@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>USUI LAB - ウスイ研究所</title>
+    <meta name="description" content="USUI LAB（ウスイ研究所）- 個人開発プロジェクトの実験場">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+JP:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Scanline overlay -->
+    <div class="scanlines"></div>
+
+    <!-- Floating particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Glitch noise overlay -->
+    <div class="noise"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-container">
+                <div class="logo-icon">🔬</div>
+                <div class="logo-text">
+                    <span class="logo-main" data-text="USUI LAB">USUI LAB</span>
+                    <span class="logo-sub">ウスイ研究所</span>
+                </div>
+            </div>
+            <nav class="nav">
+                <a href="#projects" class="nav-link">PROJECTS</a>
+                <a href="#about" class="nav-link">ABOUT</a>
+                <a href="#contact" class="nav-link">CONTACT</a>
+            </nav>
+            <div class="status-indicator">
+                <span class="status-dot"></span>
+                <span class="status-text">ONLINE</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="terminal-window">
+                <div class="terminal-header">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                    <span class="terminal-title">system_status.exe</span>
+                </div>
+                <div class="terminal-body">
+                    <div class="typing-text" id="typing-text"></div>
+                    <span class="cursor">█</span>
+                </div>
+            </div>
+
+            <h1 class="hero-title">
+                <span class="glitch" data-text="ようこそ、我が研究所へ">ようこそ、我が研究所へ</span>
+            </h1>
+
+            <p class="hero-subtitle">
+                <span class="classified">[CLASSIFIED]</span>
+                個人開発プロジェクトの実験・研究施設
+            </p>
+
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-value" data-count="2">0</span>
+                    <span class="stat-label">PROJECTS</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" data-count="1">0</span>
+                    <span class="stat-label">RELEASED</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" data-count="99">0</span>
+                    <span class="stat-label">COFFEE ☕</span>
+                </div>
+            </div>
+
+            <a href="#projects" class="cta-button">
+                <span class="cta-text">研究成果を見る</span>
+                <span class="cta-arrow">→</span>
+            </a>
+        </div>
+
+        <div class="hero-decoration">
+            <div class="circuit-lines"></div>
+            <div class="floating-icons">
+                <span class="float-icon" style="--delay: 0s; --x: 10%;">⚗️</span>
+                <span class="float-icon" style="--delay: 1s; --x: 25%;">💻</span>
+                <span class="float-icon" style="--delay: 2s; --x: 75%;">🎮</span>
+                <span class="float-icon" style="--delay: 0.5s; --x: 90%;">🧪</span>
+                <span class="float-icon" style="--delay: 1.5s; --x: 50%;">⚡</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+        <div class="section-header">
+            <div class="section-line"></div>
+            <h2 class="section-title">
+                <span class="section-icon">📁</span>
+                RESEARCH PROJECTS
+            </h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="projects-grid">
+            <!-- Project 1: YouTube Shooting -->
+            <article class="project-card released">
+                <div class="project-status">
+                    <span class="status-badge released">✓ RELEASED</span>
+                    <span class="project-number">No.001</span>
+                </div>
+
+                <div class="project-icon">🎯</div>
+
+                <h3 class="project-title">YouTube Shooting</h3>
+                <p class="project-category">Chrome Extension</p>
+
+                <p class="project-description">
+                    YouTubeのコメントを撃ち落とす弾幕シューティングゲーム。
+                    視聴中に遊べる革新的な実験作品。
+                </p>
+
+                <div class="project-tech">
+                    <span class="tech-tag">JavaScript</span>
+                    <span class="tech-tag">Chrome API</span>
+                    <span class="tech-tag">Canvas</span>
+                </div>
+
+                <div class="project-links">
+                    <a href="https://chromewebstore.google.com/detail/mdndofnojmpkmglofeioeikbgpjbphka"
+                       class="project-link primary" target="_blank" rel="noopener">
+                        <span>🛒 Chrome Web Store</span>
+                    </a>
+                    <a href="https://github.com/tomatomilk203/Yotubeshooting"
+                       class="project-link secondary" target="_blank" rel="noopener">
+                        <span>📂 GitHub</span>
+                    </a>
+                </div>
+
+                <div class="project-glow"></div>
+            </article>
+
+            <!-- Project 2: Brainrot Collection -->
+            <article class="project-card development">
+                <div class="project-status">
+                    <span class="status-badge development">⚙️ IN DEVELOPMENT</span>
+                    <span class="project-number">No.002</span>
+                </div>
+
+                <div class="project-icon">🧠</div>
+
+                <h3 class="project-title">Brainrot Collection</h3>
+                <p class="project-category">??? Application</p>
+
+                <p class="project-description">
+                    <span class="redacted">████████████████</span><br>
+                    詳細は機密事項です。開発完了までお待ちください。
+                </p>
+
+                <div class="project-tech">
+                    <span class="tech-tag">???</span>
+                    <span class="tech-tag">Coming Soon</span>
+                </div>
+
+                <div class="project-links">
+                    <div class="coming-soon-box">
+                        <div class="loading-bar">
+                            <div class="loading-progress"></div>
+                        </div>
+                        <span class="coming-soon-text">COMING SOON...</span>
+                    </div>
+                </div>
+
+                <div class="project-glow development"></div>
+            </article>
+
+            <!-- Future Project Placeholder -->
+            <article class="project-card placeholder">
+                <div class="project-status">
+                    <span class="status-badge placeholder">? UNKNOWN</span>
+                    <span class="project-number">No.???</span>
+                </div>
+
+                <div class="project-icon">❓</div>
+
+                <h3 class="project-title">Next Experiment</h3>
+                <p class="project-category">To Be Announced</p>
+
+                <p class="project-description">
+                    次なる実験は何になるのか...？<br>
+                    研究所は常に新しいアイデアを求めています。
+                </p>
+
+                <div class="project-links">
+                    <div class="mystery-text">
+                        <span class="blink">▌</span> AWAITING INPUT...
+                    </div>
+                </div>
+
+                <div class="project-glow placeholder"></div>
+            </article>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="section-header">
+            <div class="section-line"></div>
+            <h2 class="section-title">
+                <span class="section-icon">👤</span>
+                ABOUT THE LAB
+            </h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="about-content">
+            <div class="about-terminal">
+                <div class="terminal-header">
+                    <span class="terminal-dot red"></span>
+                    <span class="terminal-dot yellow"></span>
+                    <span class="terminal-dot green"></span>
+                    <span class="terminal-title">researcher_profile.dat</span>
+                </div>
+                <div class="terminal-body about-text">
+                    <p><span class="prompt">$</span> cat profile.txt</p>
+                    <br>
+                    <p class="code-block">
+                        <span class="code-key">NAME:</span> USUI<br>
+                        <span class="code-key">ROLE:</span> 個人開発者 / 研究員<br>
+                        <span class="code-key">MISSION:</span> 面白いものを作る<br>
+                        <span class="code-key">STATUS:</span> <span class="status-active">ACTIVE</span><br>
+                        <span class="code-key">LOCATION:</span> <span class="redacted">██████</span>, Japan
+                    </p>
+                    <br>
+                    <p><span class="prompt">$</span> echo $PHILOSOPHY</p>
+                    <p class="philosophy">"作りたいものを作る、それだけだ。"</p>
+                </div>
+            </div>
+
+            <div class="lab-info">
+                <div class="info-card">
+                    <div class="info-icon">🔬</div>
+                    <h4>Research Focus</h4>
+                    <p>ブラウザ拡張機能、Webアプリケーション、その他思いついたもの全て</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">⚡</div>
+                    <h4>Development Style</h4>
+                    <p>スピード重視、実験的、時々カオス</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">🎯</div>
+                    <h4>Goal</h4>
+                    <p>誰かの「面白い」を生み出すこと</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="section-header">
+            <div class="section-line"></div>
+            <h2 class="section-title">
+                <span class="section-icon">📡</span>
+                CONTACT
+            </h2>
+            <div class="section-line"></div>
+        </div>
+
+        <div class="contact-content">
+            <p class="contact-message">
+                研究所への連絡は以下のチャンネルからどうぞ
+            </p>
+
+            <div class="contact-links">
+                <a href="https://github.com/tomatomilk203" class="contact-link github" target="_blank" rel="noopener">
+                    <span class="contact-icon">📂</span>
+                    <span class="contact-name">GitHub</span>
+                    <span class="contact-handle">@tomatomilk203</span>
+                </a>
+
+                <a href="https://x.com/tomatomilk203" class="contact-link twitter" target="_blank" rel="noopener">
+                    <span class="contact-icon">🐦</span>
+                    <span class="contact-name">X (Twitter)</span>
+                    <span class="contact-handle">@tomatomilk203</span>
+                </a>
+            </div>
+
+            <div class="transmission-status">
+                <span class="transmission-icon">📻</span>
+                <span class="transmission-text">TRANSMISSION CHANNEL OPEN</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <span class="footer-icon">🔬</span>
+                <span class="footer-text">USUI LAB</span>
+            </div>
+
+            <div class="footer-divider"></div>
+
+            <p class="footer-copyright">
+                © 2024-2025 USUI LAB. All experiments reserved.
+            </p>
+
+            <p class="footer-disclaimer">
+                ※ 当研究所の実験は全て個人の趣味で行われています
+            </p>
+
+            <div class="footer-decoration">
+                <span class="footer-code">[ END OF TRANSMISSION ]</span>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
