@@ -10,7 +10,103 @@ document.addEventListener('DOMContentLoaded', () => {
     initCounterAnimation();
     initSmoothScroll();
     initScoreAnimation();
+    initLangToggle();
 });
+
+/* =====================================================
+   LANGUAGE TOGGLE
+   ===================================================== */
+let currentLang = 'ja';
+
+const translations = {
+    ja: {
+        'welcome-line1': 'ようこそ',
+        'welcome-line3': 'ウスイ研究所',
+        'welcome-hint': '← チャンネルを選択 →',
+        'preview-desc-1': 'コメント弾幕シューティング',
+        'preview-footer-1': 'クリックで入る',
+        'preview-footer-2': '開発中...',
+        'preview-footer-3': '信号待機中...',
+        'section-projects': 'PROJECTS',
+        'section-about': 'ABOUT',
+        'section-contact': 'CONTACT',
+        'scroll-hint': '↓ 下にスクロール ↓'
+    },
+    en: {
+        'welcome-line1': 'WELCOME TO',
+        'welcome-line3': 'USUI LABORATORY',
+        'welcome-hint': '← SELECT CHANNEL →',
+        'preview-desc-1': 'Comment Bullet Hell Shooter',
+        'preview-footer-1': 'CLICK TO ENTER',
+        'preview-footer-2': 'IN DEVELOPMENT...',
+        'preview-footer-3': 'AWAITING SIGNAL...',
+        'section-projects': 'PROJECTS',
+        'section-about': 'ABOUT',
+        'section-contact': 'CONTACT',
+        'scroll-hint': '↓ SCROLL FOR MORE ↓'
+    }
+};
+
+function initLangToggle() {
+    const toggle = document.getElementById('lang-toggle');
+    if (!toggle) return;
+
+    // Load saved preference
+    const saved = localStorage.getItem('usuilab_lang');
+    if (saved) {
+        currentLang = saved;
+        updateLangUI();
+        applyTranslations();
+    }
+
+    toggle.addEventListener('click', () => {
+        currentLang = currentLang === 'ja' ? 'en' : 'ja';
+        localStorage.setItem('usuilab_lang', currentLang);
+        updateLangUI();
+        applyTranslations();
+    });
+}
+
+function updateLangUI() {
+    const jaBtn = document.querySelector('.lang-ja');
+    const enBtn = document.querySelector('.lang-en');
+
+    if (currentLang === 'ja') {
+        jaBtn?.classList.add('active');
+        enBtn?.classList.remove('active');
+    } else {
+        jaBtn?.classList.remove('active');
+        enBtn?.classList.add('active');
+    }
+}
+
+function applyTranslations() {
+    const t = translations[currentLang];
+
+    // Welcome screen
+    const line1 = document.querySelector('.welcome-line1');
+    const line3 = document.querySelector('.welcome-line3');
+    const hint = document.querySelector('.welcome-hint');
+
+    if (line1) line1.textContent = t['welcome-line1'];
+    if (line3) line3.textContent = t['welcome-line3'];
+    if (hint) hint.textContent = t['welcome-hint'];
+
+    // Preview descriptions
+    const desc1 = document.querySelector('.channel[data-channel="1"] .preview-desc');
+    const footer1 = document.querySelector('.channel[data-channel="1"] .preview-footer span');
+    const footer2 = document.querySelector('.channel[data-channel="2"] .preview-footer span');
+    const footer3 = document.querySelector('.channel[data-channel="3"] .preview-footer span');
+
+    if (desc1) desc1.textContent = t['preview-desc-1'];
+    if (footer1) footer1.textContent = t['preview-footer-1'];
+    if (footer2) footer2.textContent = t['preview-footer-2'];
+    if (footer3) footer3.textContent = t['preview-footer-3'];
+
+    // Scroll hint
+    const scrollHint = document.querySelector('.scroll-hint span');
+    if (scrollHint) scrollHint.textContent = t['scroll-hint'];
+}
 
 /* =====================================================
    TV SYSTEM - Power & Channel Control
