@@ -1005,6 +1005,63 @@ body.tv-on .tv-content {
 }
 
 /* =====================================================
+   TV POWER BUTTON
+   ===================================================== */
+.tv-power-btn {
+    width: 55px;
+    height: 55px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    background: radial-gradient(circle at 35% 35%, #555, #222);
+    border: 3px solid #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    transition: all 0.15s;
+    box-shadow:
+        inset 0 2px 4px rgba(255,255,255,0.2),
+        inset 0 -2px 4px rgba(0,0,0,0.5),
+        0 4px 8px rgba(0,0,0,0.6);
+}
+
+.tv-power-btn:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+.tv-power-btn:active {
+    transform: scale(0.95) translateY(2px);
+    box-shadow:
+        inset 0 2px 4px rgba(0,0,0,0.4),
+        inset 0 -1px 2px rgba(255,255,255,0.1),
+        0 1px 2px rgba(0,0,0,0.5);
+}
+
+.power-icon {
+    width: 28px;
+    height: 28px;
+    color: #666;
+    transition: all 0.3s;
+}
+
+/* TV ON時の電源ボタン */
+body.tv-on .tv-power-btn {
+    background: radial-gradient(circle at 35% 35%, #66ff66, #228822);
+    border-color: #115511;
+    box-shadow:
+        inset 0 2px 4px rgba(255,255,255,0.3),
+        inset 0 -2px 4px rgba(0,0,0,0.3),
+        0 0 25px rgba(50,255,50,0.7),
+        0 4px 8px rgba(0,0,0,0.5);
+}
+
+body.tv-on .power-icon {
+    color: #fff;
+}
+
+/* =====================================================
    TV COLOR BUTTONS
    ===================================================== */
 .tv-color-buttons {
@@ -1042,18 +1099,10 @@ body.tv-on .tv-content {
         0 1px 2px rgba(0,0,0,0.5);
 }
 
-/* 赤ボタン - 電源/次へ */
+/* 赤ボタン - 次へ */
 .tv-btn.red {
     background: radial-gradient(circle at 35% 35%, #ff7777, #bb0000);
     border: 2px solid #880000;
-}
-
-body.tv-on .tv-btn.red {
-    box-shadow:
-        inset 0 2px 4px rgba(255,255,255,0.3),
-        inset 0 -2px 4px rgba(0,0,0,0.3),
-        0 0 20px rgba(255,50,50,0.8),
-        0 3px 6px rgba(0,0,0,0.5);
 }
 
 /* 黄ボタン - 戻る */

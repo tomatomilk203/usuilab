@@ -115,18 +115,27 @@ let currentChannel = 0;
 let tvIsOn = false;
 
 function initTV() {
-    const powerBtn = document.getElementById('power-btn');
+    const mainPowerBtn = document.getElementById('main-power-btn');
+    const nextBtn = document.getElementById('next-btn');
     const prevBtn = document.getElementById('prev-btn');
     const secretBtn1 = document.getElementById('secret-btn-1');
     const secretBtn2 = document.getElementById('secret-btn-2');
 
-    // 赤ボタン - 電源ON/次のチャンネル
-    if (powerBtn) {
-        powerBtn.addEventListener('click', () => {
+    // メイン電源ボタン - 電源ON/OFF
+    if (mainPowerBtn) {
+        mainPowerBtn.addEventListener('click', () => {
             if (!tvIsOn) {
                 powerOnTV();
             } else {
-                // 次のチャンネルへ
+                powerOffTV();
+            }
+        });
+    }
+
+    // 赤ボタン - 次のチャンネル
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            if (tvIsOn) {
                 nextChannel();
             }
         });
