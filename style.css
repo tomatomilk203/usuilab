@@ -293,7 +293,82 @@ body.tv-on .main-content {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 20px;
+}
+
+/* =====================================================
+   TV ANTENNA - V字アンテナ
+   ===================================================== */
+.tv-antenna {
+    display: flex;
+    align-items: flex-end;
     justify-content: center;
+    height: 80px;
+    margin-bottom: -5px;
+    position: relative;
+    z-index: 5;
+}
+
+.antenna-base {
+    width: 30px;
+    height: 20px;
+    background:
+        radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.2) 0%, transparent 60%),
+        linear-gradient(180deg, #4a4a4a 0%, #2a2a2a 50%, #1a1a1a 100%);
+    border-radius: 5px 5px 0 0;
+    position: relative;
+    box-shadow:
+        0 -2px 4px rgba(0,0,0,0.3),
+        inset 0 1px 2px rgba(255,255,255,0.1);
+}
+
+.antenna-left,
+.antenna-right {
+    width: 4px;
+    height: 70px;
+    background:
+        linear-gradient(90deg,
+            #6a6a6a 0%,
+            #9a9a9a 30%,
+            #6a6a6a 50%,
+            #4a4a4a 100%
+        );
+    border-radius: 2px;
+    position: relative;
+    box-shadow:
+        1px 0 2px rgba(0,0,0,0.3),
+        -1px 0 1px rgba(255,255,255,0.1);
+}
+
+.antenna-left {
+    transform: rotate(-25deg);
+    transform-origin: bottom center;
+    margin-right: -2px;
+}
+
+.antenna-right {
+    transform: rotate(25deg);
+    transform-origin: bottom center;
+    margin-left: -2px;
+}
+
+/* アンテナの先端の丸い部分 */
+.antenna-left::before,
+.antenna-right::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 8px;
+    background:
+        radial-gradient(circle at 30% 30%, #aaa 0%, #666 100%);
+    border-radius: 50%;
+    box-shadow:
+        inset 0 1px 2px rgba(255,255,255,0.3),
+        0 1px 2px rgba(0,0,0,0.3);
 }
 
 /* =====================================================
@@ -302,9 +377,10 @@ body.tv-on .main-content {
 .tv-frame {
     position: relative;
     width: calc(100vw - 30px);
-    max-width: 1600px;
-    height: calc(100vh - 110px);
-    max-height: 750px;
+    max-width: 1400px;
+    height: calc(100vh - 180px);
+    max-height: 700px;
+    min-height: 500px;
     display: grid;
     grid-template-columns: 1fr 140px;
     gap: 0;
@@ -1798,10 +1874,19 @@ body.tv-on .scroll-hint.visible {
         gap: 20px;
     }
 
+    .tv-antenna {
+        height: 60px;
+    }
+
+    .antenna-left,
+    .antenna-right {
+        height: 50px;
+    }
+
     .tv-frame {
         grid-template-columns: 1fr 100px;
         width: calc(100vw - 20px);
-        height: calc(100vh - 100px);
+        height: calc(100vh - 160px);
         padding: 15px 12px 20px 15px;
     }
 
@@ -1863,11 +1948,33 @@ body.tv-on .scroll-hint.visible {
         height: calc(100vh - 70px);
     }
 
+    .tv-antenna {
+        height: 50px;
+    }
+
+    .antenna-left,
+    .antenna-right {
+        height: 40px;
+        width: 3px;
+    }
+
+    .antenna-base {
+        width: 24px;
+        height: 16px;
+    }
+
+    .antenna-left::before,
+    .antenna-right::before {
+        width: 6px;
+        height: 6px;
+        top: -4px;
+    }
+
     .tv-frame {
         grid-template-columns: 1fr;
         grid-template-rows: 1fr auto;
         width: calc(100vw - 16px);
-        height: calc(100vh - 90px);
+        height: calc(100vh - 140px);
         padding: 12px 10px 15px 10px;
         border-radius: 15px 15px 18px 18px;
     }
