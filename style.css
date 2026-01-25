@@ -115,22 +115,146 @@ body.tv-on .main-content {
 }
 
 /* =====================================================
-   TV FRAME
+   TV FRAME - Realistic CRT TV
    ===================================================== */
 .tv-frame {
-    background: linear-gradient(145deg, var(--tv-frame-light) 0%, var(--tv-frame) 50%, #2a2520 100%);
-    border-radius: 30px;
-    padding: 25px;
-    padding-bottom: 60px; /* ボタン用スペース */
-    box-shadow:
-        0 20px 60px rgba(0,0,0,0.5),
-        inset 0 2px 4px rgba(255,255,255,0.1),
-        inset 0 -2px 4px rgba(0,0,0,0.3);
+    /* 木目調フレーム */
+    background:
+        linear-gradient(90deg,
+            rgba(0,0,0,0.1) 0%,
+            transparent 2%,
+            transparent 98%,
+            rgba(0,0,0,0.1) 100%
+        ),
+        linear-gradient(180deg,
+            #5a4a3a 0%,
+            #4a3a2a 5%,
+            #3d3025 50%,
+            #2a2018 95%,
+            #1a1510 100%
+        );
+    border-radius: 15px;
+    padding: 20px;
     position: relative;
-    width: calc(100vw - 60px);
+    width: calc(100vw - 40px);
     max-width: 1400px;
-    height: calc(100vh - 80px);
-    max-height: 900px;
+    height: calc(100vh - 60px);
+    max-height: 850px;
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    gap: 15px;
+    /* リアルな影 */
+    box-shadow:
+        0 30px 60px rgba(0,0,0,0.6),
+        0 10px 20px rgba(0,0,0,0.4),
+        inset 0 1px 0 rgba(255,255,255,0.1),
+        inset 0 -1px 0 rgba(0,0,0,0.3);
+}
+
+/* TVフレームの木目テクスチャ */
+.tv-frame::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(0,0,0,0.03) 2px,
+            rgba(0,0,0,0.03) 4px
+        );
+    border-radius: 15px;
+    pointer-events: none;
+}
+
+/* コントロールパネル（右側） */
+.tv-controls-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+/* ブランドロゴ */
+.tv-brand {
+    text-align: center;
+    font-family: 'VT323', monospace;
+    font-size: 1.2rem;
+    color: #8a7a6a;
+    letter-spacing: 3px;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.1);
+    margin-bottom: 15px;
+}
+
+/* スピーカーグリル */
+.tv-speaker {
+    background: #1a1510;
+    border-radius: 5px;
+    padding: 15px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.speaker-line {
+    height: 3px;
+    background: linear-gradient(90deg,
+        #0a0805 0%,
+        #2a2520 50%,
+        #0a0805 100%
+    );
+    border-radius: 1px;
+}
+
+/* ダイヤル */
+.tv-dials {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+}
+
+.dial-container {
+    text-align: center;
+}
+
+.dial {
+    width: 45px;
+    height: 45px;
+    background:
+        radial-gradient(circle at 30% 30%, #6a6a6a, #2a2a2a),
+        conic-gradient(from 0deg, #4a4a4a, #3a3a3a, #4a4a4a);
+    border-radius: 50%;
+    border: 3px solid #1a1a1a;
+    position: relative;
+    cursor: pointer;
+    box-shadow:
+        0 3px 6px rgba(0,0,0,0.5),
+        inset 0 1px 2px rgba(255,255,255,0.2);
+}
+
+.dial::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 12px;
+    background: #ddd;
+    border-radius: 1px;
+}
+
+.dial-label {
+    font-family: 'VT323', monospace;
+    font-size: 0.7rem;
+    color: #6a5a4a;
+    margin-top: 5px;
 }
 
 /* =====================================================
@@ -699,65 +823,73 @@ body.tv-on .tv-content {
 }
 
 /* =====================================================
-   TV BUTTONS (ATTACHED TO FRAME)
+   TV COLOR BUTTONS
    ===================================================== */
-.tv-buttons {
-    position: absolute;
-    bottom: 15px;
-    right: 30px;
-    display: flex;
-    gap: 15px;
+.tv-color-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 10px;
+    background: rgba(0,0,0,0.2);
+    border-radius: 8px;
 }
 
 .tv-btn {
-    width: 25px;
-    height: 25px;
+    width: 35px;
+    height: 35px;
     border: none;
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.1s;
     box-shadow:
         inset 0 2px 4px rgba(255,255,255,0.3),
-        inset 0 -2px 4px rgba(0,0,0,0.3),
-        0 2px 4px rgba(0,0,0,0.5);
+        inset 0 -2px 4px rgba(0,0,0,0.4),
+        0 3px 6px rgba(0,0,0,0.5);
 }
 
 .tv-btn:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
+    filter: brightness(1.1);
 }
 
 .tv-btn:active {
-    transform: scale(0.95);
+    transform: scale(0.95) translateY(2px);
     box-shadow:
-        inset 0 2px 4px rgba(0,0,0,0.3),
-        inset 0 -2px 4px rgba(255,255,255,0.1);
+        inset 0 2px 4px rgba(0,0,0,0.4),
+        inset 0 -1px 2px rgba(255,255,255,0.1),
+        0 1px 2px rgba(0,0,0,0.5);
 }
 
 /* 赤ボタン - 電源/次へ */
 .tv-btn.red {
-    background: radial-gradient(circle at 30% 30%, #ff6666, #cc0000);
+    background: radial-gradient(circle at 35% 35%, #ff7777, #bb0000);
+    border: 2px solid #880000;
 }
 
 body.tv-on .tv-btn.red {
     box-shadow:
         inset 0 2px 4px rgba(255,255,255,0.3),
         inset 0 -2px 4px rgba(0,0,0,0.3),
-        0 0 15px rgba(255,0,0,0.6);
+        0 0 20px rgba(255,50,50,0.8),
+        0 3px 6px rgba(0,0,0,0.5);
 }
 
 /* 黄ボタン - 戻る */
 .tv-btn.yellow {
-    background: radial-gradient(circle at 30% 30%, #ffee66, #ccaa00);
+    background: radial-gradient(circle at 35% 35%, #ffee77, #bb9900);
+    border: 2px solid #886600;
 }
 
 /* 青ボタン - 隠しコマンド */
 .tv-btn.blue {
-    background: radial-gradient(circle at 30% 30%, #66aaff, #0044cc);
+    background: radial-gradient(circle at 35% 35%, #77aaff, #0044bb);
+    border: 2px solid #003388;
 }
 
 /* 紫ボタン - 隠しコマンド */
 .tv-btn.purple {
-    background: radial-gradient(circle at 30% 30%, #cc66ff, #7700cc);
+    background: radial-gradient(circle at 35% 35%, #cc77ff, #7700bb);
+    border: 2px solid #550088;
 }
 
 /* =====================================================
@@ -1135,24 +1267,27 @@ body.tv-on .scroll-hint.visible {
 /* =====================================================
    RESPONSIVE
    ===================================================== */
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
     .tv-frame {
-        padding: 15px;
-        padding-bottom: 50px;
-        border-radius: 20px;
+        grid-template-columns: 1fr 100px;
         width: calc(100vw - 30px);
-        height: calc(100vh - 60px);
+        height: calc(100vh - 50px);
+        padding: 15px;
+        gap: 10px;
     }
 
-    .tv-buttons {
-        bottom: 12px;
-        right: 20px;
-        gap: 12px;
+    .tv-speaker {
+        padding: 10px 8px;
+    }
+
+    .dial {
+        width: 35px;
+        height: 35px;
     }
 
     .tv-btn {
-        width: 22px;
-        height: 22px;
+        width: 28px;
+        height: 28px;
     }
 
     .about-content {
@@ -1166,19 +1301,41 @@ body.tv-on .scroll-hint.visible {
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
     html { font-size: 16px; }
 
     .tv-frame {
-        padding: 10px;
-        padding-bottom: 45px;
-        border-radius: 15px;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr auto;
         width: calc(100vw - 20px);
         height: calc(100vh - 40px);
+        padding: 10px;
     }
 
-    .tv-screen-wrapper {
-        border-radius: 10px;
+    .tv-controls-panel {
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        padding: 10px 0;
+    }
+
+    .tv-speaker {
+        display: none;
+    }
+
+    .tv-dials {
+        flex-direction: row;
+        gap: 15px;
+    }
+
+    .tv-color-buttons {
+        display: flex;
+        gap: 8px;
+    }
+
+    .tv-btn {
+        width: 30px;
+        height: 30px;
     }
 
     .welcome-line2 {
@@ -1187,16 +1344,5 @@ body.tv-on .scroll-hint.visible {
 
     .preview-title {
         font-size: 1.5rem;
-    }
-
-    .tv-buttons {
-        bottom: 10px;
-        right: 15px;
-        gap: 10px;
-    }
-
-    .tv-btn {
-        width: 18px;
-        height: 18px;
     }
 }
