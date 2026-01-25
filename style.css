@@ -1155,22 +1155,13 @@ body.tv-on .scroll-hint.visible {
     border: 3px solid var(--text-dark);
     padding: 25px;
     position: relative;
-    transition: transform 0.1s;
-}
-
-.project-card::after {
-    content: '';
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    right: -6px;
-    bottom: -6px;
-    background: var(--text-dark);
-    z-index: -1;
+    transition: transform 0.1s, box-shadow 0.1s;
+    box-shadow: 6px 6px 0 var(--text-dark);
 }
 
 .project-card:hover {
     transform: translate(-3px, -3px);
+    box-shadow: 9px 9px 0 var(--text-dark);
 }
 
 .project-status {
