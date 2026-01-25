@@ -100,16 +100,18 @@ body.tv-on .main-content {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 40px 20px;
+    padding: 0;
     position: relative;
     z-index: 10;
 }
 
 .tv-container {
+    width: 100%;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 30px;
+    justify-content: center;
 }
 
 /* =====================================================
@@ -117,30 +119,18 @@ body.tv-on .main-content {
    ===================================================== */
 .tv-frame {
     background: linear-gradient(145deg, var(--tv-frame-light) 0%, var(--tv-frame) 50%, #2a2520 100%);
-    border-radius: 20px;
-    padding: 30px;
+    border-radius: 30px;
+    padding: 25px;
+    padding-bottom: 60px; /* ボタン用スペース */
     box-shadow:
         0 20px 60px rgba(0,0,0,0.5),
         inset 0 2px 4px rgba(255,255,255,0.1),
         inset 0 -2px 4px rgba(0,0,0,0.3);
     position: relative;
-}
-
-/* TV Legs */
-.tv-legs {
-    position: absolute;
-    bottom: -40px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 200px;
-}
-
-.tv-leg {
-    width: 20px;
-    height: 50px;
-    background: linear-gradient(90deg, #2a2520 0%, var(--tv-frame) 50%, #2a2520 100%);
-    border-radius: 0 0 5px 5px;
+    width: calc(100vw - 60px);
+    max-width: 1400px;
+    height: calc(100vh - 80px);
+    max-height: 900px;
 }
 
 /* =====================================================
@@ -148,14 +138,14 @@ body.tv-on .main-content {
    ===================================================== */
 .tv-screen-wrapper {
     position: relative;
-    width: 600px;
-    height: 450px;
+    width: 100%;
+    height: 100%;
     background: #000;
-    border-radius: 30px / 25px;
+    border-radius: 20px;
     overflow: hidden;
     box-shadow:
-        inset 0 0 50px rgba(0,0,0,0.8),
-        inset 0 0 10px rgba(0,0,0,0.9);
+        inset 0 0 80px rgba(0,0,0,0.8),
+        inset 0 0 20px rgba(0,0,0,0.9);
 }
 
 .tv-screen {
@@ -164,8 +154,7 @@ body.tv-on .main-content {
     background: var(--tv-screen-off);
     position: relative;
     overflow: hidden;
-    /* CRT curvature effect */
-    border-radius: 30px / 25px;
+    border-radius: 15px;
 }
 
 /* Curved screen effect overlay */
@@ -710,121 +699,77 @@ body.tv-on .tv-content {
 }
 
 /* =====================================================
-   TV CONTROLS (BOTTOM)
+   TV BUTTONS (ATTACHED TO FRAME)
    ===================================================== */
-.tv-controls-bottom {
+.tv-buttons {
+    position: absolute;
+    bottom: 15px;
+    right: 30px;
     display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 30px;
+    gap: 15px;
 }
 
-.color-btn {
-    width: 70px;
-    height: 70px;
+.tv-btn {
+    width: 25px;
+    height: 25px;
     border: none;
     border-radius: 50%;
     cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     transition: all 0.1s;
-    position: relative;
+    box-shadow:
+        inset 0 2px 4px rgba(255,255,255,0.3),
+        inset 0 -2px 4px rgba(0,0,0,0.3),
+        0 2px 4px rgba(0,0,0,0.5);
 }
 
-.color-btn .btn-label {
-    font-family: 'DotGothic16', monospace;
-    font-size: 0.8rem;
-    color: rgba(255,255,255,0.9);
-    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+.tv-btn:hover {
+    transform: scale(1.1);
+}
+
+.tv-btn:active {
+    transform: scale(0.95);
+    box-shadow:
+        inset 0 2px 4px rgba(0,0,0,0.3),
+        inset 0 -2px 4px rgba(255,255,255,0.1);
 }
 
 /* 赤ボタン - 電源/次へ */
-.color-btn.red {
-    background: linear-gradient(180deg, #ff4444 0%, #cc0000 100%);
+.tv-btn.red {
+    background: radial-gradient(circle at 30% 30%, #ff6666, #cc0000);
+}
+
+body.tv-on .tv-btn.red {
     box-shadow:
-        0 6px 0 #990000,
-        0 10px 20px rgba(0,0,0,0.4);
-}
-
-.color-btn.red:hover {
-    background: linear-gradient(180deg, #ff6666 0%, #ee2222 100%);
-}
-
-.color-btn.red:active {
-    transform: translateY(4px);
-    box-shadow: 0 2px 0 #990000;
-}
-
-body.tv-on .color-btn.red {
-    box-shadow:
-        0 6px 0 #990000,
-        0 0 30px rgba(255,0,0,0.4);
+        inset 0 2px 4px rgba(255,255,255,0.3),
+        inset 0 -2px 4px rgba(0,0,0,0.3),
+        0 0 15px rgba(255,0,0,0.6);
 }
 
 /* 黄ボタン - 戻る */
-.color-btn.yellow {
-    background: linear-gradient(180deg, #ffdd44 0%, #ccaa00 100%);
-    box-shadow:
-        0 6px 0 #997700,
-        0 10px 20px rgba(0,0,0,0.4);
-}
-
-.color-btn.yellow:hover {
-    background: linear-gradient(180deg, #ffee66 0%, #ddbb22 100%);
-}
-
-.color-btn.yellow:active {
-    transform: translateY(4px);
-    box-shadow: 0 2px 0 #997700;
-}
-
-.color-btn.yellow .btn-label {
-    color: rgba(0,0,0,0.8);
-    text-shadow: none;
+.tv-btn.yellow {
+    background: radial-gradient(circle at 30% 30%, #ffee66, #ccaa00);
 }
 
 /* 青ボタン - 隠しコマンド */
-.color-btn.blue {
-    background: linear-gradient(180deg, #4488ff 0%, #0044cc 100%);
-    box-shadow:
-        0 6px 0 #003399,
-        0 10px 20px rgba(0,0,0,0.4);
-}
-
-.color-btn.blue:hover {
-    background: linear-gradient(180deg, #66aaff 0%, #2266ee 100%);
-}
-
-.color-btn.blue:active {
-    transform: translateY(4px);
-    box-shadow: 0 2px 0 #003399;
+.tv-btn.blue {
+    background: radial-gradient(circle at 30% 30%, #66aaff, #0044cc);
 }
 
 /* 紫ボタン - 隠しコマンド */
-.color-btn.purple {
-    background: linear-gradient(180deg, #aa44ff 0%, #7700cc 100%);
-    box-shadow:
-        0 6px 0 #550099,
-        0 10px 20px rgba(0,0,0,0.4);
-}
-
-.color-btn.purple:hover {
-    background: linear-gradient(180deg, #cc66ff 0%, #9922ee 100%);
-}
-
-.color-btn.purple:active {
-    transform: translateY(4px);
-    box-shadow: 0 2px 0 #550099;
+.tv-btn.purple {
+    background: radial-gradient(circle at 30% 30%, #cc66ff, #7700cc);
 }
 
 /* =====================================================
    SCROLL HINT
    ===================================================== */
 .scroll-hint {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
     font-family: 'VT323', monospace;
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: var(--text-light);
     opacity: 0;
     transition: opacity 0.5s;
@@ -832,17 +777,17 @@ body.tv-on .color-btn.red {
 }
 
 .scroll-hint.visible {
-    opacity: 0.6;
+    opacity: 0.5;
     animation: scrollHintFade 2s ease-in-out infinite;
 }
 
 body.tv-on .scroll-hint.visible {
-    opacity: 0.6;
+    opacity: 0.5;
 }
 
 @keyframes scrollHintFade {
-    0%, 100% { opacity: 0.6; transform: translateY(0); }
-    50% { opacity: 0.3; transform: translateY(5px); }
+    0%, 100% { opacity: 0.5; transform: translateX(-50%) translateY(0); }
+    50% { opacity: 0.2; transform: translateX(-50%) translateY(3px); }
 }
 
 /* =====================================================
@@ -1192,26 +1137,22 @@ body.tv-on .scroll-hint.visible {
    ===================================================== */
 @media (max-width: 900px) {
     .tv-frame {
-        padding: 20px;
+        padding: 15px;
+        padding-bottom: 50px;
+        border-radius: 20px;
+        width: calc(100vw - 30px);
+        height: calc(100vh - 60px);
     }
 
-    .tv-screen-wrapper {
-        width: 100%;
-        max-width: 500px;
-        height: 375px;
+    .tv-buttons {
+        bottom: 12px;
+        right: 20px;
+        gap: 12px;
     }
 
-    .tv-legs {
-        gap: 100px;
-    }
-
-    .tv-controls-bottom {
-        gap: 15px;
-    }
-
-    .color-btn {
-        width: 60px;
-        height: 60px;
+    .tv-btn {
+        width: 22px;
+        height: 22px;
     }
 
     .about-content {
@@ -1228,28 +1169,34 @@ body.tv-on .scroll-hint.visible {
 @media (max-width: 600px) {
     html { font-size: 16px; }
 
+    .tv-frame {
+        padding: 10px;
+        padding-bottom: 45px;
+        border-radius: 15px;
+        width: calc(100vw - 20px);
+        height: calc(100vh - 40px);
+    }
+
     .tv-screen-wrapper {
-        height: 280px;
+        border-radius: 10px;
     }
 
     .welcome-line2 {
-        font-size: 2.5rem;
+        font-size: 2rem;
     }
 
     .preview-title {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
     }
 
-    .tv-controls-bottom {
+    .tv-buttons {
+        bottom: 10px;
+        right: 15px;
         gap: 10px;
     }
 
-    .color-btn {
-        width: 50px;
-        height: 50px;
-    }
-
-    .color-btn .btn-label {
-        font-size: 0.7rem;
+    .tv-btn {
+        width: 18px;
+        height: 18px;
     }
 }
