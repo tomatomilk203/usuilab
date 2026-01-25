@@ -41,6 +41,105 @@
     box-sizing: border-box;
 }
 
+/* =====================================================
+   HEADER
+   ===================================================== */
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: var(--room-lit);
+}
+
+.color-bars {
+    display: flex;
+    height: 8px;
+}
+
+.color-bars span {
+    flex: 1;
+}
+
+.color-bars span:nth-child(1) { background: #fff; }
+.color-bars span:nth-child(2) { background: #ffff00; }
+.color-bars span:nth-child(3) { background: #00ffff; }
+.color-bars span:nth-child(4) { background: #00ff00; }
+.color-bars span:nth-child(5) { background: #ff00ff; }
+.color-bars span:nth-child(6) { background: #ff0000; }
+.color-bars span:nth-child(7) { background: #0000ff; }
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--text-dark);
+}
+
+.logo-icon {
+    font-size: 1.5rem;
+}
+
+.logo-text {
+    font-family: 'VT323', monospace;
+    font-size: 1.8rem;
+    letter-spacing: 3px;
+}
+
+.logo-sub {
+    font-family: 'DotGothic16', monospace;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.nav {
+    display: flex;
+    gap: 30px;
+}
+
+.nav a {
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    text-decoration: none;
+    letter-spacing: 2px;
+    transition: color 0.2s;
+}
+
+.nav a:hover {
+    color: var(--accent-yellow);
+}
+
+.status-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--text-dark);
+    color: var(--text-light);
+    padding: 8px 15px;
+    border-radius: 5px;
+    font-family: 'VT323', monospace;
+    font-size: 0.9rem;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: #00ff00;
+    border-radius: 50%;
+    animation: statusPulse 1.5s ease-in-out infinite;
+}
+
 html {
     scroll-behavior: smooth;
     font-size: 18px;
@@ -100,14 +199,14 @@ body.tv-on .main-content {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0;
+    padding-top: 80px; /* ヘッダー分 */
     position: relative;
     z-index: 10;
 }
 
 .tv-container {
     width: 100%;
-    height: 100vh;
+    height: calc(100vh - 80px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -138,8 +237,8 @@ body.tv-on .main-content {
     position: relative;
     width: calc(100vw - 40px);
     max-width: 1400px;
-    height: calc(100vh - 60px);
-    max-height: 850px;
+    height: calc(100vh - 120px);
+    max-height: 800px;
     display: grid;
     grid-template-columns: 1fr 120px;
     gap: 15px;
@@ -826,9 +925,9 @@ body.tv-on .tv-content {
    TV COLOR BUTTONS
    ===================================================== */
 .tv-color-buttons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     padding: 10px;
     background: rgba(0,0,0,0.2);
     border-radius: 8px;
@@ -1268,10 +1367,22 @@ body.tv-on .scroll-hint.visible {
    RESPONSIVE
    ===================================================== */
 @media (max-width: 1000px) {
+    .header-content {
+        padding: 12px 20px;
+    }
+
+    .logo-sub {
+        display: none;
+    }
+
+    .nav {
+        gap: 20px;
+    }
+
     .tv-frame {
         grid-template-columns: 1fr 100px;
         width: calc(100vw - 30px);
-        height: calc(100vh - 50px);
+        height: calc(100vh - 110px);
         padding: 15px;
         gap: 10px;
     }
@@ -1304,11 +1415,36 @@ body.tv-on .scroll-hint.visible {
 @media (max-width: 700px) {
     html { font-size: 16px; }
 
+    .header-content {
+        padding: 10px 15px;
+    }
+
+    .logo-text {
+        font-size: 1.4rem;
+    }
+
+    .nav {
+        display: none;
+    }
+
+    .status-badge {
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+
+    .tv-section {
+        padding-top: 70px;
+    }
+
+    .tv-container {
+        height: calc(100vh - 70px);
+    }
+
     .tv-frame {
         grid-template-columns: 1fr;
         grid-template-rows: 1fr auto;
         width: calc(100vw - 20px);
-        height: calc(100vh - 40px);
+        height: calc(100vh - 100px);
         padding: 10px;
     }
 
