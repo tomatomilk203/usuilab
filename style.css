@@ -1264,7 +1264,7 @@ body.tv-on .scroll-hint.visible {
 }
 
 .project-link:hover {
-    filter: brightness(1.1);
+    text-decoration: underline;
 }
 
 .coming-soon-box,
@@ -1395,7 +1395,6 @@ body.tv-on .scroll-hint.visible {
 }
 
 .contact-link:hover {
-    background: var(--accent-yellow);
     transform: translateX(5px);
 }
 
