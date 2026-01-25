@@ -4,11 +4,249 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+    initTV();
     initEffectsToggle();
     initTypingEffect();
     initCounterAnimation();
     initSmoothScroll();
+    initScoreAnimation();
 });
+
+/* =====================================================
+   TV SYSTEM - Power & Channel Control
+   ===================================================== */
+let currentChannel = 0;
+let tvIsOn = false;
+
+function initTV() {
+    const powerBtn = document.getElementById('power-btn');
+    const prevBtn = document.getElementById('prev-btn');
+    const secretBtn1 = document.getElementById('secret-btn-1');
+    const secretBtn2 = document.getElementById('secret-btn-2');
+
+    // 赤ボタン - 電源ON/次のチャンネル
+    if (powerBtn) {
+        powerBtn.addEventListener('click', () => {
+            if (!tvIsOn) {
+                powerOnTV();
+            } else {
+                // 次のチャンネルへ
+                nextChannel();
+            }
+        });
+    }
+
+    // 黄ボタン - 前のチャンネル
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            if (tvIsOn) {
+                prevChannel();
+            }
+        });
+    }
+
+    // 青ボタン - 隠しコマンド1
+    if (secretBtn1) {
+        secretBtn1.addEventListener('click', () => {
+            secretCommand1();
+        });
+    }
+
+    // 紫ボタン - 隠しコマンド2
+    if (secretBtn2) {
+        secretBtn2.addEventListener('click', () => {
+            secretCommand2();
+        });
+    }
+
+    // Keyboard controls
+    document.addEventListener('keydown', handleKeyboard);
+
+    // TV starts OFF - user must click power button
+}
+
+function toggleTV() {
+    if (tvIsOn) {
+        powerOffTV();
+    } else {
+        powerOnTV();
+    }
+}
+
+function powerOnTV() {
+    const body = document.body;
+    const tvScreen = document.getElementById('tv-screen');
+    const tvOffScreen = document.getElementById('tv-off-screen');
+    const tvContent = document.getElementById('tv-content');
+
+    body.classList.remove('tv-off');
+    body.classList.add('tv-on');
+
+    // TV screen power-on sequence
+    if (tvScreen) {
+        tvScreen.classList.add('powering-on');
+
+        // After power-on animation, show content
+        setTimeout(() => {
+            tvScreen.classList.remove('powering-on');
+            tvScreen.classList.add('powered');
+            if (tvOffScreen) tvOffScreen.style.display = 'none';
+            if (tvContent) tvContent.style.opacity = '1';
+        }, 800);
+    }
+
+    tvIsOn = true;
+
+    // Show scroll hint after TV is on
+    setTimeout(() => {
+        const scrollHint = document.getElementById('scroll-hint');
+        if (scrollHint) {
+            scrollHint.classList.add('visible');
+        }
+    }, 2000);
+}
+
+function powerOffTV() {
+    const body = document.body;
+    const tvScreen = document.getElementById('tv-screen');
+    const tvOffScreen = document.getElementById('tv-off-screen');
+    const tvContent = document.getElementById('tv-content');
+    const scrollHint = document.getElementById('scroll-hint');
+
+    body.classList.remove('tv-on');
+    body.classList.add('tv-off');
+
+    if (tvScreen) {
+        tvScreen.classList.remove('powered');
+        tvScreen.classList.add('powering-off');
+
+        setTimeout(() => {
+            tvScreen.classList.remove('powering-off');
+            if (tvOffScreen) tvOffScreen.style.display = 'flex';
+            if (tvContent) tvContent.style.opacity = '0';
+        }, 500);
+    }
+
+    if (scrollHint) {
+        scrollHint.classList.remove('visible');
+    }
+
+    tvIsOn = false;
+}
+
+function switchChannel(channel) {
+    if (channel === currentChannel) return;
+
+    const channels = document.querySelectorAll('.channel');
+    const tvScreen = document.getElementById('tv-screen');
+
+    // Channel switch animation
+    if (tvScreen) {
+        tvScreen.classList.add('switching');
+
+        setTimeout(() => {
+            // Hide all channels
+            channels.forEach(ch => ch.classList.remove('active'));
+
+            // Show selected channel
+            const targetChannel = document.querySelector(`.channel[data-channel="${channel}"]`);
+            if (targetChannel) {
+                targetChannel.classList.add('active');
+            }
+
+            currentChannel = channel;
+
+            setTimeout(() => {
+                tvScreen.classList.remove('switching');
+            }, 200);
+        }, 150);
+    }
+}
+
+function nextChannel() {
+    const maxChannel = 3;
+    const next = currentChannel < maxChannel ? currentChannel + 1 : 0;
+    switchChannel(next);
+}
+
+function prevChannel() {
+    const maxChannel = 3;
+    const prev = currentChannel > 0 ? currentChannel - 1 : maxChannel;
+    switchChannel(prev);
+}
+
+// 隠しコマンド - 青ボタン
+let secretClicks1 = 0;
+function secretCommand1() {
+    secretClicks1++;
+    if (secretClicks1 >= 3) {
+        activateSecretMode();
+        secretClicks1 = 0;
+    }
+}
+
+// 隠しコマンド - 紫ボタン（青と組み合わせ）
+let secretClicks2 = 0;
+function secretCommand2() {
+    secretClicks2++;
+    // 青3回 + 紫2回でエルプサイ
+    if (secretClicks1 >= 3 && secretClicks2 >= 2) {
+        activateSecretMode();
+        secretClicks1 = 0;
+        secretClicks2 = 0;
+    }
+}
+
+function handleKeyboard(e) {
+    if (!tvIsOn) {
+        // Space or Enter to turn on TV
+        if (e.key === ' ' || e.key === 'Enter') {
+            powerOnTV();
+        }
+        return;
+    }
+
+    switch (e.key) {
+        case 'ArrowLeft':
+            prevChannel();
+            break;
+        case 'ArrowRight':
+            nextChannel();
+            break;
+        case 'Escape':
+            powerOffTV();
+            break;
+    }
+}
+
+/* =====================================================
+   SCORE ANIMATION (YouTube Shooting Preview)
+   ===================================================== */
+function initScoreAnimation() {
+    const scoreValue = document.querySelector('.score-value');
+    if (!scoreValue) return;
+
+    let score = 0;
+    const maxScore = 99999;
+
+    function animateScore() {
+        // Random score increment
+        score += Math.floor(Math.random() * 150) + 50;
+        if (score > maxScore) score = 0;
+
+        scoreValue.textContent = score;
+
+        // Continue animation
+        setTimeout(animateScore, Math.random() * 500 + 200);
+    }
+
+    // Start after TV is on
+    setTimeout(() => {
+        if (tvIsOn) {
+            animateScore();
+        }
+    }, 1500);
+}
 
 /* =====================================================
    CRT EFFECTS TOGGLE
