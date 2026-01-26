@@ -441,8 +441,9 @@ body.tv-on .main-content {
 .tv-frame {
     position: relative;
     width: 95vw;
-    /* 高さ制限なし - 画面いっぱいに */
     aspect-ratio: 430 / 330;
+    /* ヘッダー + コントロールバー + 余白を考慮 */
+    max-height: calc(100vh - 180px);
 }
 
 /* Real TV Frame Image Overlay */
@@ -1896,6 +1897,7 @@ body.tv-on .scroll-hint.visible {
 
     .tv-frame {
         width: 98vw;
+        max-height: calc(100vh - 160px);
     }
 
     .vhs-play, .vhs-slp, .vhs-time {
@@ -1998,6 +2000,7 @@ body.tv-on .scroll-hint.visible {
 
     .tv-frame {
         width: 100vw;
+        max-height: calc(100vh - 150px);
     }
 
     .vhs-play {
