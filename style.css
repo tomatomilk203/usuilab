@@ -298,76 +298,139 @@ body.tv-on .main-content {
 }
 
 /* =====================================================
-   TV ANTENNA - V字アンテナ
+   TV ANTENNA - フレーム一体型V字アンテナ
    ===================================================== */
 .tv-antenna {
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    height: 80px;
-    margin-bottom: -5px;
+    height: 100px;
+    margin-bottom: -20px; /* TVフレームに埋め込む */
     position: relative;
-    z-index: 5;
+    z-index: 15; /* TVフレームより上 */
 }
 
+/* アンテナ台座 - TVフレームと一体化 */
 .antenna-base {
-    width: 30px;
-    height: 20px;
+    width: 80px;
+    height: 35px;
     background:
-        radial-gradient(ellipse at 50% 30%, rgba(255,255,255,0.2) 0%, transparent 60%),
-        linear-gradient(180deg, #4a4a4a 0%, #2a2a2a 50%, #1a1a1a 100%);
-    border-radius: 5px 5px 0 0;
+        /* 上面のハイライト */
+        linear-gradient(180deg,
+            rgba(255,255,255,0.1) 0%,
+            transparent 20%
+        ),
+        /* 木目グラデーション（TVフレームと同じ） */
+        linear-gradient(180deg,
+            #4a3828 0%,
+            #3d2e20 30%,
+            #2f231a 60%,
+            #261c14 100%
+        );
+    border-radius: 10px 10px 0 0;
     position: relative;
     box-shadow:
-        0 -2px 4px rgba(0,0,0,0.3),
-        inset 0 1px 2px rgba(255,255,255,0.1);
+        /* 外側の影 */
+        0 -3px 8px rgba(0,0,0,0.4),
+        /* 側面の立体感 */
+        inset 2px 0 4px rgba(255,255,255,0.05),
+        inset -2px 0 4px rgba(0,0,0,0.2),
+        inset 0 3px 6px rgba(255,255,255,0.08);
 }
 
+/* 台座の木目テクスチャ */
+.antenna-base::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 10px 10px 0 0;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent 0px,
+            transparent 6px,
+            rgba(0,0,0,0.02) 6px,
+            rgba(0,0,0,0.02) 7px
+        );
+    pointer-events: none;
+}
+
+/* アンテナのポール */
 .antenna-left,
 .antenna-right {
-    width: 4px;
-    height: 70px;
+    width: 5px;
+    height: 90px;
     background:
+        /* 金属の反射 */
         linear-gradient(90deg,
-            #6a6a6a 0%,
-            #9a9a9a 30%,
-            #6a6a6a 50%,
-            #4a4a4a 100%
+            #505050 0%,
+            #888888 20%,
+            #c0c0c0 40%,
+            #888888 60%,
+            #505050 100%
         );
-    border-radius: 2px;
+    border-radius: 2.5px;
     position: relative;
     box-shadow:
-        1px 0 2px rgba(0,0,0,0.3),
-        -1px 0 1px rgba(255,255,255,0.1);
+        2px 2px 4px rgba(0,0,0,0.4),
+        -1px -1px 2px rgba(255,255,255,0.1);
 }
 
 .antenna-left {
-    transform: rotate(-25deg);
+    transform: rotate(-30deg);
     transform-origin: bottom center;
-    margin-right: -2px;
+    margin-right: 5px;
 }
 
 .antenna-right {
-    transform: rotate(25deg);
+    transform: rotate(30deg);
     transform-origin: bottom center;
-    margin-left: -2px;
+    margin-left: 5px;
 }
 
-/* アンテナの先端の丸い部分 */
+/* アンテナの先端の丸い部分（キャップ） */
 .antenna-left::before,
 .antenna-right::before {
     content: '';
     position: absolute;
-    top: -6px;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 12px;
+    height: 12px;
+    background:
+        /* ハイライト */
+        radial-gradient(circle at 35% 30%, rgba(255,255,255,0.6) 0%, transparent 50%),
+        /* 金属のベース */
+        radial-gradient(circle at 50% 50%, #b0b0b0 0%, #707070 70%, #505050 100%);
+    border-radius: 50%;
+    box-shadow:
+        inset 0 2px 4px rgba(255,255,255,0.4),
+        inset 0 -2px 4px rgba(0,0,0,0.4),
+        0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* アンテナポールの節目（リング） */
+.antenna-left::after,
+.antenna-right::after {
+    content: '';
+    position: absolute;
+    bottom: 15px;
     left: 50%;
     transform: translateX(-50%);
     width: 8px;
-    height: 8px;
+    height: 4px;
     background:
-        radial-gradient(circle at 30% 30%, #aaa 0%, #666 100%);
-    border-radius: 50%;
+        linear-gradient(180deg,
+            #a0a0a0 0%,
+            #606060 50%,
+            #808080 100%
+        );
+    border-radius: 2px;
     box-shadow:
-        inset 0 1px 2px rgba(255,255,255,0.3),
         0 1px 2px rgba(0,0,0,0.3);
 }
 
@@ -377,12 +440,13 @@ body.tv-on .main-content {
 .tv-frame {
     position: relative;
     width: calc(100vw - 30px);
-    max-width: 1400px;
-    height: calc(100vh - 180px);
-    max-height: 700px;
-    min-height: 500px;
+    max-width: 1600px;
+    height: calc(100vh - 160px);
+    max-height: 850px;
+    min-height: 550px;
     display: grid;
-    grid-template-columns: 1fr 140px;
+    /* 左右対称: 左スペース + 画面 + 右コントロール */
+    grid-template-columns: 140px 1fr 140px;
     gap: 0;
 
     /* 外側のプラスチック/木目筐体 */
@@ -481,6 +545,92 @@ body.tv-on .main-content {
         inset 0 -4px 8px -2px rgba(0,0,0,0.5),
         /* 右辺の影 */
         inset -3px 0 6px -2px rgba(0,0,0,0.3);
+}
+
+/* 左パネル（バランス用） */
+.tv-left-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 5px 15px 10px;
+    position: relative;
+    z-index: 2;
+}
+
+/* 左側のスピーカーグリル */
+.tv-left-speaker {
+    background:
+        /* メッシュパターン */
+        repeating-linear-gradient(
+            0deg,
+            #0a0705 0px,
+            #0a0705 2px,
+            #1a1510 2px,
+            #1a1510 4px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent 0px,
+            transparent 1px,
+            rgba(0,0,0,0.5) 1px,
+            rgba(0,0,0,0.5) 2px
+        );
+    border-radius: 8px;
+    width: 100%;
+    height: 200px;
+    position: relative;
+    box-shadow:
+        inset 0 3px 8px rgba(0,0,0,0.8),
+        inset 0 -1px 0 rgba(255,255,255,0.05),
+        0 1px 0 rgba(255,255,255,0.05);
+    border: 2px solid #0a0805;
+}
+
+/* 左スピーカー布地テクスチャ */
+.tv-left-speaker::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    background:
+        repeating-linear-gradient(
+            45deg,
+            transparent 0px,
+            transparent 1px,
+            rgba(40,30,20,0.3) 1px,
+            rgba(40,30,20,0.3) 2px
+        ),
+        repeating-linear-gradient(
+            -45deg,
+            transparent 0px,
+            transparent 1px,
+            rgba(40,30,20,0.3) 1px,
+            rgba(40,30,20,0.3) 2px
+        );
+    border-radius: 6px;
+}
+
+/* 左パネルのブランドプレート */
+.tv-left-brand {
+    margin-top: 20px;
+    text-align: center;
+    font-family: 'VT323', monospace;
+    font-size: 0.9rem;
+    color: transparent;
+    background: linear-gradient(180deg,
+        #c4a882 0%,
+        #8b7355 40%,
+        #6b5540 60%,
+        #a08060 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    letter-spacing: 2px;
+    text-shadow:
+        0 1px 1px rgba(255,255,255,0.2);
 }
 
 /* コントロールパネル（右側） */
@@ -1854,14 +2004,18 @@ body.tv-on .scroll-hint.visible {
 /* =====================================================
    RESPONSIVE
    ===================================================== */
-@media (max-width: 1200px) {
+@media (max-width: 1400px) {
     .tv-frame {
-        grid-template-columns: 1fr 120px;
-        padding: 20px 15px 25px 20px;
+        grid-template-columns: 120px 1fr 120px;
+        padding: 20px 15px 25px 15px;
+    }
+
+    .tv-left-speaker {
+        height: 160px;
     }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1100px) {
     .header-content {
         padding: 12px 20px;
     }
@@ -1875,19 +2029,29 @@ body.tv-on .scroll-hint.visible {
     }
 
     .tv-antenna {
-        height: 60px;
+        height: 70px;
+        margin-bottom: -15px;
     }
 
     .antenna-left,
     .antenna-right {
-        height: 50px;
+        height: 60px;
+    }
+
+    .antenna-base {
+        width: 60px;
+        height: 28px;
     }
 
     .tv-frame {
-        grid-template-columns: 1fr 100px;
+        grid-template-columns: 100px 1fr 100px;
         width: calc(100vw - 20px);
         height: calc(100vh - 160px);
-        padding: 15px 12px 20px 15px;
+        padding: 15px 12px 20px 12px;
+    }
+
+    .tv-left-speaker {
+        height: 120px;
     }
 
     .tv-speaker {
@@ -1920,7 +2084,7 @@ body.tv-on .scroll-hint.visible {
     }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 800px) {
     html { font-size: 16px; }
 
     .header-content {
@@ -1950,26 +2114,28 @@ body.tv-on .scroll-hint.visible {
 
     .tv-antenna {
         height: 50px;
+        margin-bottom: -12px;
     }
 
     .antenna-left,
     .antenna-right {
-        height: 40px;
-        width: 3px;
+        height: 45px;
+        width: 4px;
     }
 
     .antenna-base {
-        width: 24px;
-        height: 16px;
+        width: 50px;
+        height: 22px;
     }
 
     .antenna-left::before,
     .antenna-right::before {
-        width: 6px;
-        height: 6px;
-        top: -4px;
+        width: 9px;
+        height: 9px;
+        top: -6px;
     }
 
+    /* モバイル: 左パネルを非表示、下部にコントロール */
     .tv-frame {
         grid-template-columns: 1fr;
         grid-template-rows: 1fr auto;
@@ -1982,6 +2148,10 @@ body.tv-on .scroll-hint.visible {
     .tv-frame::before,
     .tv-frame::after {
         border-radius: 15px 15px 18px 18px;
+    }
+
+    .tv-left-panel {
+        display: none;
     }
 
     .tv-controls-panel {
