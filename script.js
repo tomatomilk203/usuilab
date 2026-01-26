@@ -20,30 +20,108 @@ let currentLang = 'ja';
 
 const translations = {
     ja: {
+        // TV Screen
         'welcome-line1': 'ようこそ',
         'welcome-line3': 'ウスイ研究所',
         'welcome-hint': '← チャンネルを選択 →',
         'preview-desc-1': 'コメント弾幕シューティング',
         'preview-footer-1': 'クリックで入る',
+        'ch-status-1': '● 放送中',
+        'preview-desc-2': '???',
         'preview-footer-2': '開発中...',
+        'ch-status-2': '● COMING SOON',
         'preview-footer-3': '信号待機中...',
-        'section-projects': 'PROJECTS',
-        'section-about': 'ABOUT',
-        'section-contact': 'CONTACT',
-        'scroll-hint': '↓ 下にスクロール ↓'
+        'ch-status-3': '● 準備中',
+        'scroll-hint': '↓ 下にスクロール ↓',
+
+        // Profile Card
+        'profile-name-label': 'NAME',
+        'profile-name-sub': 'ウスイ',
+        'profile-hobby-label': 'HOBBY',
+        'profile-hobby-value': '開発',
+        'profile-works-label': 'WORKS',
+        'profile-works-value': 'Chrome拡張 / Webアプリ / モバイルアプリ',
+        'profile-motto': '"自分が楽しいものを作り続ける"',
+
+        // Projects
+        'project-1-title': 'YouTube Shooting',
+        'project-1-category': 'Chrome拡張機能',
+        'project-1-desc': 'YouTubeのコメントが弾幕になって襲いかかる！避けて撃って、コメントを制圧せよ。実際の動画コメントを使用した新感覚シューティングゲーム。',
+        'project-1-status': '✓ RELEASED',
+        'project-1-btn-store': 'Chrome ストア',
+        'project-1-btn-github': 'GitHub',
+
+        'project-2-title': 'Brainrot Collection',
+        'project-2-category': '???',
+        'project-2-desc': '脳が溶ける何か。詳細は不明。',
+        'project-2-status': '⚡ 開発中',
+        'project-2-coming': 'COMING SOON',
+
+        'project-3-title': 'Next Project',
+        'project-3-category': 'To Be Announced',
+        'project-3-desc': '次なる実験は何になるのか...？',
+        'project-3-status': '? UNKNOWN',
+        'project-3-waiting': '▌ AWAITING...',
+
+        // Contact
+        'contact-twitter': 'Twitter / X',
+        'contact-github': 'GitHub',
+
+        // Footer
+        'footer-disclaimer': '※ 全て個人の趣味で行われています',
+        'footer-code': '[ 放送終了 ]'
     },
     en: {
+        // TV Screen
         'welcome-line1': 'WELCOME TO',
         'welcome-line3': 'USUI LABORATORY',
         'welcome-hint': '← SELECT CHANNEL →',
         'preview-desc-1': 'Comment Bullet Hell Shooter',
         'preview-footer-1': 'CLICK TO ENTER',
+        'ch-status-1': '● ON AIR',
+        'preview-desc-2': '???',
         'preview-footer-2': 'IN DEVELOPMENT...',
+        'ch-status-2': '● COMING SOON',
         'preview-footer-3': 'AWAITING SIGNAL...',
-        'section-projects': 'PROJECTS',
-        'section-about': 'ABOUT',
-        'section-contact': 'CONTACT',
-        'scroll-hint': '↓ SCROLL FOR MORE ↓'
+        'ch-status-3': '● STANDBY',
+        'scroll-hint': '↓ SCROLL FOR MORE ↓',
+
+        // Profile Card
+        'profile-name-label': 'NAME',
+        'profile-name-sub': 'Usui',
+        'profile-hobby-label': 'HOBBY',
+        'profile-hobby-value': 'Development',
+        'profile-works-label': 'WORKS',
+        'profile-works-value': 'Chrome Extensions / Web Apps / Mobile Apps',
+        'profile-motto': '"Keep making things I enjoy"',
+
+        // Projects
+        'project-1-title': 'YouTube Shooting',
+        'project-1-category': 'Chrome Extension',
+        'project-1-desc': 'YouTube comments turn into a bullet hell! Dodge and shoot to survive the comment chaos. A new shooting experience using actual video comments.',
+        'project-1-status': '✓ RELEASED',
+        'project-1-btn-store': 'Chrome Store',
+        'project-1-btn-github': 'GitHub',
+
+        'project-2-title': 'Brainrot Collection',
+        'project-2-category': '???',
+        'project-2-desc': 'Something that melts your brain. Details unknown.',
+        'project-2-status': '⚡ IN DEV',
+        'project-2-coming': 'COMING SOON',
+
+        'project-3-title': 'Next Project',
+        'project-3-category': 'To Be Announced',
+        'project-3-desc': 'What will the next experiment be...?',
+        'project-3-status': '? UNKNOWN',
+        'project-3-waiting': '▌ AWAITING...',
+
+        // Contact
+        'contact-twitter': 'Twitter / X',
+        'contact-github': 'GitHub',
+
+        // Footer
+        'footer-disclaimer': '※ All projects are personal hobbies',
+        'footer-code': '[ END OF TRANSMISSION ]'
     }
 };
 
@@ -83,6 +161,15 @@ function updateLangUI() {
 function applyTranslations() {
     const t = translations[currentLang];
 
+    // Generic i18n elements (data-i18n attribute)
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (t[key]) {
+            el.textContent = t[key];
+        }
+    });
+
+    // Legacy support for existing elements
     // Welcome screen
     const line1 = document.querySelector('.welcome-line1');
     const line3 = document.querySelector('.welcome-line3');
@@ -95,17 +182,22 @@ function applyTranslations() {
     // Preview descriptions
     const desc1 = document.querySelector('.channel[data-channel="1"] .preview-desc');
     const footer1 = document.querySelector('.channel[data-channel="1"] .preview-footer span');
+    const status1 = document.querySelector('.channel[data-channel="1"] .ch-status');
     const footer2 = document.querySelector('.channel[data-channel="2"] .preview-footer span');
     const footer3 = document.querySelector('.channel[data-channel="3"] .preview-footer span');
 
     if (desc1) desc1.textContent = t['preview-desc-1'];
     if (footer1) footer1.textContent = t['preview-footer-1'];
+    if (status1) status1.textContent = t['ch-status-1'];
     if (footer2) footer2.textContent = t['preview-footer-2'];
     if (footer3) footer3.textContent = t['preview-footer-3'];
 
     // Scroll hint
     const scrollHint = document.querySelector('.scroll-hint span');
     if (scrollHint) scrollHint.textContent = t['scroll-hint'];
+
+    // Update HTML lang attribute
+    document.documentElement.lang = currentLang;
 }
 
 /* =====================================================
