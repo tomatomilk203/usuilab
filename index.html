@@ -51,11 +51,8 @@
             </div>
             <!-- TV Frame -->
             <div class="tv-frame">
-                <!-- Left Panel (for symmetry) -->
-                <div class="tv-left-panel">
-                    <div class="tv-left-speaker"></div>
-                    <div class="tv-left-brand">LAB</div>
-                </div>
+                <!-- Real TV Frame Image Overlay -->
+                <div class="tv-frame-overlay"></div>
 
                 <!-- TV Screen -->
                 <div class="tv-screen-wrapper">
@@ -165,50 +162,29 @@
                     </div>
                 </div>
 
-                <!-- TV Controls Panel (right side) -->
-                <div class="tv-controls-panel">
-                    <!-- Brand Logo -->
-                    <div class="tv-brand">USUI</div>
+            </div>
 
-                    <!-- Speaker Grill -->
-                    <div class="tv-speaker">
-                        <div class="speaker-line"></div>
-                        <div class="speaker-line"></div>
-                        <div class="speaker-line"></div>
-                        <div class="speaker-line"></div>
-                        <div class="speaker-line"></div>
-                        <div class="speaker-line"></div>
-                        <div class="speaker-line"></div>
-                        <div class="speaker-line"></div>
-                    </div>
+            <!-- TV Controls (below TV) -->
+            <div class="tv-controls-bar">
+                <!-- Power Button -->
+                <button class="tv-power-btn" id="main-power-btn" title="電源">
+                    <svg viewBox="0 0 24 24" class="power-icon">
+                        <path d="M12 3v9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M18.36 6.64A9 9 0 1 1 5.64 6.64" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                    </svg>
+                </button>
 
-                    <!-- Dials -->
-                    <div class="tv-dials">
-                        <div class="dial-container">
-                            <div class="dial" id="dial-vol"></div>
-                            <div class="dial-label">VOL</div>
-                        </div>
-                        <div class="dial-container">
-                            <div class="dial" id="dial-ch"></div>
-                            <div class="dial-label">CH</div>
-                        </div>
-                    </div>
+                <!-- Channel Buttons -->
+                <div class="tv-channel-buttons">
+                    <button class="tv-btn yellow" id="prev-btn" title="前へ"></button>
+                    <span class="channel-indicator">CH</span>
+                    <button class="tv-btn red" id="next-btn" title="次へ"></button>
+                </div>
 
-                    <!-- Power Button -->
-                    <button class="tv-power-btn" id="main-power-btn" title="電源">
-                        <svg viewBox="0 0 24 24" class="power-icon">
-                            <path d="M12 3v9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                            <path d="M18.36 6.64A9 9 0 1 1 5.64 6.64" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-                        </svg>
-                    </button>
-
-                    <!-- Color Buttons -->
-                    <div class="tv-color-buttons">
-                        <button class="tv-btn red" id="next-btn" title="次へ"></button>
-                        <button class="tv-btn yellow" id="prev-btn" title="前へ"></button>
-                        <button class="tv-btn blue" id="secret-btn-1" title="???"></button>
-                        <button class="tv-btn purple" id="secret-btn-2" title="???"></button>
-                    </div>
+                <!-- Secret Buttons -->
+                <div class="tv-secret-buttons">
+                    <button class="tv-btn blue" id="secret-btn-1" title="???"></button>
+                    <button class="tv-btn purple" id="secret-btn-2" title="???"></button>
                 </div>
             </div>
 
