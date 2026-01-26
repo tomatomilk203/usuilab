@@ -11,7 +11,25 @@ document.addEventListener('DOMContentLoaded', () => {
     initSmoothScroll();
     initScoreAnimation();
     initLangToggle();
+    initVHSTimer();
 });
+
+/* =====================================================
+   VHS TIMER - レトロビデオ風タイムコード
+   ===================================================== */
+function initVHSTimer() {
+    const vhsTime = document.getElementById('vhs-time');
+    if (!vhsTime) return;
+
+    let seconds = 0;
+    setInterval(() => {
+        seconds++;
+        const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
+        const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+        const s = (seconds % 60).toString().padStart(2, '0');
+        vhsTime.textContent = `${h}:${m}:${s}`;
+    }, 1000);
+}
 
 /* =====================================================
    LANGUAGE TOGGLE
