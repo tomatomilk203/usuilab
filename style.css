@@ -1836,94 +1836,248 @@ body.tv-on .scroll-hint.visible {
     animation: blink 1s step-end infinite;
 }
 
-/* About Section */
-.about-content {
+/* About Section - Profile Card (Business Card Style) */
+.profile-card {
+    max-width: 800px;
+    margin: 0 auto;
+    background: linear-gradient(145deg, #faf8f5 0%, #f0ebe3 100%);
+    border: 4px solid var(--text-dark);
+    border-radius: 15px;
+    padding: 40px;
     display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    gap: 30px;
-}
-
-.about-terminal {
-    background: var(--tv-frame);
-    border-radius: 10px;
+    grid-template-columns: 180px 1fr;
+    gap: 40px;
+    position: relative;
+    box-shadow:
+        8px 8px 0 var(--text-dark),
+        inset 0 0 60px rgba(0,0,0,0.03);
     overflow: hidden;
 }
 
-.terminal-header {
+/* Decorative corners */
+.card-corner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 3px solid var(--accent-yellow);
+}
+
+.card-corner.top-left {
+    top: 12px;
+    left: 12px;
+    border-right: none;
+    border-bottom: none;
+}
+
+.card-corner.top-right {
+    top: 12px;
+    right: 12px;
+    border-left: none;
+    border-bottom: none;
+}
+
+.card-corner.bottom-left {
+    bottom: 12px;
+    left: 12px;
+    border-right: none;
+    border-top: none;
+}
+
+.card-corner.bottom-right {
+    bottom: 12px;
+    right: 12px;
+    border-left: none;
+    border-top: none;
+}
+
+/* Avatar */
+.profile-avatar {
     display: flex;
-    gap: 8px;
-    padding: 12px 15px;
-    background: #2a2520;
+    align-items: center;
+    justify-content: center;
 }
 
-.terminal-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
+.avatar-img {
+    width: 160px;
+    height: 160px;
+    border-radius: 12px;
+    border: 4px solid var(--text-dark);
+    box-shadow:
+        4px 4px 0 var(--text-dark),
+        inset 0 0 20px rgba(0,0,0,0.1);
+    object-fit: cover;
+    background: #ddd;
+    image-rendering: pixelated;
 }
 
-.terminal-dot.red { background: var(--tv-red); }
-.terminal-dot.yellow { background: var(--tv-yellow); }
-.terminal-dot.green { background: var(--tv-green); }
-
-.terminal-body {
-    padding: 25px;
-    font-family: 'VT323', monospace;
-    font-size: 1.1rem;
-    color: var(--accent-green);
-    background: #0a0a0a;
-}
-
-.prompt {
-    color: var(--accent-yellow);
-}
-
-.code-block {
-    background: rgba(0,0,0,0.5);
-    padding: 15px;
-    margin: 15px 0;
-    border-radius: 5px;
-}
-
-.code-key {
-    color: var(--tv-cyan);
-}
-
-.status-active {
-    color: var(--tv-green);
-}
-
-.philosophy {
-    color: var(--accent-yellow);
-    font-style: italic;
-}
-
-.lab-info {
+/* Profile Info */
+.profile-info {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 15px;
 }
 
-.info-card {
-    background: #fff;
-    border: 3px solid var(--text-dark);
-    padding: 20px;
+/* Name */
+.profile-name {
+    border-bottom: 2px solid var(--text-dark);
+    padding-bottom: 15px;
 }
 
-.info-icon {
-    font-size: 1.5rem;
-    margin-bottom: 8px;
-}
-
-.info-card h4 {
+.name-label {
     font-family: 'VT323', monospace;
-    font-size: 1.3rem;
-    color: var(--text-dark);
-    margin-bottom: 8px;
+    font-size: 0.85rem;
+    color: #888;
+    letter-spacing: 3px;
+    display: block;
+    margin-bottom: 5px;
 }
 
-.info-card p {
-    color: #555;
+.name-value {
+    font-family: 'VT323', monospace;
+    font-size: 3rem;
+    color: var(--text-dark);
+    letter-spacing: 5px;
+    margin: 0;
+    line-height: 1;
+}
+
+.name-sub {
+    font-family: 'DotGothic16', monospace;
+    font-size: 1rem;
+    color: #666;
+    margin-left: 5px;
+}
+
+/* Details */
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.detail-icon {
+    font-size: 1.3rem;
+    width: 30px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.detail-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.detail-label {
+    font-family: 'VT323', monospace;
+    font-size: 0.75rem;
+    color: #999;
+    letter-spacing: 2px;
+}
+
+.detail-value {
+    font-family: 'DotGothic16', monospace;
+    font-size: 1rem;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+/* Motto */
+.profile-motto {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(90deg, rgba(255,208,0,0.15) 0%, transparent 100%);
+    padding: 12px 15px;
+    border-left: 4px solid var(--accent-yellow);
+    border-radius: 0 8px 8px 0;
+}
+
+.motto-icon {
+    font-size: 1.2rem;
+}
+
+.motto-text {
+    font-family: 'DotGothic16', monospace;
+    font-size: 1rem;
+    color: var(--text-dark);
+    margin: 0;
+    font-style: italic;
+}
+
+/* Status */
+.profile-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    align-self: flex-end;
+}
+
+.profile-status .status-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--tv-green);
+    border-radius: 50%;
+    animation: statusPulse 1.5s ease-in-out infinite;
+    box-shadow: 0 0 8px var(--tv-green);
+}
+
+.profile-status .status-text {
+    font-family: 'VT323', monospace;
+    font-size: 1rem;
+    color: var(--tv-green);
+    letter-spacing: 2px;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+    .profile-card {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        padding: 30px 25px;
+        text-align: center;
+    }
+
+    .profile-avatar {
+        justify-content: center;
+    }
+
+    .avatar-img {
+        width: 140px;
+        height: 140px;
+    }
+
+    .profile-name {
+        text-align: center;
+    }
+
+    .name-value {
+        font-size: 2.5rem;
+    }
+
+    .detail-item {
+        justify-content: center;
+    }
+
+    .profile-motto {
+        justify-content: center;
+        border-left: none;
+        border-top: 4px solid var(--accent-yellow);
+        border-radius: 0 0 8px 8px;
+        background: linear-gradient(180deg, rgba(255,208,0,0.15) 0%, transparent 100%);
+        padding: 15px;
+    }
+
+    .profile-status {
+        align-self: center;
+    }
 }
 
 /* Contact Section */
