@@ -502,10 +502,10 @@ body.tv-on .main-content {
 .tv-screen-wrapper {
     position: absolute;
     /* 実写TVフレームの画面エリアに正確に合わせる */
-    top: 5.5%;
-    left: 14%;
-    width: 72%;
-    height: 70%;
+    top: 7%;
+    left: 8%;
+    width: 84%;
+    height: 68%;
     background: transparent;
     border-radius: 5px;
     overflow: hidden;
