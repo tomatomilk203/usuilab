@@ -727,7 +727,7 @@ body.tv-on .channels {
     justify-content: center;
     gap: 15px;
     margin-bottom: 30px;
-    font-size: 1rem;
+    font-size: 2.5rem;
     color: var(--phosphor-green);
     opacity: 0.6;
     animation: hintBlink 1.5s ease-in-out infinite;
@@ -751,7 +751,7 @@ body.tv-on .channels {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    font-size: 0.9rem;
+    font-size: 2.25rem;
     color: var(--phosphor-white);
     opacity: 0.5;
 }
