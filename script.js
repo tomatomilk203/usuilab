@@ -174,7 +174,8 @@ const state = {
     currentSlide: 0,
     maxSlides: 8,
     vhsSeconds: 0,
-    demoScore: 0
+    demoScore: 0,
+    volume: 0.5
 };
 
 const audio = new CRTAudio();
@@ -210,7 +211,10 @@ function cacheElements() {
         slideshowProgressBar: document.getElementById('slideshow-progress-bar'),
         terminalInput: document.getElementById('terminal-input'),
         terminalOutput: document.getElementById('terminal-output'),
-        demoScore: document.getElementById('demo-score')
+        demoScore: document.getElementById('demo-score'),
+        volUp: document.getElementById('vol-up'),
+        volDown: document.getElementById('vol-down'),
+        volDisplay: document.getElementById('vol-display')
     };
 }
 
@@ -693,6 +697,42 @@ function startDemoScore() {
 }
 
 // =====================================================
+// VOLUME CONTROLS
+// =====================================================
+
+function volumeUp() {
+    if (state.volume < 1) {
+        state.volume = Math.min(1, state.volume + 0.1);
+        updateVolumeDisplay();
+        audio.playClick();
+    }
+}
+
+function volumeDown() {
+    if (state.volume > 0) {
+        state.volume = Math.max(0, state.volume - 0.1);
+        updateVolumeDisplay();
+        audio.playClick();
+    }
+}
+
+function updateVolumeDisplay() {
+    if (!elements.volDisplay) return;
+    if (state.volume <= 0) {
+        elements.volDisplay.textContent = '🔇';
+    } else if (state.volume < 0.4) {
+        elements.volDisplay.textContent = '🔈';
+    } else if (state.volume < 0.7) {
+        elements.volDisplay.textContent = '🔉';
+    } else {
+        elements.volDisplay.textContent = '🔊';
+    }
+    if (audio.masterGain) {
+        audio.masterGain.gain.value = state.volume;
+    }
+}
+
+// =====================================================
 // KEYBOARD CONTROLS
 // =====================================================
 
@@ -850,6 +890,13 @@ function init() {
     }
     if (elements.progNext) {
         elements.progNext.addEventListener('click', nextProgram);
+    }
+
+    if (elements.volUp) {
+        elements.volUp.addEventListener('click', volumeUp);
+    }
+    if (elements.volDown) {
+        elements.volDown.addEventListener('click', volumeDown);
     }
 
     // 初期状態で番組ボタンを更新
