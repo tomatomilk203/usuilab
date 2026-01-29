@@ -175,7 +175,7 @@ const state = {
     maxSlides: 8,
     vhsSeconds: 0,
     demoScore: 0,
-    volume: 0.5
+    volume: 3
 };
 
 const audio = new CRTAudio();
@@ -214,7 +214,9 @@ function cacheElements() {
         demoScore: document.getElementById('demo-score'),
         volUp: document.getElementById('vol-up'),
         volDown: document.getElementById('vol-down'),
-        volDisplay: document.getElementById('vol-display')
+        volumeOsd: document.getElementById('volume-osd'),
+        volumeBar: document.getElementById('volume-bar'),
+        volumeLevel: document.getElementById('volume-level')
     };
 }
 
@@ -700,9 +702,11 @@ function startDemoScore() {
 // VOLUME CONTROLS
 // =====================================================
 
+let volumeOsdTimer = null;
+
 function volumeUp() {
-    if (state.volume < 1) {
-        state.volume = Math.min(1, state.volume + 0.1);
+    if (state.volume < 5) {
+        state.volume = Math.min(5, state.volume + 1);
         updateVolumeDisplay();
         audio.playClick();
     }
@@ -710,26 +714,31 @@ function volumeUp() {
 
 function volumeDown() {
     if (state.volume > 0) {
-        state.volume = Math.max(0, state.volume - 0.1);
+        state.volume = Math.max(0, state.volume - 1);
         updateVolumeDisplay();
         audio.playClick();
     }
 }
 
 function updateVolumeDisplay() {
-    if (!elements.volDisplay) return;
-    if (state.volume <= 0) {
-        elements.volDisplay.textContent = '🔇';
-    } else if (state.volume < 0.4) {
-        elements.volDisplay.textContent = '🔈';
-    } else if (state.volume < 0.7) {
-        elements.volDisplay.textContent = '🔉';
-    } else {
-        elements.volDisplay.textContent = '🔊';
-    }
+    const lvl = state.volume;
+    const filled = '█'.repeat(lvl);
+    const empty = '░'.repeat(5 - lvl);
+    if (elements.volumeBar) elements.volumeBar.textContent = filled + empty;
+    if (elements.volumeLevel) elements.volumeLevel.textContent = lvl;
     if (audio.masterGain) {
-        audio.masterGain.gain.value = state.volume;
+        audio.masterGain.gain.value = lvl / 5 * 0.5;
     }
+    showVolumeOsd();
+}
+
+function showVolumeOsd() {
+    if (!elements.volumeOsd) return;
+    elements.volumeOsd.classList.add('show');
+    clearTimeout(volumeOsdTimer);
+    volumeOsdTimer = setTimeout(() => {
+        elements.volumeOsd.classList.remove('show');
+    }, 1500);
 }
 
 // =====================================================
