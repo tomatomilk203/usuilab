@@ -172,7 +172,7 @@ const state = {
     currentNews: 0,
     maxNews: 2,
     currentSlide: 0,
-    maxSlides: 10,
+    maxSlides: 8,
     vhsSeconds: 0,
     demoScore: 0
 };
