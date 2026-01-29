@@ -8,378 +8,438 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="tv-off">
-    <!-- ========== HEADER ========== -->
-    <header class="site-header">
-        <div class="color-bars">
-            <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
-        </div>
-        <div class="header-content">
-            <a href="/" class="logo">
-                <span class="logo-icon">📺</span>
-                <span class="logo-text">USUI LAB</span>
-                <span class="logo-sub">ウスイ研究所</span>
-            </a>
-            <nav class="nav">
-                <a href="#projects">PROJECTS</a>
-                <a href="#about">ABOUT</a>
-                <a href="#contact">CONTACT</a>
-            </nav>
-            <div class="header-right">
-                <button class="lang-toggle" id="lang-toggle" title="言語切替">
-                    <span class="lang-ja active">JP</span>
-                    <span class="lang-en">EN</span>
-                </button>
-                <div class="status-badge">
-                    <span class="status-dot"></span>
-                    ONLINE
+    <!-- ========== FULL SCREEN TV INTERFACE ========== -->
+    <div class="tv-terminal" id="tv-terminal">
+        <!-- Room ambient (dark when TV off, slight glow when on) -->
+        <div class="room-ambient"></div>
+
+        <!-- CRT Monitor -->
+        <div class="crt-monitor">
+            <!-- TV Frame Image -->
+            <div class="tv-frame-image"></div>
+
+            <!-- Screen Area -->
+            <div class="screen-container">
+                <!-- CRT Effects Layer -->
+                <div class="crt-effects">
+                    <div class="scanlines"></div>
+                    <div class="scanline-thick"></div>
+                    <div class="screen-curve"></div>
+                    <div class="vignette"></div>
+                    <div class="screen-flicker"></div>
+                    <div class="rgb-shift"></div>
+                    <div class="static-noise" id="static-noise"></div>
                 </div>
-            </div>
-        </div>
-    </header>
 
-    <!-- Room / Background -->
-    <div class="room-light"></div>
+                <!-- Power ON Animation Layer -->
+                <div class="power-sequence" id="power-sequence">
+                    <div class="power-line"></div>
+                </div>
 
-    <!-- ========== TV SECTION ========== -->
-    <section class="tv-section" id="tv-section">
-        <div class="tv-container">
-            <!-- TV Antenna -->
-            <div class="tv-antenna">
-                <div class="antenna-left"></div>
-                <div class="antenna-base"></div>
-                <div class="antenna-right"></div>
-            </div>
-            <!-- TV Frame -->
-            <div class="tv-frame">
-                <!-- Real TV Frame Image Overlay -->
-                <div class="tv-frame-overlay"></div>
+                <!-- Screen Off State -->
+                <div class="screen-off" id="screen-off">
+                    <div class="crt-dot"></div>
+                </div>
 
-                <!-- TV Screen -->
-                <div class="tv-screen-wrapper">
-                    <div class="tv-screen" id="tv-screen">
-                        <!-- Scanlines overlay -->
-                        <div class="tv-scanlines"></div>
-                        <!-- Screen curvature overlay -->
-                        <div class="tv-curve"></div>
-                        <!-- Screen reflection -->
-                        <div class="tv-reflection"></div>
+                <!-- VHS Overlay -->
+                <div class="vhs-ui" id="vhs-ui">
+                    <div class="vhs-top">
+                        <span class="vhs-rec">REC</span>
+                        <span class="vhs-play" id="vhs-play">PLAY <span class="play-icon">▶</span></span>
+                    </div>
+                    <div class="vhs-bottom">
+                        <span class="vhs-mode">SP</span>
+                        <span class="vhs-counter" id="vhs-counter">00:00:00</span>
+                    </div>
+                    <div class="vhs-channel" id="vhs-channel">CH-0</div>
+                </div>
 
-                        <!-- VHS Overlay -->
-                        <div class="vhs-overlay">
-                            <span class="vhs-play">PLAY ▶</span>
-                            <span class="vhs-slp">SLP</span>
-                            <span class="vhs-time" id="vhs-time">00:00:00</span>
+                <!-- Channel Content Area -->
+                <div class="channels" id="channels">
+
+                    <!-- CH 0: Welcome / Standby -->
+                    <div class="channel active" data-channel="0">
+                        <div class="ch-standby">
+                            <div class="standby-noise"></div>
+                            <div class="standby-content">
+                                <div class="standby-logo">
+                                    <span class="logo-welcome">ようこそ</span>
+                                    <span class="logo-main">USUI LAB</span>
+                                    <span class="logo-sub">ウスイ研究所</span>
+                                </div>
+                                <div class="standby-hint">
+                                    <span class="hint-arrow">◀</span>
+                                    <span>SELECT CHANNEL</span>
+                                    <span class="hint-arrow">▶</span>
+                                </div>
+                                <div class="standby-channels">
+                                    <span>CH1: PROJECTS</span>
+                                    <span>CH2: ABOUT</span>
+                                    <span>CH3: CONTACT</span>
+                                    <span>CH4: NEWS</span>
+                                </div>
+                            </div>
                         </div>
+                    </div>
 
-                        <!-- Power off state -->
-                        <div class="tv-off-screen" id="tv-off-screen">
-                            <div class="tv-dot"></div>
-                        </div>
+                    <!-- CH 1: Projects -->
+                    <div class="channel" data-channel="1">
+                        <div class="ch-projects">
+                            <div class="ch-header">
+                                <span class="ch-number">CH.01</span>
+                                <span class="ch-title">PROJECTS</span>
+                                <span class="ch-status on-air">● ON AIR</span>
+                            </div>
 
-                        <!-- Channel Content -->
-                        <div class="tv-content" id="tv-content">
-                            <!-- Channel 0: Welcome -->
-                            <div class="channel active" data-channel="0">
-                                <div class="welcome-screen">
-                                    <div class="welcome-static"></div>
-                                    <div class="welcome-text">
-                                        <span class="welcome-line1">ようこそ</span>
-                                        <span class="welcome-line2">USUI LAB</span>
-                                        <span class="welcome-line3">ウスイ研究所</span>
+                            <div class="projects-carousel" id="projects-carousel">
+                                <!-- Project 1: YouTube Shooting -->
+                                <div class="project-slide active" data-project="0">
+                                    <div class="project-badge released">✓ RELEASED</div>
+                                    <div class="project-icon">🎯</div>
+                                    <h2 class="project-name">YouTube Shooting</h2>
+                                    <p class="project-category">Chrome Extension</p>
+                                    <p class="project-desc">
+                                        YouTubeのコメントが弾幕になって襲いかかる！<br>
+                                        避けて撃って、コメントを制圧せよ。
+                                    </p>
+                                    <div class="project-demo">
+                                        <div class="demo-game">
+                                            <div class="demo-score">SCORE: <span id="demo-score">0</span></div>
+                                            <div class="demo-bullets">
+                                                <span class="demo-bullet" style="--i:0">すごい！</span>
+                                                <span class="demo-bullet" style="--i:1">面白い</span>
+                                                <span class="demo-bullet" style="--i:2">最高www</span>
+                                            </div>
+                                            <div class="demo-player">▲</div>
+                                        </div>
                                     </div>
-                                    <div class="welcome-hint">← チャンネルを選択 →</div>
+                                    <div class="project-links">
+                                        <a href="youtube-shooting/" class="project-btn primary">▶ PLAY / 詳細</a>
+                                        <a href="https://github.com/tomatomilk203/Yotubeshooting" target="_blank" class="project-btn">GitHub</a>
+                                    </div>
+                                </div>
+
+                                <!-- Project 2: Brainrot -->
+                                <div class="project-slide" data-project="1">
+                                    <div class="project-badge dev">⚡ IN DEV</div>
+                                    <div class="project-icon">🧠</div>
+                                    <h2 class="project-name">Brainrot Collection</h2>
+                                    <p class="project-category">???</p>
+                                    <p class="project-desc">
+                                        脳が溶ける何か。<br>
+                                        詳細は不明。
+                                    </p>
+                                    <div class="project-demo">
+                                        <div class="demo-static">
+                                            <div class="static-text">SIGNAL LOST</div>
+                                        </div>
+                                    </div>
+                                    <div class="project-links">
+                                        <span class="project-btn disabled">COMING SOON</span>
+                                    </div>
+                                </div>
+
+                                <!-- Project 3: Unknown -->
+                                <div class="project-slide" data-project="2">
+                                    <div class="project-badge unknown">? UNKNOWN</div>
+                                    <div class="project-icon">❓</div>
+                                    <h2 class="project-name">Next Project</h2>
+                                    <p class="project-category">To Be Announced</p>
+                                    <p class="project-desc">
+                                        次なる実験は何になるのか...？
+                                    </p>
+                                    <div class="project-demo">
+                                        <div class="demo-static glitch">
+                                            <div class="static-text blink">AWAITING...</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <!-- Channel 1: YouTube Shooting -->
-                            <div class="channel" data-channel="1">
-                                <a href="youtube-shooting/" class="channel-link">
-                                    <div class="channel-preview yt-shooting">
-                                        <div class="preview-header">
-                                            <span class="ch-number">CH.01</span>
-                                            <span class="ch-status live">● 放送中</span>
+                            <!-- 番組インジケーター（ドットのみ、ボタンは外部に） -->
+                            <div class="carousel-dots" id="carousel-dots">
+                                <span class="dot active"></span>
+                                <span class="dot"></span>
+                                <span class="dot"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CH 2: About - Y2K Design -->
+                    <div class="channel" data-channel="2">
+                        <div class="ch-about y2k">
+                            <!-- Y2K Header -->
+                            <div class="y2k-header">
+                                <div class="y2k-star">✦</div>
+                                <span class="y2k-title">PROFILE</span>
+                                <div class="y2k-star">✦</div>
+                            </div>
+
+                            <!-- Y2K Profile Card -->
+                            <div class="y2k-card">
+                                <div class="y2k-avatar">
+                                    <div class="avatar-ring"></div>
+                                    <img src="assets/avatar.png" alt="Usui" class="y2k-avatar-img">
+                                    <div class="avatar-glow"></div>
+                                </div>
+
+                                <div class="y2k-info">
+                                    <div class="y2k-name">
+                                        <span class="name-en">Usui</span>
+                                        <span class="name-jp">ウスイ</span>
+                                    </div>
+                                    <div class="y2k-bio">作りたいものを作る個人開発者</div>
+                                    <div class="y2k-tags">
+                                        <span class="y2k-tag">🌐 Web</span>
+                                        <span class="y2k-tag">📱 Mobile</span>
+                                        <span class="y2k-tag">🧩 Chrome拡張</span>
+                                        <span class="y2k-tag">🎮 Game</span>
+                                    </div>
+                                    <div class="y2k-skills">
+                                        <span class="skill">JavaScript</span>
+                                        <span class="skill">TypeScript</span>
+                                        <span class="skill">React</span>
+                                        <span class="skill">Node.js</span>
+                                    </div>
+                                    <div class="y2k-motto">"自分が楽しいものを作り続ける"</div>
+                                </div>
+
+                                <div class="y2k-status">
+                                    <span class="status-bubble"></span>
+                                    <span>ONLINE</span>
+                                </div>
+                            </div>
+
+                            <!-- Y2K Terminal Input -->
+                            <div class="y2k-terminal">
+                                <div class="terminal-header">
+                                    <span class="terminal-dot"></span>
+                                    <span class="terminal-dot"></span>
+                                    <span class="terminal-dot"></span>
+                                    <span class="terminal-title">USUI_LAB.exe</span>
+                                </div>
+                                <div class="terminal-body">
+                                    <div class="terminal-output" id="terminal-output">ようこそ、我がラボへ。</div>
+                                    <div class="terminal-input-row">
+                                        <span class="terminal-prompt">＞</span>
+                                        <input type="text" class="terminal-input" id="terminal-input" placeholder="コマンドを入力..." maxlength="30" autocomplete="off">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Y2K Decorations -->
+                            <div class="y2k-deco deco-1">●</div>
+                            <div class="y2k-deco deco-2">◆</div>
+                            <div class="y2k-deco deco-3">★</div>
+                        </div>
+                    </div>
+
+                    <!-- CH 3: Contact - Cream Simple Design -->
+                    <div class="channel" data-channel="3">
+                        <div class="ch-contact">
+                            <div class="contact-carousel" id="contact-carousel">
+
+                                <!-- Contact Program 0: Ad Style -->
+                                <div class="contact-slide active" data-contact="0">
+                                    <div class="ad-program">
+                                        <div class="ad-header">
+                                            <span class="ad-badge">📢 PR</span>
+                                            <span class="ad-header-text">こんなことにお困りではありませんか？</span>
                                         </div>
-                                        <div class="preview-content">
-                                            <div class="preview-icon">🎯</div>
-                                            <h3 class="preview-title">YouTube Shooting</h3>
-                                            <p class="preview-desc">コメント弾幕シューティング</p>
-                                            <div class="preview-game">
-                                                <div class="game-score">SCORE: <span class="score-value">0</span></div>
-                                                <div class="game-bullets">
-                                                    <span class="bullet" style="--delay:0s">すごい！</span>
-                                                    <span class="bullet" style="--delay:0.5s">面白い</span>
-                                                    <span class="bullet" style="--delay:1s">最高</span>
-                                                    <span class="bullet" style="--delay:1.5s">www</span>
+
+                                        <div class="ad-problems">
+                                            <div class="ad-problem">
+                                                <span class="problem-icon">😰</span>
+                                                <span class="problem-text">ちょっとしたツールが欲しい...</span>
+                                            </div>
+                                            <div class="ad-problem">
+                                                <span class="problem-icon">🤔</span>
+                                                <span class="problem-text">こんな機能あったらいいのに...</span>
+                                            </div>
+                                            <div class="ad-problem">
+                                                <span class="problem-icon">💡</span>
+                                                <span class="problem-text">誰かにアイデア聞いてほしい...</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="ad-solution">
+                                            <div class="solution-arrow">▼</div>
+                                            <div class="solution-text">そんなあなたに！</div>
+                                        </div>
+
+                                        <div class="ad-cta">
+                                            <div class="cta-main">USUI LAB</div>
+                                            <div class="cta-sub">お気軽にご連絡ください</div>
+                                            <div class="cta-hint">PROG ▶ で連絡先へ</div>
+                                        </div>
+
+                                        <div class="ad-disclaimer">※個人の趣味です。返信は気まぐれです。</div>
+                                    </div>
+                                </div>
+
+                                <!-- Contact Program 1: Links (Cream Design) -->
+                                <div class="contact-slide" data-contact="1">
+                                    <div class="cream-content">
+                                        <!-- Simple Header -->
+                                        <div class="cream-header">
+                                            <span class="cream-title">Contact</span>
+                                            <span class="cream-subtitle">Get in touch</span>
+                                        </div>
+
+                                        <!-- Contact Cards -->
+                                        <div class="cream-links">
+                                            <a href="https://github.com/tomatomilk203" target="_blank" class="cream-card">
+                                                <div class="card-icon github">
+                                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                                                    </svg>
                                                 </div>
-                                                <div class="game-player">▲</div>
-                                            </div>
-                                        </div>
-                                        <div class="preview-footer">
-                                            <span>CLICK TO ENTER</span>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
+                                                <div class="card-info">
+                                                    <span class="card-name">GitHub</span>
+                                                    <span class="card-handle">@tomatomilk203</span>
+                                                </div>
+                                                <span class="card-arrow">→</span>
+                                            </a>
 
-                            <!-- Channel 2: Brainrot Collection -->
-                            <div class="channel" data-channel="2">
-                                <div class="channel-preview brainrot">
-                                    <div class="preview-header">
-                                        <span class="ch-number">CH.02</span>
-                                        <span class="ch-status dev">● COMING SOON</span>
-                                    </div>
-                                    <div class="preview-content">
-                                        <div class="preview-icon">🧠</div>
-                                        <h3 class="preview-title">Brainrot Collection</h3>
-                                        <p class="preview-desc">???</p>
-                                        <div class="preview-static">
-                                            <div class="static-text">NO SIGNAL</div>
-                                            <div class="static-bars">
-                                                <span></span><span></span><span></span><span></span>
-                                            </div>
+                                            <a href="https://x.com/tomatomilk203" target="_blank" class="cream-card">
+                                                <div class="card-icon twitter">
+                                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                                                    </svg>
+                                                </div>
+                                                <div class="card-info">
+                                                    <span class="card-name">X (Twitter)</span>
+                                                    <span class="card-handle">@tomatomilk203</span>
+                                                </div>
+                                                <span class="card-arrow">→</span>
+                                            </a>
                                         </div>
-                                    </div>
-                                    <div class="preview-footer">
-                                        <span>開発中...</span>
+
+                                        <!-- Footer -->
+                                        <div class="cream-footer">
+                                            <div class="footer-brand">USUI LAB</div>
+                                            <div class="footer-copy">© 2024-2025</div>
+                                            <div class="footer-note">個人の趣味で運営しています</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- Channel 3: Coming Soon -->
-                            <div class="channel" data-channel="3">
-                                <div class="channel-preview unknown">
-                                    <div class="preview-header">
-                                        <span class="ch-number">CH.03</span>
-                                        <span class="ch-status">● STANDBY</span>
-                                    </div>
-                                    <div class="preview-content">
-                                        <div class="preview-icon">❓</div>
-                                        <h3 class="preview-title">Next Project</h3>
-                                        <p class="preview-desc">Coming Soon...</p>
-                                        <div class="preview-static">
-                                            <div class="static-noise"></div>
-                                        </div>
-                                    </div>
-                                    <div class="preview-footer">
-                                        <span>AWAITING SIGNAL...</span>
-                                    </div>
-                                </div>
+                            <!-- Contact Carousel Dots -->
+                            <div class="contact-dots" id="contact-dots">
+                                <span class="dot active"></span>
+                                <span class="dot"></span>
                             </div>
                         </div>
                     </div>
+
+                    <!-- CH 4: NEWS - Photo Slideshow -->
+                    <div class="channel" data-channel="4">
+                        <div class="ch-news">
+                            <div class="news-carousel" id="news-carousel">
+
+                                <!-- News Program 0: Caster Screen -->
+                                <div class="news-slide active" data-news="0">
+                                    <div class="news-studio">
+                                        <!-- Station Logo -->
+                                        <div class="news-logo"><span class="logo-top">UL</span><span class="logo-bottom">NEWS</span></div>
+
+                                        <!-- Caster Area -->
+                                        <div class="news-caster">
+                                            <img src="assets/news/caster.png" alt="Caster" class="caster-img">
+                                        </div>
+
+                                        <!-- Telop Area -->
+                                        <div class="news-telop">
+                                            <div class="telop-top-row">
+                                                <div class="telop-category">特集</div>
+                                                <div class="telop-program-name">UL NEWS</div>
+                                            </div>
+                                            <div class="telop-headline">美しい写真の数々　狙いは無しか？</div>
+                                            <div class="telop-sub">USUI LAB が届ける至高のフォトギャラリー</div>
+                                            <div class="news-hint">PROG ▶ でスライドショーへ</div>
+                                        </div>
+
+                                        <!-- Time Display -->
+                                        <div class="news-time" id="news-time">00:00</div>
+                                    </div>
+                                </div>
+
+                                <!-- News Program 1: Photo Slideshow -->
+                                <div class="news-slide" data-news="1">
+                                    <div class="news-slideshow">
+                                        <!-- Photo Container -->
+                                        <div class="slideshow-container" id="slideshow-container">
+                                            <img src="assets/news/photo-01.jpg" class="slideshow-photo active" data-index="0" alt="Photo 1">
+                                            <img src="assets/news/photo-02.jpg" class="slideshow-photo" data-index="1" alt="Photo 2">
+                                            <img src="assets/news/photo-03.jpg" class="slideshow-photo" data-index="2" alt="Photo 3">
+                                            <img src="assets/news/photo-04.jpg" class="slideshow-photo" data-index="3" alt="Photo 4">
+                                            <img src="assets/news/photo-05.jpg" class="slideshow-photo" data-index="4" alt="Photo 5">
+                                            <img src="assets/news/photo-06.jpg" class="slideshow-photo" data-index="5" alt="Photo 6">
+                                            <img src="assets/news/photo-07.jpg" class="slideshow-photo" data-index="6" alt="Photo 7">
+                                            <img src="assets/news/photo-08.jpg" class="slideshow-photo" data-index="7" alt="Photo 8">
+                                            <img src="assets/news/photo-09.jpg" class="slideshow-photo" data-index="8" alt="Photo 9">
+                                            <img src="assets/news/photo-10.jpg" class="slideshow-photo" data-index="9" alt="Photo 10">
+                                        </div>
+
+                                        <!-- Slideshow UI -->
+                                        <div class="slideshow-ui">
+                                            <div class="slideshow-logo">UL NEWS</div>
+                                            <div class="slideshow-counter">
+                                                <span id="slideshow-current">1</span> / <span id="slideshow-total">10</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Progress Bar -->
+                                        <div class="slideshow-progress">
+                                            <div class="progress-bar" id="slideshow-progress-bar"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- News Carousel Dots -->
+                            <div class="news-dots" id="news-dots">
+                                <span class="dot active"></span>
+                                <span class="dot"></span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-
-            </div>
-
-            <!-- TV Controls (below TV) -->
-            <div class="tv-controls-bar">
-                <!-- Power Button -->
-                <button class="tv-power-btn" id="main-power-btn" title="電源">
-                    <svg viewBox="0 0 24 24" class="power-icon">
-                        <path d="M12 3v9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
-                        <path d="M18.36 6.64A9 9 0 1 1 5.64 6.64" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-                    </svg>
-                </button>
-
-                <!-- Channel Buttons -->
-                <div class="tv-channel-buttons">
-                    <button class="tv-btn yellow" id="prev-btn" title="前へ"></button>
-                    <span class="channel-indicator">CH</span>
-                    <button class="tv-btn red" id="next-btn" title="次へ"></button>
-                </div>
-
-                <!-- Secret Buttons -->
-                <div class="tv-secret-buttons">
-                    <button class="tv-btn blue" id="secret-btn-1" title="???"></button>
-                    <button class="tv-btn purple" id="secret-btn-2" title="???"></button>
-                </div>
-            </div>
-
-            <!-- Scroll hint -->
-            <div class="scroll-hint" id="scroll-hint">
-                <span>↓ SCROLL FOR MORE ↓</span>
             </div>
         </div>
-    </section>
 
-    <!-- ========== CONTENT SECTIONS ========== -->
-    <main class="main-content">
-        <!-- Projects Section -->
-        <section class="projects" id="projects">
-            <div class="section-header">
-                <div class="section-line"></div>
-                <h2 class="section-title">
-                    <span class="section-icon">📁</span>
-                    PROJECTS
-                </h2>
-                <div class="section-line"></div>
+        <!-- Control Panel (TV外に配置) -->
+        <div class="tv-controls">
+            <div class="power-hint" id="power-hint">
+                <span>▼ POWER</span>
             </div>
-
-            <div class="projects-grid">
-                <!-- Project 1 -->
-                <article class="project-card released">
-                    <div class="project-status">
-                        <span class="status-badge released" data-i18n="project-1-status">✓ RELEASED</span>
-                        <span class="project-number">No.001</span>
-                    </div>
-                    <div class="project-icon">🎯</div>
-                    <h3 class="project-title" data-i18n="project-1-title">YouTube Shooting</h3>
-                    <p class="project-category" data-i18n="project-1-category">Chrome拡張機能</p>
-                    <p class="project-description" data-i18n="project-1-desc">
-                        YouTubeのコメントが弾幕になって襲いかかる！避けて撃って、コメントを制圧せよ。実際の動画コメントを使用した新感覚シューティングゲーム。
-                    </p>
-                    <div class="project-tech">
-                        <span class="tech-tag">JavaScript</span>
-                        <span class="tech-tag">Chrome API</span>
-                    </div>
-                    <div class="project-links">
-                        <a href="youtube-shooting/" class="project-link primary" data-i18n="project-1-btn-store">Chrome ストア</a>
-                        <a href="https://github.com/tomatomilk203/Yotubeshooting" class="project-link secondary" target="_blank" data-i18n="project-1-btn-github">GitHub</a>
-                    </div>
-                </article>
-
-                <!-- Project 2 -->
-                <article class="project-card development">
-                    <div class="project-status">
-                        <span class="status-badge development" data-i18n="project-2-status">⚡ 開発中</span>
-                        <span class="project-number">No.002</span>
-                    </div>
-                    <div class="project-icon">🧠</div>
-                    <h3 class="project-title" data-i18n="project-2-title">Brainrot Collection</h3>
-                    <p class="project-category" data-i18n="project-2-category">???</p>
-                    <p class="project-description" data-i18n="project-2-desc">
-                        脳が溶ける何か。詳細は不明。
-                    </p>
-                    <div class="project-tech">
-                        <span class="tech-tag">???</span>
-                    </div>
-                    <div class="project-links">
-                        <div class="coming-soon-box" data-i18n="project-2-coming">COMING SOON</div>
-                    </div>
-                </article>
-
-                <!-- Project 3 -->
-                <article class="project-card placeholder">
-                    <div class="project-status">
-                        <span class="status-badge placeholder" data-i18n="project-3-status">? UNKNOWN</span>
-                        <span class="project-number">No.???</span>
-                    </div>
-                    <div class="project-icon">❓</div>
-                    <h3 class="project-title" data-i18n="project-3-title">Next Project</h3>
-                    <p class="project-category" data-i18n="project-3-category">To Be Announced</p>
-                    <p class="project-description" data-i18n="project-3-desc">
-                        次なる実験は何になるのか...？
-                    </p>
-                    <div class="project-links">
-                        <div class="mystery-text" data-i18n="project-3-waiting"><span class="blink">▌</span> AWAITING...</div>
-                    </div>
-                </article>
+            <button class="ctrl-power" id="power-btn" title="電源">
+                <svg viewBox="0 0 24 24" class="power-icon">
+                    <path d="M12 3v9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M18.36 6.64A9 9 0 1 1 5.64 6.64" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                </svg>
+            </button>
+            <div class="ctrl-channels">
+                <button class="ctrl-ch ch-down" id="ch-down" title="CH-">◀</button>
+                <span class="ctrl-ch-display">CH</span>
+                <button class="ctrl-ch ch-up" id="ch-up" title="CH+">▶</button>
             </div>
-        </section>
-
-        <!-- About Section -->
-        <section class="about" id="about">
-            <div class="section-header">
-                <div class="section-line"></div>
-                <h2 class="section-title">
-                    <span class="section-icon">👤</span>
-                    ABOUT
-                </h2>
-                <div class="section-line"></div>
+            <div class="ctrl-programs">
+                <button class="ctrl-prog prog-prev" id="prog-prev" title="前の番組">◀</button>
+                <button class="ctrl-prog prog-next" id="prog-next" title="次の番組">▶</button>
             </div>
+        </div>
 
-            <!-- Profile Card - Business Card Style -->
-            <div class="profile-card">
-                <!-- Left: Avatar -->
-                <div class="profile-avatar">
-                    <img src="assets/avatar.png" alt="Usui" class="avatar-img">
-                </div>
-
-                <!-- Right: Info -->
-                <div class="profile-info">
-                    <!-- Name -->
-                    <div class="profile-name">
-                        <span class="name-label" data-i18n="profile-name-label">NAME</span>
-                        <h3 class="name-value">Usui</h3>
-                        <span class="name-sub" data-i18n="profile-name-sub">ウスイ</span>
-                    </div>
-
-                    <!-- Details -->
-                    <div class="profile-details">
-                        <div class="detail-item">
-                            <span class="detail-icon">🛠️</span>
-                            <div class="detail-content">
-                                <span class="detail-label" data-i18n="profile-hobby-label">HOBBY</span>
-                                <span class="detail-value" data-i18n="profile-hobby-value">開発</span>
-                            </div>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-icon">🏆</span>
-                            <div class="detail-content">
-                                <span class="detail-label" data-i18n="profile-works-label">WORKS</span>
-                                <span class="detail-value" data-i18n="profile-works-value">Chrome拡張 / Webアプリ / モバイルアプリ</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Motto -->
-                    <div class="profile-motto">
-                        <span class="motto-icon">💬</span>
-                        <p class="motto-text" data-i18n="profile-motto">"自分が楽しいものを作り続ける"</p>
-                    </div>
-
-                    <!-- Status Badge -->
-                    <div class="profile-status">
-                        <span class="status-dot"></span>
-                        <span class="status-text">ACTIVE</span>
-                    </div>
-                </div>
-
-                <!-- Decorative Elements -->
-                <div class="card-corner top-left"></div>
-                <div class="card-corner top-right"></div>
-                <div class="card-corner bottom-left"></div>
-                <div class="card-corner bottom-right"></div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section class="contact" id="contact">
-            <div class="section-header">
-                <div class="section-line"></div>
-                <h2 class="section-title">
-                    <span class="section-icon">📡</span>
-                    CONTACT
-                </h2>
-                <div class="section-line"></div>
-            </div>
-
-            <div class="contact-content">
-                <div class="contact-links">
-                    <a href="https://github.com/tomatomilk203" class="contact-link" target="_blank">
-                        <span class="contact-icon">📂</span>
-                        <span class="contact-name">GitHub</span>
-                        <span class="contact-handle">@tomatomilk203</span>
-                    </a>
-                    <a href="https://x.com/tomatomilk203" class="contact-link" target="_blank">
-                        <span class="contact-icon">🐦</span>
-                        <span class="contact-name">X (Twitter)</span>
-                        <span class="contact-handle">@tomatomilk203</span>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer class="footer">
-            <div class="footer-content">
-                <div class="footer-logo">📺 USUI LAB</div>
-                <p class="footer-copyright">© 2024-2025 USUI LAB</p>
-                <p class="footer-disclaimer" data-i18n="footer-disclaimer">※ 全て個人の趣味で行われています</p>
-                <span class="footer-code" data-i18n="footer-code">[ 放送終了 ]</span>
-            </div>
-        </footer>
-    </main>
+        <!-- Keyboard hints -->
+        <div class="keyboard-hints" id="keyboard-hints">
+            <span>[SPACE] Power</span>
+            <span>[←→] Channel</span>
+            <span>[ESC] Off</span>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>

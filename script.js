@@ -1,615 +1,775 @@
 /**
- * USUI LAB - ウスイ研究所
- * Retro CRT TV Effects
+ * USUI LAB - Immersive CRT TV Experience
+ * 完全没入型ブラウン管テレビ体験
+ *
+ * Web Audio API による音声合成
+ * 物理シミュレーション電源ON/OFF
+ * チャンネル切り替えアニメーション
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-    initTV();
-    initEffectsToggle();
-    initTypingEffect();
-    initCounterAnimation();
-    initSmoothScroll();
-    initScoreAnimation();
-    initLangToggle();
-    initVHSTimer();
-});
+// =====================================================
+// AUDIO CONTEXT & SOUND SYNTHESIS
+// =====================================================
 
-/* =====================================================
-   VHS TIMER - レトロビデオ風タイムコード
-   ===================================================== */
-function initVHSTimer() {
-    const vhsTime = document.getElementById('vhs-time');
-    if (!vhsTime) return;
+class CRTAudio {
+    constructor() {
+        this.ctx = null;
+        this.masterGain = null;
+        this.humOsc = null;
+        this.humGain = null;
+        this.flybackOsc = null;
+        this.flybackGain = null;
+        this.isInitialized = false;
+    }
 
-    let seconds = 0;
-    setInterval(() => {
-        seconds++;
-        const h = Math.floor(seconds / 3600).toString().padStart(2, '0');
-        const m = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
-        const s = (seconds % 60).toString().padStart(2, '0');
-        vhsTime.textContent = `${h}:${m}:${s}`;
-    }, 1000);
+    init() {
+        if (this.isInitialized) return;
+
+        try {
+            this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+            this.masterGain = this.ctx.createGain();
+            this.masterGain.gain.value = 0.3; // Master volume
+            this.masterGain.connect(this.ctx.destination);
+            this.isInitialized = true;
+        } catch (e) {
+            console.warn('Web Audio API not supported');
+        }
+    }
+
+    // Physical switch click sound
+    playClick() {
+        if (!this.ctx) return;
+
+        const clickOsc = this.ctx.createOscillator();
+        const clickGain = this.ctx.createGain();
+        const clickFilter = this.ctx.createBiquadFilter();
+
+        clickFilter.type = 'bandpass';
+        clickFilter.frequency.value = 2000;
+        clickFilter.Q.value = 1;
+
+        clickOsc.type = 'square';
+        clickOsc.frequency.value = 150;
+
+        clickGain.gain.setValueAtTime(0.4, this.ctx.currentTime);
+        clickGain.gain.exponentialDecayTo = 0.01;
+        clickGain.gain.setTargetAtTime(0.001, this.ctx.currentTime, 0.02);
+
+        clickOsc.connect(clickFilter);
+        clickFilter.connect(clickGain);
+        clickGain.connect(this.masterGain);
+
+        clickOsc.start(this.ctx.currentTime);
+        clickOsc.stop(this.ctx.currentTime + 0.05);
+    }
+
+    // CRT power-on sound (短い起動音のみ、常時ハム音なし)
+    playPowerOn() {
+        if (!this.ctx) return;
+
+        // 短い起動音（ブーン→フェードアウト）
+        const startOsc = this.ctx.createOscillator();
+        const startGain = this.ctx.createGain();
+
+        startOsc.type = 'sawtooth';
+        startOsc.frequency.value = 60;
+
+        startGain.gain.setValueAtTime(0, this.ctx.currentTime);
+        startGain.gain.linearRampToValueAtTime(0.15, this.ctx.currentTime + 0.1);
+        startGain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.6);
+
+        startOsc.connect(startGain);
+        startGain.connect(this.masterGain);
+
+        startOsc.start();
+        startOsc.stop(this.ctx.currentTime + 0.7);
+
+        // 高周波の「チリッ」という音
+        const highOsc = this.ctx.createOscillator();
+        const highGain = this.ctx.createGain();
+
+        highOsc.type = 'sine';
+        highOsc.frequency.value = 8000;
+
+        highGain.gain.setValueAtTime(0.05, this.ctx.currentTime + 0.05);
+        highGain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.2);
+
+        highOsc.connect(highGain);
+        highGain.connect(this.masterGain);
+
+        highOsc.start(this.ctx.currentTime + 0.05);
+        highOsc.stop(this.ctx.currentTime + 0.25);
+    }
+
+    // Static noise for channel switching
+    playStatic(duration = 150) {
+        if (!this.ctx) return;
+
+        const bufferSize = this.ctx.sampleRate * (duration / 1000);
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+
+        // Generate white noise
+        for (let i = 0; i < bufferSize; i++) {
+            data[i] = Math.random() * 2 - 1;
+        }
+
+        const noiseSource = this.ctx.createBufferSource();
+        const noiseGain = this.ctx.createGain();
+        const noiseFilter = this.ctx.createBiquadFilter();
+
+        noiseFilter.type = 'bandpass';
+        noiseFilter.frequency.value = 3000;
+        noiseFilter.Q.value = 0.5;
+
+        noiseSource.buffer = buffer;
+        noiseGain.gain.setValueAtTime(0.25, this.ctx.currentTime);
+        noiseGain.gain.exponentialDecayTo = 0.01;
+        noiseGain.gain.setTargetAtTime(0.01, this.ctx.currentTime + duration / 2000, 0.05);
+
+        noiseSource.connect(noiseFilter);
+        noiseFilter.connect(noiseGain);
+        noiseGain.connect(this.masterGain);
+
+        noiseSource.start();
+        noiseSource.stop(this.ctx.currentTime + duration / 1000);
+    }
+
+    // Power off "pop" sound
+    playPowerOff() {
+        if (!this.ctx) return;
+
+        const popOsc = this.ctx.createOscillator();
+        const popGain = this.ctx.createGain();
+
+        popOsc.type = 'sine';
+        popOsc.frequency.setValueAtTime(200, this.ctx.currentTime);
+        popOsc.frequency.exponentialRampToValueAtTime(50, this.ctx.currentTime + 0.1);
+
+        popGain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+        popGain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.15);
+
+        popOsc.connect(popGain);
+        popGain.connect(this.masterGain);
+
+        popOsc.start();
+        popOsc.stop(this.ctx.currentTime + 0.15);
+    }
 }
 
-/* =====================================================
-   LANGUAGE TOGGLE
-   ===================================================== */
-let currentLang = 'ja';
+// =====================================================
+// TV STATE
+// =====================================================
 
-const translations = {
-    ja: {
-        // TV Screen
-        'welcome-line1': 'ようこそ',
-        'welcome-line3': 'ウスイ研究所',
-        'welcome-hint': '← チャンネルを選択 →',
-        'preview-desc-1': 'コメント弾幕シューティング',
-        'preview-footer-1': 'クリックで入る',
-        'ch-status-1': '● 放送中',
-        'preview-desc-2': '???',
-        'preview-footer-2': '開発中...',
-        'ch-status-2': '● COMING SOON',
-        'preview-footer-3': '信号待機中...',
-        'ch-status-3': '● 準備中',
-        'scroll-hint': '↓ 下にスクロール ↓',
-
-        // Profile Card
-        'profile-name-label': 'NAME',
-        'profile-name-sub': 'ウスイ',
-        'profile-hobby-label': 'HOBBY',
-        'profile-hobby-value': '開発',
-        'profile-works-label': 'WORKS',
-        'profile-works-value': 'Chrome拡張 / Webアプリ / モバイルアプリ',
-        'profile-motto': '"自分が楽しいものを作り続ける"',
-
-        // Projects
-        'project-1-title': 'YouTube Shooting',
-        'project-1-category': 'Chrome拡張機能',
-        'project-1-desc': 'YouTubeのコメントが弾幕になって襲いかかる！避けて撃って、コメントを制圧せよ。実際の動画コメントを使用した新感覚シューティングゲーム。',
-        'project-1-status': '✓ RELEASED',
-        'project-1-btn-store': 'Chrome ストア',
-        'project-1-btn-github': 'GitHub',
-
-        'project-2-title': 'Brainrot Collection',
-        'project-2-category': '???',
-        'project-2-desc': '脳が溶ける何か。詳細は不明。',
-        'project-2-status': '⚡ 開発中',
-        'project-2-coming': 'COMING SOON',
-
-        'project-3-title': 'Next Project',
-        'project-3-category': 'To Be Announced',
-        'project-3-desc': '次なる実験は何になるのか...？',
-        'project-3-status': '? UNKNOWN',
-        'project-3-waiting': '▌ AWAITING...',
-
-        // Contact
-        'contact-twitter': 'Twitter / X',
-        'contact-github': 'GitHub',
-
-        // Footer
-        'footer-disclaimer': '※ 全て個人の趣味で行われています',
-        'footer-code': '[ 放送終了 ]'
-    },
-    en: {
-        // TV Screen
-        'welcome-line1': 'WELCOME TO',
-        'welcome-line3': 'USUI LABORATORY',
-        'welcome-hint': '← SELECT CHANNEL →',
-        'preview-desc-1': 'Comment Bullet Hell Shooter',
-        'preview-footer-1': 'CLICK TO ENTER',
-        'ch-status-1': '● ON AIR',
-        'preview-desc-2': '???',
-        'preview-footer-2': 'IN DEVELOPMENT...',
-        'ch-status-2': '● COMING SOON',
-        'preview-footer-3': 'AWAITING SIGNAL...',
-        'ch-status-3': '● STANDBY',
-        'scroll-hint': '↓ SCROLL FOR MORE ↓',
-
-        // Profile Card
-        'profile-name-label': 'NAME',
-        'profile-name-sub': 'Usui',
-        'profile-hobby-label': 'HOBBY',
-        'profile-hobby-value': 'Development',
-        'profile-works-label': 'WORKS',
-        'profile-works-value': 'Chrome Extensions / Web Apps / Mobile Apps',
-        'profile-motto': '"Keep making things I enjoy"',
-
-        // Projects
-        'project-1-title': 'YouTube Shooting',
-        'project-1-category': 'Chrome Extension',
-        'project-1-desc': 'YouTube comments turn into a bullet hell! Dodge and shoot to survive the comment chaos. A new shooting experience using actual video comments.',
-        'project-1-status': '✓ RELEASED',
-        'project-1-btn-store': 'Chrome Store',
-        'project-1-btn-github': 'GitHub',
-
-        'project-2-title': 'Brainrot Collection',
-        'project-2-category': '???',
-        'project-2-desc': 'Something that melts your brain. Details unknown.',
-        'project-2-status': '⚡ IN DEV',
-        'project-2-coming': 'COMING SOON',
-
-        'project-3-title': 'Next Project',
-        'project-3-category': 'To Be Announced',
-        'project-3-desc': 'What will the next experiment be...?',
-        'project-3-status': '? UNKNOWN',
-        'project-3-waiting': '▌ AWAITING...',
-
-        // Contact
-        'contact-twitter': 'Twitter / X',
-        'contact-github': 'GitHub',
-
-        // Footer
-        'footer-disclaimer': '※ All projects are personal hobbies',
-        'footer-code': '[ END OF TRANSMISSION ]'
-    }
+const state = {
+    tvOn: false,
+    currentChannel: 0,
+    maxChannel: 4,
+    currentProject: 0,
+    maxProjects: 3,
+    currentContact: 0,
+    maxContacts: 2,
+    currentNews: 0,
+    maxNews: 2,
+    currentSlide: 0,
+    maxSlides: 10,
+    vhsSeconds: 0,
+    demoScore: 0
 };
 
-function initLangToggle() {
-    const toggle = document.getElementById('lang-toggle');
-    if (!toggle) return;
+const audio = new CRTAudio();
 
-    // Load saved preference
-    const saved = localStorage.getItem('usuilab_lang');
-    if (saved) {
-        currentLang = saved;
-        updateLangUI();
-        applyTranslations();
-    }
+// =====================================================
+// DOM ELEMENTS
+// =====================================================
 
-    toggle.addEventListener('click', () => {
-        currentLang = currentLang === 'ja' ? 'en' : 'ja';
-        localStorage.setItem('usuilab_lang', currentLang);
-        updateLangUI();
-        applyTranslations();
-    });
+let elements = {};
+
+function cacheElements() {
+    elements = {
+        powerBtn: document.getElementById('power-btn'),
+        chUp: document.getElementById('ch-up'),
+        chDown: document.getElementById('ch-down'),
+        progPrev: document.getElementById('prog-prev'),
+        progNext: document.getElementById('prog-next'),
+        powerSequence: document.getElementById('power-sequence'),
+        screenOff: document.getElementById('screen-off'),
+        staticNoise: document.getElementById('static-noise'),
+        vhsCounter: document.getElementById('vhs-counter'),
+        vhsChannel: document.getElementById('vhs-channel'),
+        channels: document.querySelectorAll('.channel'),
+        projectSlides: document.querySelectorAll('.project-slide'),
+        carouselDots: document.querySelectorAll('#carousel-dots .dot'),
+        contactSlides: document.querySelectorAll('.contact-slide'),
+        contactDots: document.querySelectorAll('#contact-dots .dot'),
+        newsSlides: document.querySelectorAll('.news-slide'),
+        newsDots: document.querySelectorAll('#news-dots .dot'),
+        newsTime: document.getElementById('news-time'),
+        slideshowPhotos: document.querySelectorAll('.slideshow-photo'),
+        slideshowCurrent: document.getElementById('slideshow-current'),
+        slideshowProgressBar: document.getElementById('slideshow-progress-bar'),
+        terminalInput: document.getElementById('terminal-input'),
+        terminalOutput: document.getElementById('terminal-output'),
+        demoScore: document.getElementById('demo-score')
+    };
 }
 
-function updateLangUI() {
-    const jaBtn = document.querySelector('.lang-ja');
-    const enBtn = document.querySelector('.lang-en');
+// =====================================================
+// POWER ON/OFF SEQUENCE
+// =====================================================
 
-    if (currentLang === 'ja') {
-        jaBtn?.classList.add('active');
-        enBtn?.classList.remove('active');
-    } else {
-        jaBtn?.classList.remove('active');
-        enBtn?.classList.add('active');
-    }
+async function powerOn() {
+    if (state.tvOn) return;
+
+    // Initialize audio on first user interaction
+    audio.init();
+
+    // Click sound
+    audio.playClick();
+
+    const powerSeq = elements.powerSequence;
+    const powerLine = powerSeq.querySelector('.power-line');
+
+    // Phase 1: Show power sequence layer
+    powerSeq.classList.add('active');
+
+    // Phase 2: White line appears (300ms)
+    await sleep(100);
+    audio.playPowerOn();
+    powerSeq.classList.add('expanding');
+
+    // Phase 3: Line expands to fill screen (400ms)
+    await sleep(300);
+    powerSeq.classList.remove('expanding');
+    powerSeq.classList.add('filling');
+
+    // Phase 4: Content fades in
+    await sleep(400);
+    document.body.classList.remove('tv-off');
+    document.body.classList.add('tv-on');
+    state.tvOn = true;
+
+    // Cleanup
+    await sleep(100);
+    powerSeq.classList.remove('active', 'filling');
+    powerLine.style.transform = '';
+
+    // Start VHS counter
+    startVHSCounter();
+
+    // Start demo score
+    startDemoScore();
 }
 
-function applyTranslations() {
-    const t = translations[currentLang];
+async function powerOff() {
+    if (!state.tvOn) return;
 
-    // Generic i18n elements (data-i18n attribute)
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.dataset.i18n;
-        if (t[key]) {
-            el.textContent = t[key];
-        }
-    });
+    audio.playClick();
+    await sleep(50);
+    audio.playPowerOff();
 
-    // Legacy support for existing elements
-    // Welcome screen
-    const line1 = document.querySelector('.welcome-line1');
-    const line3 = document.querySelector('.welcome-line3');
-    const hint = document.querySelector('.welcome-hint');
+    // Quick flash and off
+    document.body.classList.remove('tv-on');
+    document.body.classList.add('tv-off');
+    state.tvOn = false;
 
-    if (line1) line1.textContent = t['welcome-line1'];
-    if (line3) line3.textContent = t['welcome-line3'];
-    if (hint) hint.textContent = t['welcome-hint'];
-
-    // Preview descriptions
-    const desc1 = document.querySelector('.channel[data-channel="1"] .preview-desc');
-    const footer1 = document.querySelector('.channel[data-channel="1"] .preview-footer span');
-    const status1 = document.querySelector('.channel[data-channel="1"] .ch-status');
-    const footer2 = document.querySelector('.channel[data-channel="2"] .preview-footer span');
-    const footer3 = document.querySelector('.channel[data-channel="3"] .preview-footer span');
-
-    if (desc1) desc1.textContent = t['preview-desc-1'];
-    if (footer1) footer1.textContent = t['preview-footer-1'];
-    if (status1) status1.textContent = t['ch-status-1'];
-    if (footer2) footer2.textContent = t['preview-footer-2'];
-    if (footer3) footer3.textContent = t['preview-footer-3'];
-
-    // Scroll hint
-    const scrollHint = document.querySelector('.scroll-hint span');
-    if (scrollHint) scrollHint.textContent = t['scroll-hint'];
-
-    // Update HTML lang attribute
-    document.documentElement.lang = currentLang;
+    // Reset
+    state.vhsSeconds = 0;
+    state.currentChannel = 0;
+    switchChannelInstant(0);
 }
 
-/* =====================================================
-   TV SYSTEM - Power & Channel Control
-   ===================================================== */
-let currentChannel = 0;
-let tvIsOn = false;
+// =====================================================
+// CHANNEL SWITCHING
+// =====================================================
 
-function initTV() {
-    const mainPowerBtn = document.getElementById('main-power-btn');
-    const nextBtn = document.getElementById('next-btn');
-    const prevBtn = document.getElementById('prev-btn');
-    const secretBtn1 = document.getElementById('secret-btn-1');
-    const secretBtn2 = document.getElementById('secret-btn-2');
+async function switchChannel(newChannel) {
+    if (!state.tvOn) return;
+    if (newChannel === state.currentChannel) return;
+    if (newChannel < 0 || newChannel > state.maxChannel) return;
 
-    // メイン電源ボタン - 電源ON/OFF
-    if (mainPowerBtn) {
-        mainPowerBtn.addEventListener('click', () => {
-            if (!tvIsOn) {
-                powerOnTV();
-            } else {
-                powerOffTV();
-            }
-        });
+    // Show static noise
+    elements.staticNoise.classList.add('active');
+    audio.playStatic(150);
+
+    // Show channel number
+    elements.vhsChannel.textContent = `CH-${newChannel}`;
+    elements.vhsChannel.classList.add('show');
+
+    // Wait for static
+    await sleep(150);
+
+    // Switch channel
+    elements.channels.forEach(ch => ch.classList.remove('active'));
+    const targetChannel = document.querySelector(`.channel[data-channel="${newChannel}"]`);
+    if (targetChannel) {
+        targetChannel.classList.add('active');
     }
 
-    // 赤ボタン - 次のチャンネル
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            if (tvIsOn) {
-                nextChannel();
-            }
-        });
-    }
+    state.currentChannel = newChannel;
+    updateProgramButtons();
 
-    // 黄ボタン - 前のチャンネル
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            if (tvIsOn) {
-                prevChannel();
-            }
-        });
-    }
+    // Remove static
+    elements.staticNoise.classList.remove('active');
 
-    // 青ボタン - 隠しコマンド1
-    if (secretBtn1) {
-        secretBtn1.addEventListener('click', () => {
-            secretCommand1();
-        });
-    }
-
-    // 紫ボタン - 隠しコマンド2
-    if (secretBtn2) {
-        secretBtn2.addEventListener('click', () => {
-            secretCommand2();
-        });
-    }
-
-    // Keyboard controls
-    document.addEventListener('keydown', handleKeyboard);
-
-    // TV starts OFF - user must click power button
+    // Hide channel number after delay
+    await sleep(1500);
+    elements.vhsChannel.classList.remove('show');
 }
 
-function toggleTV() {
-    if (tvIsOn) {
-        powerOffTV();
-    } else {
-        powerOnTV();
+function switchChannelInstant(channel) {
+    elements.channels.forEach(ch => ch.classList.remove('active'));
+    const targetChannel = document.querySelector(`.channel[data-channel="${channel}"]`);
+    if (targetChannel) {
+        targetChannel.classList.add('active');
     }
-}
-
-function powerOnTV() {
-    const body = document.body;
-    const tvScreen = document.getElementById('tv-screen');
-    const tvOffScreen = document.getElementById('tv-off-screen');
-    const tvContent = document.getElementById('tv-content');
-
-    body.classList.remove('tv-off');
-    body.classList.add('tv-on');
-
-    // TV screen power-on sequence
-    if (tvScreen) {
-        tvScreen.classList.add('powering-on');
-
-        // After power-on animation, show content
-        setTimeout(() => {
-            tvScreen.classList.remove('powering-on');
-            tvScreen.classList.add('powered');
-            if (tvOffScreen) tvOffScreen.style.display = 'none';
-            if (tvContent) tvContent.style.opacity = '1';
-        }, 800);
-    }
-
-    tvIsOn = true;
-
-    // Show scroll hint after TV is on
-    setTimeout(() => {
-        const scrollHint = document.getElementById('scroll-hint');
-        if (scrollHint) {
-            scrollHint.classList.add('visible');
-        }
-    }, 2000);
-}
-
-function powerOffTV() {
-    const body = document.body;
-    const tvScreen = document.getElementById('tv-screen');
-    const tvOffScreen = document.getElementById('tv-off-screen');
-    const tvContent = document.getElementById('tv-content');
-    const scrollHint = document.getElementById('scroll-hint');
-
-    body.classList.remove('tv-on');
-    body.classList.add('tv-off');
-
-    if (tvScreen) {
-        tvScreen.classList.remove('powered');
-        tvScreen.classList.add('powering-off');
-
-        setTimeout(() => {
-            tvScreen.classList.remove('powering-off');
-            if (tvOffScreen) tvOffScreen.style.display = 'flex';
-            if (tvContent) tvContent.style.opacity = '0';
-        }, 500);
-    }
-
-    if (scrollHint) {
-        scrollHint.classList.remove('visible');
-    }
-
-    tvIsOn = false;
-}
-
-function switchChannel(channel) {
-    if (channel === currentChannel) return;
-
-    const channels = document.querySelectorAll('.channel');
-    const tvScreen = document.getElementById('tv-screen');
-
-    // Channel switch animation
-    if (tvScreen) {
-        tvScreen.classList.add('switching');
-
-        setTimeout(() => {
-            // Hide all channels
-            channels.forEach(ch => ch.classList.remove('active'));
-
-            // Show selected channel
-            const targetChannel = document.querySelector(`.channel[data-channel="${channel}"]`);
-            if (targetChannel) {
-                targetChannel.classList.add('active');
-            }
-
-            currentChannel = channel;
-
-            setTimeout(() => {
-                tvScreen.classList.remove('switching');
-            }, 200);
-        }, 150);
-    }
+    state.currentChannel = channel;
+    updateProgramButtons();
 }
 
 function nextChannel() {
-    const maxChannel = 3;
-    const next = currentChannel < maxChannel ? currentChannel + 1 : 0;
+    const next = state.currentChannel < state.maxChannel ? state.currentChannel + 1 : 0;
     switchChannel(next);
 }
 
 function prevChannel() {
-    const maxChannel = 3;
-    const prev = currentChannel > 0 ? currentChannel - 1 : maxChannel;
+    const prev = state.currentChannel > 0 ? state.currentChannel - 1 : state.maxChannel;
     switchChannel(prev);
 }
 
-// 隠しコマンド - 青ボタン
-let secretClicks1 = 0;
-function secretCommand1() {
-    secretClicks1++;
-    if (secretClicks1 >= 3) {
-        activateSecretMode();
-        secretClicks1 = 0;
+// =====================================================
+// PROJECT CAROUSEL
+// =====================================================
+
+function switchProject(index) {
+    if (index < 0 || index >= state.maxProjects) return;
+
+    elements.projectSlides.forEach(slide => slide.classList.remove('active'));
+    elements.carouselDots.forEach(dot => dot.classList.remove('active'));
+
+    const targetSlide = document.querySelector(`.project-slide[data-project="${index}"]`);
+    if (targetSlide) {
+        targetSlide.classList.add('active');
+    }
+
+    if (elements.carouselDots[index]) {
+        elements.carouselDots[index].classList.add('active');
+    }
+
+    state.currentProject = index;
+}
+
+function nextProject() {
+    const next = (state.currentProject + 1) % state.maxProjects;
+    switchProject(next);
+}
+
+function prevProject() {
+    const prev = state.currentProject > 0 ? state.currentProject - 1 : state.maxProjects - 1;
+    switchProject(prev);
+}
+
+// =====================================================
+// CONTACT CAROUSEL
+// =====================================================
+
+function switchContact(index) {
+    if (index < 0 || index >= state.maxContacts) return;
+
+    elements.contactSlides.forEach(slide => slide.classList.remove('active'));
+    elements.contactDots.forEach(dot => dot.classList.remove('active'));
+
+    const targetSlide = document.querySelector(`.contact-slide[data-contact="${index}"]`);
+    if (targetSlide) {
+        targetSlide.classList.add('active');
+    }
+
+    if (elements.contactDots[index]) {
+        elements.contactDots[index].classList.add('active');
+    }
+
+    state.currentContact = index;
+}
+
+function nextContact() {
+    const next = (state.currentContact + 1) % state.maxContacts;
+    switchContact(next);
+}
+
+function prevContact() {
+    const prev = state.currentContact > 0 ? state.currentContact - 1 : state.maxContacts - 1;
+    switchContact(prev);
+}
+
+// =====================================================
+// NEWS CAROUSEL
+// =====================================================
+
+function switchNews(index) {
+    if (index < 0 || index >= state.maxNews) return;
+
+    elements.newsSlides.forEach(slide => slide.classList.remove('active'));
+    elements.newsDots.forEach(dot => dot.classList.remove('active'));
+
+    const targetSlide = document.querySelector(`.news-slide[data-news="${index}"]`);
+    if (targetSlide) {
+        targetSlide.classList.add('active');
+    }
+
+    if (elements.newsDots[index]) {
+        elements.newsDots[index].classList.add('active');
+    }
+
+    state.currentNews = index;
+
+    // Start/stop slideshow based on which program is active
+    if (index === 1) {
+        startSlideshow();
+    } else {
+        stopSlideshow();
     }
 }
 
-// 隠しコマンド - 紫ボタン（青と組み合わせ）
-let secretClicks2 = 0;
-function secretCommand2() {
-    secretClicks2++;
-    // 青3回 + 紫2回でエルプサイ
-    if (secretClicks1 >= 3 && secretClicks2 >= 2) {
-        activateSecretMode();
-        secretClicks1 = 0;
-        secretClicks2 = 0;
+function nextNews() {
+    const next = (state.currentNews + 1) % state.maxNews;
+    switchNews(next);
+}
+
+function prevNews() {
+    const prev = state.currentNews > 0 ? state.currentNews - 1 : state.maxNews - 1;
+    switchNews(prev);
+}
+
+// =====================================================
+// PHOTO SLIDESHOW
+// =====================================================
+
+let slideshowInterval = null;
+let progressInterval = null;
+const SLIDE_DURATION = 4000; // 4 seconds per photo
+
+function startSlideshow() {
+    if (slideshowInterval) return;
+
+    state.currentSlide = 0;
+    updateSlide();
+    startProgress();
+
+    slideshowInterval = setInterval(() => {
+        state.currentSlide = (state.currentSlide + 1) % state.maxSlides;
+        updateSlide();
+        resetProgress();
+    }, SLIDE_DURATION);
+}
+
+function stopSlideshow() {
+    if (slideshowInterval) {
+        clearInterval(slideshowInterval);
+        slideshowInterval = null;
+    }
+    if (progressInterval) {
+        clearInterval(progressInterval);
+        progressInterval = null;
+    }
+    // Reset to first slide
+    state.currentSlide = 0;
+    updateSlide();
+    if (elements.slideshowProgressBar) {
+        elements.slideshowProgressBar.style.width = '0%';
     }
 }
+
+function updateSlide() {
+    elements.slideshowPhotos.forEach((photo, index) => {
+        if (index === state.currentSlide) {
+            photo.classList.add('active');
+        } else {
+            photo.classList.remove('active');
+        }
+    });
+
+    if (elements.slideshowCurrent) {
+        elements.slideshowCurrent.textContent = state.currentSlide + 1;
+    }
+}
+
+function startProgress() {
+    let progress = 0;
+    const step = 100 / (SLIDE_DURATION / 50); // Update every 50ms
+
+    if (progressInterval) clearInterval(progressInterval);
+
+    progressInterval = setInterval(() => {
+        progress += step;
+        if (elements.slideshowProgressBar) {
+            elements.slideshowProgressBar.style.width = `${Math.min(progress, 100)}%`;
+        }
+    }, 50);
+}
+
+function resetProgress() {
+    if (progressInterval) {
+        clearInterval(progressInterval);
+    }
+    if (elements.slideshowProgressBar) {
+        elements.slideshowProgressBar.style.width = '0%';
+    }
+    startProgress();
+}
+
+// =====================================================
+// NEWS TIME DISPLAY
+// =====================================================
+
+let newsTimeInterval = null;
+
+function startNewsTime() {
+    if (newsTimeInterval) clearInterval(newsTimeInterval);
+
+    updateNewsTime();
+    newsTimeInterval = setInterval(updateNewsTime, 1000);
+}
+
+function stopNewsTime() {
+    if (newsTimeInterval) {
+        clearInterval(newsTimeInterval);
+        newsTimeInterval = null;
+    }
+}
+
+function updateNewsTime() {
+    if (!elements.newsTime) return;
+    const now = new Date();
+    const h = now.getHours().toString().padStart(2, '0');
+    const m = now.getMinutes().toString().padStart(2, '0');
+    elements.newsTime.textContent = `${h}:${m}`;
+}
+
+// 現在のチャンネルに応じた番組切り替え
+function nextProgram() {
+    if (state.currentChannel === 1) {
+        nextProject();
+    } else if (state.currentChannel === 3) {
+        nextContact();
+    } else if (state.currentChannel === 4) {
+        nextNews();
+    }
+}
+
+function prevProgram() {
+    if (state.currentChannel === 1) {
+        prevProject();
+    } else if (state.currentChannel === 3) {
+        prevContact();
+    } else if (state.currentChannel === 4) {
+        prevNews();
+    }
+}
+
+// 番組ボタンの状態を更新
+function updateProgramButtons() {
+    // CH1(Projects), CH3(Contact), CH4(News)に番組がある
+    const hasPrograms = state.currentChannel === 1 || state.currentChannel === 3 || state.currentChannel === 4;
+
+    if (elements.progPrev) {
+        elements.progPrev.disabled = !hasPrograms;
+    }
+    if (elements.progNext) {
+        elements.progNext.disabled = !hasPrograms;
+    }
+
+    // CH4に入ったらニュース時計を開始、離れたら停止
+    if (state.currentChannel === 4) {
+        startNewsTime();
+    } else {
+        stopNewsTime();
+        stopSlideshow();
+    }
+}
+
+// =====================================================
+// VHS COUNTER
+// =====================================================
+
+let vhsInterval = null;
+
+function startVHSCounter() {
+    if (vhsInterval) clearInterval(vhsInterval);
+
+    vhsInterval = setInterval(() => {
+        if (!state.tvOn) {
+            clearInterval(vhsInterval);
+            return;
+        }
+
+        state.vhsSeconds++;
+        const h = Math.floor(state.vhsSeconds / 3600).toString().padStart(2, '0');
+        const m = Math.floor((state.vhsSeconds % 3600) / 60).toString().padStart(2, '0');
+        const s = (state.vhsSeconds % 60).toString().padStart(2, '0');
+
+        if (elements.vhsCounter) {
+            elements.vhsCounter.textContent = `${h}:${m}:${s}`;
+        }
+    }, 1000);
+}
+
+// =====================================================
+// TERMINAL COMMAND SYSTEM
+// =====================================================
+
+const secretCommands = {
+    'sg': 'エル・プサイ・コングルゥ',
+    'steinsgate': 'エル・プサイ・コングルゥ',
+    'elpsykongroo': 'エル・プサイ・コングルゥ',
+    'tuturu': 'トゥットゥルー♪',
+    'help': 'COMMANDS: sg, tuturu, clear'
+};
+
+const defaultMessage = 'ようこそ、我がラボへ。';
+
+function handleTerminalCommand(command) {
+    const cmd = command.toLowerCase().trim();
+
+    if (cmd === '') {
+        return defaultMessage;
+    }
+
+    if (cmd === 'clear') {
+        return defaultMessage;
+    }
+
+    if (secretCommands[cmd]) {
+        // 効果音を鳴らす
+        audio.playClick();
+        return secretCommands[cmd];
+    }
+
+    return 'Unknown command...';
+}
+
+function initTerminal() {
+    const input = elements.terminalInput;
+    const output = elements.terminalOutput;
+
+    if (!input || !output) return;
+
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            const command = input.value;
+            const response = handleTerminalCommand(command);
+            output.textContent = response;
+            input.value = '';
+
+            // 特殊コマンドの場合、出力にエフェクト追加
+            if (secretCommands[command.toLowerCase().trim()]) {
+                output.classList.add('secret-active');
+                setTimeout(() => output.classList.remove('secret-active'), 500);
+            }
+        }
+    });
+}
+
+// =====================================================
+// DEMO SCORE ANIMATION
+// =====================================================
+
+let scoreInterval = null;
+
+function startDemoScore() {
+    if (scoreInterval) clearInterval(scoreInterval);
+
+    scoreInterval = setInterval(() => {
+        if (!state.tvOn || state.currentChannel !== 1) {
+            return;
+        }
+
+        state.demoScore += Math.floor(Math.random() * 200) + 50;
+        if (state.demoScore > 99999) state.demoScore = 0;
+
+        if (elements.demoScore) {
+            elements.demoScore.textContent = state.demoScore;
+        }
+    }, 300);
+}
+
+// =====================================================
+// KEYBOARD CONTROLS
+// =====================================================
 
 function handleKeyboard(e) {
-    if (!tvIsOn) {
-        // Space or Enter to turn on TV
-        if (e.key === ' ' || e.key === 'Enter') {
-            powerOnTV();
+    // 入力フィールドにフォーカスがある場合は無視
+    if (document.activeElement.tagName === 'INPUT') {
+        return;
+    }
+
+    // Space or Enter to toggle power
+    if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        if (state.tvOn) {
+            powerOff();
+        } else {
+            powerOn();
         }
         return;
     }
 
+    // ESC to power off
+    if (e.key === 'Escape' && state.tvOn) {
+        powerOff();
+        return;
+    }
+
+    // Arrow keys for channel switching (only when TV is on)
+    if (!state.tvOn) return;
+
     switch (e.key) {
         case 'ArrowLeft':
-            prevChannel();
+            if (state.currentChannel === 1) {
+                prevProject();
+            } else if (state.currentChannel === 3) {
+                prevContact();
+            } else if (state.currentChannel === 4) {
+                prevNews();
+            } else {
+                prevChannel();
+            }
             break;
         case 'ArrowRight':
+            if (state.currentChannel === 1) {
+                nextProject();
+            } else if (state.currentChannel === 3) {
+                nextContact();
+            } else if (state.currentChannel === 4) {
+                nextNews();
+            } else {
+                nextChannel();
+            }
+            break;
+        case 'ArrowUp':
             nextChannel();
             break;
-        case 'Escape':
-            powerOffTV();
+        case 'ArrowDown':
+            prevChannel();
+            break;
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+            switchChannel(parseInt(e.key));
             break;
     }
 }
 
-/* =====================================================
-   SCORE ANIMATION (YouTube Shooting Preview)
-   ===================================================== */
-function initScoreAnimation() {
-    const scoreValue = document.querySelector('.score-value');
-    if (!scoreValue) return;
+// =====================================================
+// KONAMI CODE EASTER EGG
+// =====================================================
 
-    let score = 0;
-    const maxScore = 99999;
-
-    function animateScore() {
-        // Random score increment
-        score += Math.floor(Math.random() * 150) + 50;
-        if (score > maxScore) score = 0;
-
-        scoreValue.textContent = score;
-
-        // Continue animation
-        setTimeout(animateScore, Math.random() * 500 + 200);
-    }
-
-    // Start after TV is on
-    setTimeout(() => {
-        if (tvIsOn) {
-            animateScore();
-        }
-    }, 1500);
-}
-
-/* =====================================================
-   CRT EFFECTS TOGGLE
-   ===================================================== */
-function initEffectsToggle() {
-    const toggle = document.getElementById('effects-toggle');
-    if (!toggle) return;
-
-    // Load saved preference
-    const saved = localStorage.getItem('usuilab_effects');
-    if (saved === 'off') {
-        document.body.classList.add('effects-off');
-        toggle.textContent = 'CRT: OFF';
-    }
-
-    toggle.addEventListener('click', () => {
-        document.body.classList.toggle('effects-off');
-        const isOff = document.body.classList.contains('effects-off');
-        toggle.textContent = isOff ? 'CRT: OFF' : 'CRT: ON';
-        localStorage.setItem('usuilab_effects', isOff ? 'off' : 'on');
-    });
-}
-
-/* =====================================================
-   TYPING EFFECT
-   ===================================================== */
-function initTypingEffect() {
-    const typingElement = document.getElementById('typing-text');
-    if (!typingElement) return;
-
-    const messages = [
-        '> SYSTEM ONLINE',
-        '> LOADING CHANNEL...',
-        '> SIGNAL ACQUIRED',
-        '> WELCOME TO USUI LAB',
-        '> EXPERIMENTS IN PROGRESS',
-        '> STAND BY...'
-    ];
-
-    let messageIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let isPausing = false;
-
-    function type() {
-        const currentMessage = messages[messageIndex];
-
-        if (isPausing) {
-            setTimeout(type, 2000);
-            isPausing = false;
-            isDeleting = true;
-            return;
-        }
-
-        if (isDeleting) {
-            typingElement.textContent = currentMessage.substring(0, charIndex - 1);
-            charIndex--;
-
-            if (charIndex === 0) {
-                isDeleting = false;
-                messageIndex = (messageIndex + 1) % messages.length;
-                setTimeout(type, 300);
-                return;
-            }
-        } else {
-            typingElement.textContent = currentMessage.substring(0, charIndex + 1);
-            charIndex++;
-
-            if (charIndex === currentMessage.length) {
-                isPausing = true;
-            }
-        }
-
-        const speed = isDeleting ? 40 : 70;
-        setTimeout(type, speed);
-    }
-
-    setTimeout(type, 500);
-}
-
-/* =====================================================
-   COUNTER ANIMATION
-   ===================================================== */
-function initCounterAnimation() {
-    const counters = document.querySelectorAll('.stat-value[data-count]');
-    if (counters.length === 0) return;
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                animateCounter(entry.target);
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.5 });
-
-    counters.forEach(counter => observer.observe(counter));
-}
-
-function animateCounter(element) {
-    const target = parseInt(element.dataset.count);
-    const duration = 1500;
-    const increment = target / (duration / 20);
-    let current = 0;
-
-    const timer = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-            element.textContent = target;
-            clearInterval(timer);
-        } else {
-            element.textContent = Math.floor(current);
-        }
-    }, 20);
-}
-
-/* =====================================================
-   SMOOTH SCROLL
-   ===================================================== */
-function initSmoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-
-            if (targetElement) {
-                const headerOffset = 80;
-                const elementPosition = targetElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-}
-
-/* =====================================================
-   KONAMI CODE EASTER EGG
-   ===================================================== */
 const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
 let konamiIndex = 0;
 
-document.addEventListener('keydown', (e) => {
-    if (e.key === konamiCode[konamiIndex]) {
+function checkKonami(key) {
+    if (key === konamiCode[konamiIndex]) {
         konamiIndex++;
         if (konamiIndex === konamiCode.length) {
             activateSecretMode();
@@ -618,7 +778,7 @@ document.addEventListener('keydown', (e) => {
     } else {
         konamiIndex = 0;
     }
-});
+}
 
 function activateSecretMode() {
     const secretMsg = document.createElement('div');
@@ -627,16 +787,17 @@ function activateSecretMode() {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        background: #1a1815;
+        background: #0a0a0a;
         border: 4px solid #ffd000;
         padding: 50px;
         z-index: 100000;
         text-align: center;
         font-family: 'VT323', monospace;
+        box-shadow: 0 0 50px rgba(255, 208, 0, 0.5);
     `;
     secretMsg.innerHTML = `
-        <h3 style="color: #ffd000; font-size: 2rem; margin-bottom: 20px;">📺 SECRET CHANNEL 📺</h3>
-        <p style="color: #00ff00; font-size: 1.5rem;">エル・プサイ・コングルゥ</p>
+        <h3 style="color: #ffd000; font-size: 2rem; margin-bottom: 20px;">SECRET CHANNEL</h3>
+        <p style="color: #00ff41; font-size: 1.5rem;">エル・プサイ・コングルゥ</p>
         <p style="color: #888; font-size: 1rem; margin-top: 30px;">Click to close</p>
     `;
 
@@ -646,9 +807,72 @@ function activateSecretMode() {
     setTimeout(() => secretMsg.remove(), 5000);
 }
 
-/* =====================================================
-   CONSOLE MESSAGE
-   ===================================================== */
-console.log('%c📺 USUI LAB', 'color: #ffd000; font-size: 24px; font-weight: bold; font-family: monospace;');
-console.log('%cウスイ研究所へようこそ', 'color: #00ff00; font-size: 14px; font-family: monospace;');
-console.log('%c↑↑↓↓←→←→BA で隠しチャンネル', 'color: #888; font-size: 12px; font-family: monospace;');
+// =====================================================
+// UTILITY FUNCTIONS
+// =====================================================
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// =====================================================
+// INITIALIZATION
+// =====================================================
+
+function init() {
+    cacheElements();
+
+    // Initialize terminal
+    initTerminal();
+
+    // Power button
+    if (elements.powerBtn) {
+        elements.powerBtn.addEventListener('click', () => {
+            if (state.tvOn) {
+                powerOff();
+            } else {
+                powerOn();
+            }
+        });
+    }
+
+    // Channel buttons
+    if (elements.chUp) {
+        elements.chUp.addEventListener('click', nextChannel);
+    }
+    if (elements.chDown) {
+        elements.chDown.addEventListener('click', prevChannel);
+    }
+
+    // Program buttons (external)
+    if (elements.progPrev) {
+        elements.progPrev.addEventListener('click', prevProgram);
+    }
+    if (elements.progNext) {
+        elements.progNext.addEventListener('click', nextProgram);
+    }
+
+    // 初期状態で番組ボタンを更新
+    updateProgramButtons();
+
+    // Keyboard
+    document.addEventListener('keydown', (e) => {
+        checkKonami(e.key);
+        handleKeyboard(e);
+    });
+
+    // Prevent default spacebar scroll
+    document.addEventListener('keydown', (e) => {
+        if (e.key === ' ') {
+            e.preventDefault();
+        }
+    });
+
+    // Console message
+    console.log('%c USUI LAB', 'color: #ffd000; font-size: 24px; font-weight: bold; font-family: monospace; background: #0a0a0a; padding: 10px;');
+    console.log('%c ウスイ研究所へようこそ', 'color: #00ff41; font-size: 14px; font-family: monospace;');
+    console.log('%c ↑↑↓↓←→←→BA で隠しチャンネル', 'color: #888; font-size: 12px; font-family: monospace;');
+}
+
+// Start when DOM is ready
+document.addEventListener('DOMContentLoaded', init);
