@@ -797,17 +797,17 @@ body.tv-on .channels {
 }
 
 .project-badge {
-    font-size: 0.8rem;
-    padding: 5px 15px;
-    border: 2px solid;
-    margin-bottom: 15px;
-    letter-spacing: 2px;
+    font-size: 1.4rem;
+    padding: 9px 27px;
+    border: 3px solid;
+    margin-bottom: 25px;
+    letter-spacing: 3px;
 }
 
 .project-badge.released {
     color: var(--phosphor-green);
     border-color: var(--phosphor-green);
-    box-shadow: 0 0 10px rgba(0, 255, 65, 0.3);
+    box-shadow: 0 0 15px rgba(0, 255, 65, 0.3);
 }
 
 .project-badge.dev {
@@ -821,40 +821,40 @@ body.tv-on .channels {
 }
 
 .project-icon {
-    font-size: 3rem;
-    margin-bottom: 10px;
+    font-size: 5.4rem;
+    margin-bottom: 18px;
 }
 
 .project-name {
-    font-size: 2rem;
+    font-size: 3.6rem;
     color: var(--accent-yellow);
-    text-shadow: 0 0 15px var(--accent-yellow);
-    margin-bottom: 5px;
-    letter-spacing: 2px;
+    text-shadow: 0 0 25px var(--accent-yellow);
+    margin-bottom: 9px;
+    letter-spacing: 3px;
 }
 
 .project-category {
-    font-size: 0.9rem;
+    font-size: 1.6rem;
     color: var(--phosphor-green);
-    margin-bottom: 15px;
+    margin-bottom: 25px;
     opacity: 0.8;
 }
 
 .project-desc {
     font-family: 'DotGothic16', monospace;
-    font-size: 0.95rem;
+    font-size: 1.7rem;
     color: var(--phosphor-white);
     line-height: 1.6;
-    margin-bottom: 20px;
-    max-width: 400px;
+    margin-bottom: 35px;
+    max-width: 720px;
 }
 
 /* Project demo area */
 .project-demo {
-    width: 80%;
-    max-width: 250px;
-    height: 200px;
-    margin: 0 auto 15px;
+    width: 90%;
+    max-width: 450px;
+    height: 360px;
+    margin: 0 auto 25px;
 }
 
 .demo-game {
@@ -881,9 +881,9 @@ body.tv-on .channels {
 
 .demo-score {
     position: absolute;
-    top: 8px;
-    left: 10px;
-    font-size: 1rem;
+    top: 14px;
+    left: 18px;
+    font-size: 1.8rem;
     color: var(--accent-yellow);
     z-index: 10;
 }
@@ -899,13 +899,13 @@ body.tv-on .channels {
 .demo-bullet {
     position: absolute;
     font-family: 'DotGothic16', monospace;
-    font-size: 0.9rem;
+    font-size: 1.6rem;
     color: var(--phosphor-white);
     white-space: nowrap;
     animation: bulletFly 3s linear infinite;
     animation-delay: calc(var(--i) * 1s);
-    top: calc(35px + var(--i) * 25px);
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    top: calc(60px + var(--i) * 45px);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
 }
 
 @keyframes bulletFly {
@@ -918,10 +918,10 @@ body.tv-on .channels {
 .demo-player {
     position: absolute;
     bottom: 50%;
-    left: 15px;
-    font-size: 1.5rem;
+    left: 25px;
+    font-size: 2.7rem;
     color: var(--accent-cyan);
-    text-shadow: 0 0 10px var(--accent-cyan);
+    text-shadow: 0 0 18px var(--accent-cyan);
     transition: bottom 0.3s ease-out;
     transform: rotate(90deg);
 }
@@ -953,9 +953,9 @@ body.tv-on .channels {
 
 .gameover-text {
     font-family: 'VT323', monospace;
-    font-size: 1.8rem;
+    font-size: 3.2rem;
     color: #ff4444;
-    text-shadow: 0 0 10px #ff4444;
+    text-shadow: 0 0 18px #ff4444;
     animation: gameover-blink 0.5s ease-in-out infinite;
 }
 
@@ -1010,15 +1010,15 @@ body.tv-on .channels {
 /* Project links */
 .project-links {
     display: flex;
-    gap: 15px;
+    gap: 27px;
 }
 
 .project-btn {
-    padding: 10px 25px;
+    padding: 18px 45px;
     font-family: 'VT323', monospace;
-    font-size: 1rem;
+    font-size: 1.8rem;
     text-decoration: none;
-    border: 2px solid var(--phosphor-green);
+    border: 3px solid var(--phosphor-green);
     color: var(--phosphor-green);
     background: transparent;
     transition: all 0.2s;
