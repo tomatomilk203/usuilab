@@ -2394,6 +2394,11 @@ body.tv-off .keyboard-hints span:first-child {
         height: 35px;
     }
 
+    .ctrl-prog, .ctrl-vol {
+        width: 32px;
+        height: 32px;
+    }
+
     .keyboard-hints {
         display: none;
     }
@@ -2432,5 +2437,32 @@ body.tv-off .keyboard-hints span:first-child {
 
     .contact-handle {
         display: none;
+    }
+
+    .tv-controls {
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 10px 15px;
+    }
+
+    .ctrl-power {
+        width: 42px;
+        height: 42px;
+    }
+
+    .ctrl-ch {
+        width: 30px;
+        height: 30px;
+        font-size: 0.65rem;
+    }
+
+    .ctrl-prog, .ctrl-vol {
+        width: 28px;
+        height: 28px;
+        font-size: 0.65rem;
+    }
+
+    .ctrl-ch-display {
+        font-size: 0.7rem;
     }
 }

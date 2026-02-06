@@ -20,6 +20,8 @@ class CRTAudio {
         this.flybackOsc = null;
         this.flybackGain = null;
         this.isInitialized = false;
+        this.noiseSource = null;
+        this.noiseGain = null;
     }
 
     init() {
@@ -155,6 +157,57 @@ class CRTAudio {
         popOsc.start();
         popOsc.stop(this.ctx.currentTime + 0.15);
     }
+
+    // Continuous white noise for CH0 standby
+    startWhiteNoise(volume = 0.15) {
+        if (!this.ctx) return;
+        this.stopWhiteNoise();
+
+        // Create 2 second noise buffer for looping
+        const bufferSize = this.ctx.sampleRate * 2;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+
+        for (let i = 0; i < bufferSize; i++) {
+            data[i] = Math.random() * 2 - 1;
+        }
+
+        this.noiseSource = this.ctx.createBufferSource();
+        this.noiseGain = this.ctx.createGain();
+        const noiseFilter = this.ctx.createBiquadFilter();
+
+        noiseFilter.type = 'bandpass';
+        noiseFilter.frequency.value = 2000;
+        noiseFilter.Q.value = 0.3;
+
+        this.noiseSource.buffer = buffer;
+        this.noiseSource.loop = true;
+        this.noiseGain.gain.value = volume * (state.volume / 5);
+
+        this.noiseSource.connect(noiseFilter);
+        noiseFilter.connect(this.noiseGain);
+        this.noiseGain.connect(this.masterGain);
+
+        this.noiseSource.start();
+    }
+
+    stopWhiteNoise() {
+        if (this.noiseSource) {
+            this.noiseSource.stop();
+            this.noiseSource.disconnect();
+            this.noiseSource = null;
+        }
+        if (this.noiseGain) {
+            this.noiseGain.disconnect();
+            this.noiseGain = null;
+        }
+    }
+
+    updateNoiseVolume(volume = 0.15) {
+        if (this.noiseGain) {
+            this.noiseGain.gain.value = volume * (state.volume / 5);
+        }
+    }
 }
 
 // =====================================================
@@ -204,28 +257,56 @@ function getBgmKey(channel, program) {
     return null;
 }
 
-function playBgm(channel, program = 0) {
+function playBgm(channel, program = 0, fade = false) {
     const key = getBgmKey(channel, program);
 
     // 同じBGMなら何もしない
     if (key === currentBgmKey && currentBgm && !currentBgm.paused) return;
 
     // 現在のBGMを停止
-    stopBgm();
+    stopBgm(fade);
 
     if (!key || !bgmTracks[key]) return;
 
     currentBgm = new Audio(bgmTracks[key]);
     currentBgm.loop = true;
-    currentBgm.volume = (state.volume / 5) * 0.35; // 最大35%
     currentBgmKey = key;
-    currentBgm.play().catch(() => {});
+
+    const targetVolume = (state.volume / 5) * 0.35;
+    if (fade) {
+        currentBgm.volume = 0;
+        currentBgm.play().catch(() => {});
+        const fadeIn = setInterval(() => {
+            if (currentBgm && currentBgm.volume < targetVolume - 0.02) {
+                currentBgm.volume += 0.02;
+            } else {
+                if (currentBgm) currentBgm.volume = targetVolume;
+                clearInterval(fadeIn);
+            }
+        }, 20);
+    } else {
+        currentBgm.volume = targetVolume;
+        currentBgm.play().catch(() => {});
+    }
 }
 
-function stopBgm() {
+function stopBgm(fade = false) {
     if (currentBgm) {
-        currentBgm.pause();
-        currentBgm.currentTime = 0;
+        if (fade) {
+            const bgmToFade = currentBgm;
+            const fadeOut = setInterval(() => {
+                if (bgmToFade.volume > 0.02) {
+                    bgmToFade.volume -= 0.02;
+                } else {
+                    clearInterval(fadeOut);
+                    bgmToFade.pause();
+                    bgmToFade.currentTime = 0;
+                }
+            }, 20);
+        } else {
+            currentBgm.pause();
+            currentBgm.currentTime = 0;
+        }
         currentBgm = null;
         currentBgmKey = null;
     }
@@ -267,28 +348,56 @@ function getVoiceKey(channel, program) {
     return null;
 }
 
-function playVoice(channel, program = 0) {
+function playVoice(channel, program = 0, fade = false) {
     const key = getVoiceKey(channel, program);
 
     // 同じボイスなら何もしない
     if (key === currentVoiceKey && currentVoice && !currentVoice.paused) return;
 
     // 現在のボイスを停止
-    stopVoice();
+    stopVoice(fade);
 
     if (!key || !voiceTracks[key]) return;
 
     currentVoice = new Audio(voiceTracks[key]);
     currentVoice.loop = true;
-    currentVoice.volume = (state.volume / 5) * 0.15; // 最大15%
     currentVoiceKey = key;
-    currentVoice.play().catch(() => {});
+
+    const targetVolume = (state.volume / 5) * 0.15;
+    if (fade) {
+        currentVoice.volume = 0;
+        currentVoice.play().catch(() => {});
+        const fadeIn = setInterval(() => {
+            if (currentVoice && currentVoice.volume < targetVolume - 0.01) {
+                currentVoice.volume += 0.01;
+            } else {
+                if (currentVoice) currentVoice.volume = targetVolume;
+                clearInterval(fadeIn);
+            }
+        }, 20);
+    } else {
+        currentVoice.volume = targetVolume;
+        currentVoice.play().catch(() => {});
+    }
 }
 
-function stopVoice() {
+function stopVoice(fade = false) {
     if (currentVoice) {
-        currentVoice.pause();
-        currentVoice.currentTime = 0;
+        if (fade) {
+            const voiceToFade = currentVoice;
+            const fadeOut = setInterval(() => {
+                if (voiceToFade.volume > 0.01) {
+                    voiceToFade.volume -= 0.01;
+                } else {
+                    clearInterval(fadeOut);
+                    voiceToFade.pause();
+                    voiceToFade.currentTime = 0;
+                }
+            }, 20);
+        } else {
+            currentVoice.pause();
+            currentVoice.currentTime = 0;
+        }
         currentVoice = null;
         currentVoiceKey = null;
     }
@@ -385,6 +494,9 @@ async function powerOn() {
 
     // Start demo score
     startDemoScore();
+
+    // Start white noise for CH0
+    audio.startWhiteNoise(0.15);
 }
 
 async function powerOff() {
@@ -405,6 +517,7 @@ async function powerOff() {
     switchChannelInstant(0);
     stopBgm();
     stopVoice();
+    audio.stopWhiteNoise();
 }
 
 // =====================================================
@@ -437,10 +550,17 @@ async function switchChannel(newChannel) {
     state.currentChannel = newChannel;
     updateProgramButtons();
 
-    // Play BGM and voice for this channel
-    const program = getCurrentProgram(newChannel);
-    playBgm(newChannel, program);
-    playVoice(newChannel, program);
+    // Play BGM and voice for this channel (or white noise for CH0)
+    if (newChannel === 0) {
+        stopBgm(true);
+        stopVoice(true);
+        audio.startWhiteNoise(0.15);
+    } else {
+        audio.stopWhiteNoise();
+        const program = getCurrentProgram(newChannel);
+        playBgm(newChannel, program, true);
+        playVoice(newChannel, program, true);
+    }
 
     // Remove static
     elements.staticNoise.classList.remove('active');
@@ -563,8 +683,8 @@ function switchNews(index) {
     }
 
     // CH4は番組ごとにBGM/ボイスが違う
-    playBgm(4, index);
-    playVoice(4, index);
+    playBgm(4, index, true);
+    playVoice(4, index, true);
 }
 
 function nextNews() {
@@ -654,6 +774,34 @@ function resetProgress() {
     startProgress();
 }
 
+function nextSlide() {
+    if (!slideshowInterval) return; // スライドショーが動いてない時は無視
+    state.currentSlide = (state.currentSlide + 1) % state.maxSlides;
+    updateSlide();
+    resetProgress();
+    // タイマーをリセット
+    clearInterval(slideshowInterval);
+    slideshowInterval = setInterval(() => {
+        state.currentSlide = (state.currentSlide + 1) % state.maxSlides;
+        updateSlide();
+        resetProgress();
+    }, SLIDE_DURATION);
+}
+
+function prevSlide() {
+    if (!slideshowInterval) return;
+    state.currentSlide = state.currentSlide > 0 ? state.currentSlide - 1 : state.maxSlides - 1;
+    updateSlide();
+    resetProgress();
+    // タイマーをリセット
+    clearInterval(slideshowInterval);
+    slideshowInterval = setInterval(() => {
+        state.currentSlide = (state.currentSlide + 1) % state.maxSlides;
+        updateSlide();
+        resetProgress();
+    }, SLIDE_DURATION);
+}
+
 // =====================================================
 // NEWS TIME DISPLAY
 // =====================================================
@@ -689,7 +837,12 @@ function nextProgram() {
     } else if (state.currentChannel === 3) {
         nextContact();
     } else if (state.currentChannel === 4) {
-        nextNews();
+        // スライドショー中は写真を進める
+        if (state.currentNews === 1 && slideshowInterval) {
+            nextSlide();
+        } else {
+            nextNews();
+        }
     }
 }
 
@@ -699,7 +852,12 @@ function prevProgram() {
     } else if (state.currentChannel === 3) {
         prevContact();
     } else if (state.currentChannel === 4) {
-        prevNews();
+        // スライドショー中は写真を戻る
+        if (state.currentNews === 1 && slideshowInterval) {
+            prevSlide();
+        } else {
+            prevNews();
+        }
     }
 }
 
@@ -862,6 +1020,7 @@ function updateVolumeDisplay() {
     }
     updateBgmVolume();
     updateVoiceVolume();
+    audio.updateNoiseVolume(0.15);
     showVolumeOsd();
 }
 
