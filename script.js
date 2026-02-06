@@ -228,7 +228,10 @@ const state = {
     maxSlides: 8,
     vhsSeconds: 0,
     demoScore: 0,
-    volume: 3
+    volume: 3,
+    currentProfileDesign: 0,
+    maxProfileDesigns: 3,  // 0, 1, 2 (not counting secret)
+    secretDesignActive: false
 };
 
 const audio = new CRTAudio();
@@ -498,6 +501,13 @@ async function switchChannel(newChannel) {
         const program = getCurrentProgram(newChannel);
         playBgm(newChannel, program);
         playVoice(newChannel, program);
+    }
+
+    // Start/stop profile design rotation
+    if (newChannel === 2) {
+        startProfileDesignRotation();
+    } else {
+        stopProfileDesignRotation();
     }
 
     // Remove static
@@ -888,18 +898,91 @@ function initTerminal() {
 
     input.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
-            const command = input.value;
+            const command = input.value.toLowerCase().trim();
             const response = handleTerminalCommand(command);
             output.textContent = response;
             input.value = '';
 
             // 特殊コマンドの場合、出力にエフェクト追加
-            if (secretCommands[command.toLowerCase().trim()]) {
+            if (secretCommands[command]) {
                 output.classList.add('secret-active');
                 setTimeout(() => output.classList.remove('secret-active'), 500);
             }
+
+            // 秘密デザイン発動
+            if (command === 'elpsykongroo' || command === 'sg' || command === 'エルプサイコングルゥ') {
+                activateSecretDesign();
+            }
+
+            // 通常に戻す
+            if (command === 'clear' || command === 'reset') {
+                deactivateSecretDesign();
+            }
         }
     });
+}
+
+// =====================================================
+// PROFILE DESIGN SHOWCASE
+// =====================================================
+
+let profileDesignInterval = null;
+const PROFILE_DESIGN_DURATION = 20000; // 20 seconds
+
+function startProfileDesignRotation() {
+    if (profileDesignInterval) clearInterval(profileDesignInterval);
+
+    profileDesignInterval = setInterval(() => {
+        if (!state.tvOn || state.currentChannel !== 2 || state.secretDesignActive) return;
+
+        // Advance to next design
+        const nextDesign = (state.currentProfileDesign + 1) % state.maxProfileDesigns;
+        switchProfileDesign(nextDesign);
+    }, PROFILE_DESIGN_DURATION);
+}
+
+function stopProfileDesignRotation() {
+    if (profileDesignInterval) {
+        clearInterval(profileDesignInterval);
+        profileDesignInterval = null;
+    }
+}
+
+function switchProfileDesign(designIndex, isSecret = false) {
+    const glitch = document.getElementById('profile-glitch');
+    const designs = document.querySelectorAll('.profile-design');
+
+    if (!designs.length) return;
+
+    // Trigger glitch effect
+    if (glitch) {
+        glitch.classList.add('active');
+        setTimeout(() => glitch.classList.remove('active'), 300);
+    }
+
+    // Switch design after brief delay
+    setTimeout(() => {
+        designs.forEach(d => d.classList.remove('active'));
+
+        const targetDesign = document.querySelector(`.profile-design[data-design="${designIndex}"]`);
+        if (targetDesign) {
+            targetDesign.classList.add('active');
+        }
+
+        if (!isSecret) {
+            state.currentProfileDesign = designIndex;
+        }
+    }, 150);
+}
+
+function activateSecretDesign() {
+    state.secretDesignActive = true;
+    switchProfileDesign(3, true); // Design 3 is secret FGL style
+}
+
+function deactivateSecretDesign() {
+    state.secretDesignActive = false;
+    switchProfileDesign(state.currentProfileDesign, false);
 }
 
 // =====================================================

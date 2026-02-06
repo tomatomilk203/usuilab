@@ -1077,9 +1077,421 @@ body.tv-on .channels {
 }
 
 /* =====================================================
-   CH 2: ABOUT - Y2K DESIGN
+   CH 2: ABOUT - PROFILE SHOWCASE
    ===================================================== */
-.ch-about.y2k {
+.ch-about {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Profile Design Base */
+.profile-design {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.profile-design.active {
+    display: flex;
+    opacity: 1;
+}
+
+/* Glitch Overlay */
+.profile-glitch {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0;
+}
+
+.profile-glitch.active {
+    animation: profileGlitch 0.3s ease-out;
+}
+
+@keyframes profileGlitch {
+    0% {
+        opacity: 1;
+        background: linear-gradient(90deg, #ff0040 25%, transparent 25%, transparent 50%, #00ff41 50%, #00ff41 75%, transparent 75%);
+        background-size: 4px 100%;
+    }
+    25% {
+        opacity: 0.8;
+        transform: translateX(-5px);
+        background: linear-gradient(90deg, #00ff41 25%, transparent 25%, transparent 50%, #ff0040 50%, #ff0040 75%, transparent 75%);
+    }
+    50% {
+        opacity: 1;
+        transform: translateX(5px) skewX(-2deg);
+        background: linear-gradient(90deg, #ff0040 33%, #00ff41 33%, #00ff41 66%, #0040ff 66%);
+        background-size: 6px 100%;
+    }
+    75% {
+        opacity: 0.8;
+        transform: translateX(-3px) skewX(1deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(0);
+    }
+}
+
+/* Terminal (shared) */
+.profile-terminal {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 350px;
+    background: rgba(0, 0, 0, 0.85);
+    border: 2px solid var(--phosphor-green);
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 50;
+}
+
+/* =====================================================
+   PERSONA 5 STYLE
+   ===================================================== */
+.profile-design.persona5 {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #0a0a0a;
+    padding-bottom: 80px;
+}
+
+/* P5 Background Stripes */
+.p5-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.p5-stripe {
+    position: absolute;
+    background: #ff0040;
+    transform-origin: center;
+}
+
+.p5-stripe.stripe-1 {
+    width: 200%;
+    height: 60px;
+    top: 15%;
+    left: -50%;
+    transform: rotate(-8deg);
+    animation: stripeSlide1 3s ease-in-out infinite;
+}
+
+.p5-stripe.stripe-2 {
+    width: 200%;
+    height: 40px;
+    top: 55%;
+    left: -50%;
+    transform: rotate(5deg);
+    background: #1a1a1a;
+    border-top: 3px solid #ff0040;
+    border-bottom: 3px solid #ff0040;
+    animation: stripeSlide2 4s ease-in-out infinite;
+}
+
+.p5-stripe.stripe-3 {
+    width: 200%;
+    height: 80px;
+    bottom: 10%;
+    left: -50%;
+    transform: rotate(-3deg);
+    background: linear-gradient(90deg, #ff0040, #ff4060, #ff0040);
+    animation: stripeSlide3 5s ease-in-out infinite;
+}
+
+@keyframes stripeSlide1 {
+    0%, 100% { transform: rotate(-8deg) translateX(0); }
+    50% { transform: rotate(-8deg) translateX(20px); }
+}
+
+@keyframes stripeSlide2 {
+    0%, 100% { transform: rotate(5deg) translateX(0); }
+    50% { transform: rotate(5deg) translateX(-30px); }
+}
+
+@keyframes stripeSlide3 {
+    0%, 100% { transform: rotate(-3deg) translateX(0); }
+    50% { transform: rotate(-3deg) translateX(15px); }
+}
+
+/* P5 Content */
+.p5-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+/* P5 Cut-in Avatar */
+.p5-cutin {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    transform: skewX(-5deg);
+    animation: cutinEnter 0.5s ease-out;
+}
+
+@keyframes cutinEnter {
+    0% {
+        transform: skewX(-5deg) translateX(-100px) scale(0.5);
+        opacity: 0;
+    }
+    60% {
+        transform: skewX(-5deg) translateX(10px) scale(1.1);
+    }
+    100% {
+        transform: skewX(-5deg) translateX(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.p5-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: 4px solid #ff0040;
+    background: #1a1a1a;
+}
+
+.p5-avatar-frame {
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    border: 2px solid #fff;
+    transform: skewX(3deg);
+}
+
+/* P5 Info */
+.p5-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    transform: skewX(-3deg);
+}
+
+.p5-name {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: nameSlideIn 0.6s ease-out 0.2s both;
+}
+
+@keyframes nameSlideIn {
+    0% {
+        transform: translateX(50px) skewX(-10deg);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0) skewX(0);
+        opacity: 1;
+    }
+}
+
+.p5-name-main {
+    font-family: 'Anton', 'Impact', sans-serif;
+    font-size: 3.5rem;
+    color: #fff;
+    text-shadow:
+        4px 4px 0 #ff0040,
+        -2px -2px 0 #ff0040,
+        6px 6px 0 rgba(0,0,0,0.5);
+    letter-spacing: 8px;
+    line-height: 1;
+}
+
+.p5-name-sub {
+    font-size: 1.2rem;
+    color: #ff0040;
+    letter-spacing: 10px;
+    margin-top: 5px;
+}
+
+.p5-title {
+    font-family: 'VT323', monospace;
+    font-size: 1.1rem;
+    color: #fff;
+    background: #ff0040;
+    padding: 5px 20px;
+    transform: skewX(-10deg);
+    animation: titlePop 0.4s ease-out 0.4s both;
+}
+
+@keyframes titlePop {
+    0% {
+        transform: skewX(-10deg) scale(0);
+    }
+    70% {
+        transform: skewX(-10deg) scale(1.1);
+    }
+    100% {
+        transform: skewX(-10deg) scale(1);
+    }
+}
+
+/* P5 Stats */
+.p5-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 200px;
+    animation: statsSlideIn 0.5s ease-out 0.5s both;
+}
+
+@keyframes statsSlideIn {
+    0% {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.p5-stat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.p5-stat .stat-label {
+    font-family: 'VT323', monospace;
+    font-size: 0.9rem;
+    color: #ff0040;
+    width: 60px;
+    text-align: right;
+}
+
+.p5-stat .stat-bar {
+    flex: 1;
+    height: 12px;
+    background: #333;
+    border: 1px solid #ff0040;
+    position: relative;
+    overflow: hidden;
+}
+
+.p5-stat .stat-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff0040, #ff4060);
+    transition: width 1s ease-out;
+    animation: statFillPulse 2s ease-in-out infinite;
+}
+
+@keyframes statFillPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* P5 Skills */
+.p5-skills {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: skillsAppear 0.6s ease-out 0.7s both;
+}
+
+@keyframes skillsAppear {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.p5-skill {
+    font-family: 'VT323', monospace;
+    font-size: 0.95rem;
+    color: #fff;
+    background: transparent;
+    border: 2px solid #ff0040;
+    padding: 4px 12px;
+    transform: skewX(-5deg);
+    transition: all 0.2s;
+}
+
+.p5-skill:hover {
+    background: #ff0040;
+    transform: skewX(-5deg) scale(1.05);
+}
+
+/* P5 Motto */
+.p5-motto {
+    font-family: 'DotGothic16', monospace;
+    font-size: 1rem;
+    color: #fff;
+    background: rgba(255, 0, 64, 0.3);
+    padding: 8px 20px;
+    border-left: 4px solid #ff0040;
+    margin-top: 10px;
+    animation: mottoFade 0.8s ease-out 0.9s both;
+}
+
+@keyframes mottoFade {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* P5 Corners */
+.p5-corner {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #ff0040;
+    z-index: 5;
+}
+
+.p5-corner.tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+.p5-corner.tr { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+.p5-corner.bl { bottom: 90px; left: 10px; border-right: none; border-top: none; }
+.p5-corner.br { bottom: 90px; right: 10px; border-left: none; border-top: none; }
+
+/* Placeholder styles for other designs */
+.profile-design.windows,
+.profile-design.cafe,
+.profile-design.fgl {
+    align-items: center;
+    justify-content: center;
+    background: #1a1a1a;
+    font-family: 'VT323', monospace;
+    font-size: 2rem;
+    color: #666;
+}
+
+/* =====================================================
+   LEGACY Y2K DESIGN (keeping for reference)
+   ===================================================== */
+.ch-about.y2k-legacy {
     width: 100%;
     height: 100%;
     display: flex;

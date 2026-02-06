@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>USUI LAB - ウスイ研究所</title>
     <meta name="description" content="USUI LAB（ウスイ研究所）- 個人開発プロジェクトの実験場">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Permanent+Marker&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="tv-off">
@@ -175,53 +179,75 @@
                         </div>
                     </div>
 
-                    <!-- CH 2: About - Y2K Design -->
+                    <!-- CH 2: About - Multiple Design Showcase -->
                     <div class="channel" data-channel="2">
-                        <div class="ch-about y2k">
-                            <!-- Y2K Header -->
-                            <div class="y2k-header">
-                                <div class="y2k-star">✦</div>
-                                <span class="y2k-title">PROFILE</span>
-                                <div class="y2k-star">✦</div>
+                        <div class="ch-about">
+                            <!-- Glitch overlay for transitions -->
+                            <div class="profile-glitch" id="profile-glitch"></div>
+
+                            <!-- Design 1: Persona 5 Style -->
+                            <div class="profile-design persona5 active" data-design="0">
+                                <div class="p5-bg">
+                                    <div class="p5-stripe stripe-1"></div>
+                                    <div class="p5-stripe stripe-2"></div>
+                                    <div class="p5-stripe stripe-3"></div>
+                                </div>
+                                <div class="p5-content">
+                                    <div class="p5-cutin">
+                                        <img src="assets/avatar.png" alt="Usui" class="p5-avatar">
+                                        <div class="p5-avatar-frame"></div>
+                                    </div>
+                                    <div class="p5-info">
+                                        <div class="p5-name">
+                                            <span class="p5-name-main">USUI</span>
+                                            <span class="p5-name-sub">ウスイ</span>
+                                        </div>
+                                        <div class="p5-title">INDIE DEVELOPER</div>
+                                        <div class="p5-stats">
+                                            <div class="p5-stat">
+                                                <span class="stat-label">CODE</span>
+                                                <div class="stat-bar"><div class="stat-fill" style="width: 85%"></div></div>
+                                            </div>
+                                            <div class="p5-stat">
+                                                <span class="stat-label">DESIGN</span>
+                                                <div class="stat-bar"><div class="stat-fill" style="width: 70%"></div></div>
+                                            </div>
+                                            <div class="p5-stat">
+                                                <span class="stat-label">IDEA</span>
+                                                <div class="stat-bar"><div class="stat-fill" style="width: 90%"></div></div>
+                                            </div>
+                                        </div>
+                                        <div class="p5-skills">
+                                            <span class="p5-skill">JavaScript</span>
+                                            <span class="p5-skill">React</span>
+                                            <span class="p5-skill">Node.js</span>
+                                        </div>
+                                    </div>
+                                    <div class="p5-motto">"自分が楽しいものを作り続ける"</div>
+                                </div>
+                                <div class="p5-corner tl"></div>
+                                <div class="p5-corner tr"></div>
+                                <div class="p5-corner bl"></div>
+                                <div class="p5-corner br"></div>
                             </div>
 
-                            <!-- Y2K Profile Card -->
-                            <div class="y2k-card">
-                                <div class="y2k-avatar">
-                                    <div class="avatar-ring"></div>
-                                    <img src="assets/avatar.png" alt="Usui" class="y2k-avatar-img">
-                                    <div class="avatar-glow"></div>
-                                </div>
-
-                                <div class="y2k-info">
-                                    <div class="y2k-name">
-                                        <span class="name-en">Usui</span>
-                                        <span class="name-jp">ウスイ</span>
-                                    </div>
-                                    <div class="y2k-bio">作りたいものを作る個人開発者</div>
-                                    <div class="y2k-tags">
-                                        <span class="y2k-tag">🌐 Web</span>
-                                        <span class="y2k-tag">📱 Mobile</span>
-                                        <span class="y2k-tag">🧩 Chrome拡張</span>
-                                        <span class="y2k-tag">🎮 Game</span>
-                                    </div>
-                                    <div class="y2k-skills">
-                                        <span class="skill">JavaScript</span>
-                                        <span class="skill">TypeScript</span>
-                                        <span class="skill">React</span>
-                                        <span class="skill">Node.js</span>
-                                    </div>
-                                    <div class="y2k-motto">"自分が楽しいものを作り続ける"</div>
-                                </div>
-
-                                <div class="y2k-status">
-                                    <span class="status-bubble"></span>
-                                    <span>ONLINE</span>
-                                </div>
+                            <!-- Design 2: Poolsuite/Windows Style (placeholder) -->
+                            <div class="profile-design windows" data-design="1">
+                                <div class="win-placeholder">WINDOWS STYLE - COMING SOON</div>
                             </div>
 
-                            <!-- Y2K Terminal Input -->
-                            <div class="y2k-terminal">
+                            <!-- Design 3: Cafe/Warm Style (placeholder) -->
+                            <div class="profile-design cafe" data-design="2">
+                                <div class="cafe-placeholder">CAFE STYLE - COMING SOON</div>
+                            </div>
+
+                            <!-- Design 4: Secret - Future Gadget Lab Style (placeholder) -->
+                            <div class="profile-design fgl" data-design="3">
+                                <div class="fgl-placeholder">EL PSY KONGROO</div>
+                            </div>
+
+                            <!-- Terminal (shared across designs) -->
+                            <div class="profile-terminal">
                                 <div class="terminal-header">
                                     <span class="terminal-dot"></span>
                                     <span class="terminal-dot"></span>
@@ -236,11 +262,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Y2K Decorations -->
-                            <div class="y2k-deco deco-1">●</div>
-                            <div class="y2k-deco deco-2">◆</div>
-                            <div class="y2k-deco deco-3">★</div>
                         </div>
                     </div>
 
