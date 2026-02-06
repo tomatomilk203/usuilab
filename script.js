@@ -245,6 +245,62 @@ function getCurrentProgram(channel) {
 }
 
 // =====================================================
+// VOICE SYSTEM
+// =====================================================
+
+const voiceTracks = {
+    ch1: 'assets/voice/game.wav',      // CH1 全番組
+    ch2: 'assets/voice/profile.wav',   // CH2
+    ch3: 'assets/voice/koukoku.wav',   // CH3 全番組
+    ch4_0: 'assets/voice/news.wav'     // CH4 Program 0 (キャスター)
+};
+
+let currentVoice = null;
+let currentVoiceKey = null;
+
+function getVoiceKey(channel, program) {
+    if (channel === 0) return null;
+    if (channel === 1) return 'ch1';
+    if (channel === 2) return 'ch2';
+    if (channel === 3) return 'ch3';
+    if (channel === 4 && program === 0) return 'ch4_0';
+    return null;
+}
+
+function playVoice(channel, program = 0) {
+    const key = getVoiceKey(channel, program);
+
+    // 同じボイスなら何もしない
+    if (key === currentVoiceKey && currentVoice && !currentVoice.paused) return;
+
+    // 現在のボイスを停止
+    stopVoice();
+
+    if (!key || !voiceTracks[key]) return;
+
+    currentVoice = new Audio(voiceTracks[key]);
+    currentVoice.loop = true;
+    currentVoice.volume = (state.volume / 5) * 0.1; // 最大10% (BGMの1/4)
+    currentVoiceKey = key;
+    currentVoice.play().catch(() => {});
+}
+
+function stopVoice() {
+    if (currentVoice) {
+        currentVoice.pause();
+        currentVoice.currentTime = 0;
+        currentVoice = null;
+        currentVoiceKey = null;
+    }
+}
+
+function updateVoiceVolume() {
+    if (currentVoice) {
+        currentVoice.volume = (state.volume / 5) * 0.1;
+    }
+}
+
+// =====================================================
 // DOM ELEMENTS
 // =====================================================
 
@@ -348,6 +404,7 @@ async function powerOff() {
     state.currentChannel = 0;
     switchChannelInstant(0);
     stopBgm();
+    stopVoice();
 }
 
 // =====================================================
@@ -380,9 +437,10 @@ async function switchChannel(newChannel) {
     state.currentChannel = newChannel;
     updateProgramButtons();
 
-    // Play BGM for this channel
+    // Play BGM and voice for this channel
     const program = getCurrentProgram(newChannel);
     playBgm(newChannel, program);
+    playVoice(newChannel, program);
 
     // Remove static
     elements.staticNoise.classList.remove('active');
@@ -504,8 +562,9 @@ function switchNews(index) {
         stopSlideshow();
     }
 
-    // CH4は番組ごとにBGMが違う
+    // CH4は番組ごとにBGM/ボイスが違う
     playBgm(4, index);
+    playVoice(4, index);
 }
 
 function nextNews() {
@@ -802,6 +861,7 @@ function updateVolumeDisplay() {
         audio.masterGain.gain.value = lvl / 5 * 0.5;
     }
     updateBgmVolume();
+    updateVoiceVolume();
     showVolumeOsd();
 }
 
