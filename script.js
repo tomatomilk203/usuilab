@@ -438,9 +438,6 @@ async function powerOn() {
 
     // Start demo score
     startDemoScore();
-
-    // Start white noise for CH0
-    audio.startWhiteNoise(0.15);
 }
 
 async function powerOff() {
@@ -461,7 +458,6 @@ async function powerOff() {
     switchChannelInstant(0);
     stopBgm();
     stopVoice();
-    audio.stopWhiteNoise();
 }
 
 // =====================================================
@@ -494,13 +490,11 @@ async function switchChannel(newChannel) {
     state.currentChannel = newChannel;
     updateProgramButtons();
 
-    // Play BGM and voice for this channel (or white noise for CH0)
+    // Play BGM and voice for this channel
     if (newChannel === 0) {
         stopBgm();
         stopVoice();
-        audio.startWhiteNoise(0.15);
     } else {
-        audio.stopWhiteNoise();
         const program = getCurrentProgram(newChannel);
         playBgm(newChannel, program);
         playVoice(newChannel, program);
@@ -935,7 +929,7 @@ function startDemoScore() {
             demoGame.classList.remove('gameover', 'hit');
         }
         if (demoPlayer) {
-            demoPlayer.style.left = '30%';
+            demoPlayer.style.bottom = '50%';
         }
 
         // Score counting phase
@@ -950,11 +944,11 @@ function startDemoScore() {
                 elements.demoScore.textContent = state.demoScore;
             }
 
-            // Move player to "dodge"
+            // Move player to "dodge" (up/down)
             dodgeCount++;
             if (demoPlayer) {
-                const pos = 20 + Math.random() * 50;
-                demoPlayer.style.left = pos + '%';
+                const pos = 20 + Math.random() * 60;
+                demoPlayer.style.bottom = pos + '%';
             }
 
             // Game over after some dodges
@@ -1013,7 +1007,6 @@ function updateVolumeDisplay() {
     }
     updateBgmVolume();
     updateVoiceVolume();
-    audio.updateNoiseVolume(0.15);
     showVolumeOsd();
 }
 
