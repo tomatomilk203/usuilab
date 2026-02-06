@@ -257,56 +257,28 @@ function getBgmKey(channel, program) {
     return null;
 }
 
-function playBgm(channel, program = 0, fade = false) {
+function playBgm(channel, program = 0) {
     const key = getBgmKey(channel, program);
 
     // 同じBGMなら何もしない
     if (key === currentBgmKey && currentBgm && !currentBgm.paused) return;
 
     // 現在のBGMを停止
-    stopBgm(fade);
+    stopBgm();
 
     if (!key || !bgmTracks[key]) return;
 
     currentBgm = new Audio(bgmTracks[key]);
     currentBgm.loop = true;
     currentBgmKey = key;
-
-    const targetVolume = (state.volume / 5) * 0.35;
-    if (fade) {
-        currentBgm.volume = 0;
-        currentBgm.play().catch(() => {});
-        const fadeIn = setInterval(() => {
-            if (currentBgm && currentBgm.volume < targetVolume - 0.02) {
-                currentBgm.volume += 0.02;
-            } else {
-                if (currentBgm) currentBgm.volume = targetVolume;
-                clearInterval(fadeIn);
-            }
-        }, 20);
-    } else {
-        currentBgm.volume = targetVolume;
-        currentBgm.play().catch(() => {});
-    }
+    currentBgm.volume = (state.volume / 5) * 0.35;
+    currentBgm.play().catch(() => {});
 }
 
-function stopBgm(fade = false) {
+function stopBgm() {
     if (currentBgm) {
-        if (fade) {
-            const bgmToFade = currentBgm;
-            const fadeOut = setInterval(() => {
-                if (bgmToFade.volume > 0.02) {
-                    bgmToFade.volume -= 0.02;
-                } else {
-                    clearInterval(fadeOut);
-                    bgmToFade.pause();
-                    bgmToFade.currentTime = 0;
-                }
-            }, 20);
-        } else {
-            currentBgm.pause();
-            currentBgm.currentTime = 0;
-        }
+        currentBgm.pause();
+        currentBgm.currentTime = 0;
         currentBgm = null;
         currentBgmKey = null;
     }
@@ -348,56 +320,28 @@ function getVoiceKey(channel, program) {
     return null;
 }
 
-function playVoice(channel, program = 0, fade = false) {
+function playVoice(channel, program = 0) {
     const key = getVoiceKey(channel, program);
 
     // 同じボイスなら何もしない
     if (key === currentVoiceKey && currentVoice && !currentVoice.paused) return;
 
     // 現在のボイスを停止
-    stopVoice(fade);
+    stopVoice();
 
     if (!key || !voiceTracks[key]) return;
 
     currentVoice = new Audio(voiceTracks[key]);
     currentVoice.loop = true;
     currentVoiceKey = key;
-
-    const targetVolume = (state.volume / 5) * 0.15;
-    if (fade) {
-        currentVoice.volume = 0;
-        currentVoice.play().catch(() => {});
-        const fadeIn = setInterval(() => {
-            if (currentVoice && currentVoice.volume < targetVolume - 0.01) {
-                currentVoice.volume += 0.01;
-            } else {
-                if (currentVoice) currentVoice.volume = targetVolume;
-                clearInterval(fadeIn);
-            }
-        }, 20);
-    } else {
-        currentVoice.volume = targetVolume;
-        currentVoice.play().catch(() => {});
-    }
+    currentVoice.volume = (state.volume / 5) * 0.15;
+    currentVoice.play().catch(() => {});
 }
 
-function stopVoice(fade = false) {
+function stopVoice() {
     if (currentVoice) {
-        if (fade) {
-            const voiceToFade = currentVoice;
-            const fadeOut = setInterval(() => {
-                if (voiceToFade.volume > 0.01) {
-                    voiceToFade.volume -= 0.01;
-                } else {
-                    clearInterval(fadeOut);
-                    voiceToFade.pause();
-                    voiceToFade.currentTime = 0;
-                }
-            }, 20);
-        } else {
-            currentVoice.pause();
-            currentVoice.currentTime = 0;
-        }
+        currentVoice.pause();
+        currentVoice.currentTime = 0;
         currentVoice = null;
         currentVoiceKey = null;
     }
@@ -552,14 +496,14 @@ async function switchChannel(newChannel) {
 
     // Play BGM and voice for this channel (or white noise for CH0)
     if (newChannel === 0) {
-        stopBgm(true);
-        stopVoice(true);
+        stopBgm();
+        stopVoice();
         audio.startWhiteNoise(0.15);
     } else {
         audio.stopWhiteNoise();
         const program = getCurrentProgram(newChannel);
-        playBgm(newChannel, program, true);
-        playVoice(newChannel, program, true);
+        playBgm(newChannel, program);
+        playVoice(newChannel, program);
     }
 
     // Remove static
@@ -683,8 +627,8 @@ function switchNews(index) {
     }
 
     // CH4は番組ごとにBGM/ボイスが違う
-    playBgm(4, index, true);
-    playVoice(4, index, true);
+    playBgm(4, index);
+    playVoice(4, index);
 }
 
 function nextNews() {
