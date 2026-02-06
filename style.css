@@ -2405,34 +2405,67 @@ body.tv-off .keyboard-hints span:first-child {
 }
 
 @media (max-width: 500px) {
+    /* TV全体を縮小して上部に配置 */
+    .crt-monitor {
+        width: 100%;
+        height: 75vh;
+    }
+
+    .tv-frame-image {
+        width: 100%;
+        height: 75vh;
+        background-size: contain;
+        background-position: top center;
+    }
+
     .screen-container {
-        width: 60%;
-        height: 45%;
-        border-radius: 6px;
+        /* 縮小したTVに合わせて位置調整 */
+        width: 42%;
+        height: 40%;
+        top: 28%;
+        left: 50%;
+        transform: translateX(-50%);
     }
 
     .ch-header {
-        padding: 10px 15px;
+        padding: 6px 10px;
     }
 
     .ch-title {
-        font-size: 1.2rem;
+        font-size: 0.9rem;
+    }
+
+    .ch-number {
+        font-size: 0.7rem;
     }
 
     .logo-main {
-        font-size: 2rem;
+        font-size: 1.4rem;
+    }
+
+    .logo-welcome, .logo-sub {
+        font-size: 0.6rem;
+    }
+
+    .standby-hint {
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+
+    .standby-channels {
+        font-size: 0.9rem;
     }
 
     .contact-list {
-        padding: 15px 20px;
+        padding: 10px 15px;
     }
 
     .contact-item {
-        padding: 12px 15px;
+        padding: 8px 10px;
     }
 
     .contact-name {
-        font-size: 1.1rem;
+        font-size: 0.9rem;
     }
 
     .contact-handle {
@@ -2446,9 +2479,9 @@ body.tv-off .keyboard-hints span:first-child {
         right: 0;
         flex-wrap: wrap;
         justify-content: center;
-        gap: 15px;
-        padding: 15px;
-        background: rgba(0, 0, 0, 0.9);
+        gap: 12px;
+        padding: 12px;
+        background: rgba(0, 0, 0, 0.95);
         border-top: 1px solid rgba(255, 255, 255, 0.1);
         z-index: 1000;
     }
@@ -2458,23 +2491,32 @@ body.tv-off .keyboard-hints span:first-child {
     }
 
     .ctrl-power {
-        width: 50px;
-        height: 50px;
+        width: 44px;
+        height: 44px;
     }
 
     .ctrl-ch {
-        width: 40px;
-        height: 40px;
-        font-size: 0.8rem;
+        width: 36px;
+        height: 36px;
+        font-size: 0.75rem;
     }
 
     .ctrl-prog, .ctrl-vol {
-        width: 38px;
-        height: 38px;
-        font-size: 0.8rem;
+        width: 34px;
+        height: 34px;
+        font-size: 0.75rem;
     }
 
     .ctrl-ch-display {
-        font-size: 0.9rem;
+        font-size: 0.8rem;
+    }
+
+    .keyboard-hints {
+        display: none;
+    }
+
+    .volume-osd {
+        font-size: 1rem;
+        padding: 4px 10px;
     }
 }
