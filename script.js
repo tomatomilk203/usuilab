@@ -217,7 +217,7 @@ function playBgm(channel, program = 0) {
 
     currentBgm = new Audio(bgmTracks[key]);
     currentBgm.loop = true;
-    currentBgm.volume = (state.volume / 5) * 0.4; // 最大40%
+    currentBgm.volume = (state.volume / 5) * 0.35; // 最大35%
     currentBgmKey = key;
     currentBgm.play().catch(() => {});
 }
@@ -233,7 +233,7 @@ function stopBgm() {
 
 function updateBgmVolume() {
     if (currentBgm) {
-        currentBgm.volume = (state.volume / 5) * 0.4;
+        currentBgm.volume = (state.volume / 5) * 0.35;
     }
 }
 
@@ -280,7 +280,7 @@ function playVoice(channel, program = 0) {
 
     currentVoice = new Audio(voiceTracks[key]);
     currentVoice.loop = true;
-    currentVoice.volume = (state.volume / 5) * 0.1; // 最大10% (BGMの1/4)
+    currentVoice.volume = (state.volume / 5) * 0.15; // 最大15%
     currentVoiceKey = key;
     currentVoice.play().catch(() => {});
 }
@@ -296,7 +296,7 @@ function stopVoice() {
 
 function updateVoiceVolume() {
     if (currentVoice) {
-        currentVoice.volume = (state.volume / 5) * 0.1;
+        currentVoice.volume = (state.volume / 5) * 0.15;
     }
 }
 
