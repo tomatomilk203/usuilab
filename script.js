@@ -913,22 +913,71 @@ function initTerminal() {
 // =====================================================
 
 let scoreInterval = null;
+let demoTimeout = null;
 
 function startDemoScore() {
     if (scoreInterval) clearInterval(scoreInterval);
+    if (demoTimeout) clearTimeout(demoTimeout);
 
-    scoreInterval = setInterval(() => {
+    const demoGame = document.getElementById('demo-game');
+    const demoPlayer = document.getElementById('demo-player');
+
+    function runDemo() {
         if (!state.tvOn || state.currentChannel !== 1) {
+            demoTimeout = setTimeout(runDemo, 1000);
             return;
         }
 
-        state.demoScore += Math.floor(Math.random() * 200) + 50;
-        if (state.demoScore > 99999) state.demoScore = 0;
-
-        if (elements.demoScore) {
-            elements.demoScore.textContent = state.demoScore;
+        // Reset state
+        state.demoScore = 0;
+        if (elements.demoScore) elements.demoScore.textContent = '0';
+        if (demoGame) {
+            demoGame.classList.remove('gameover', 'hit');
         }
-    }, 300);
+        if (demoPlayer) {
+            demoPlayer.style.left = '30%';
+        }
+
+        // Score counting phase
+        let dodgeCount = 0;
+        const maxDodges = 3 + Math.floor(Math.random() * 3); // 3-5 dodges before game over
+
+        scoreInterval = setInterval(() => {
+            if (!state.tvOn || state.currentChannel !== 1) return;
+
+            state.demoScore += Math.floor(Math.random() * 200) + 100;
+            if (elements.demoScore) {
+                elements.demoScore.textContent = state.demoScore;
+            }
+
+            // Move player to "dodge"
+            dodgeCount++;
+            if (demoPlayer) {
+                const pos = 20 + Math.random() * 50;
+                demoPlayer.style.left = pos + '%';
+            }
+
+            // Game over after some dodges
+            if (dodgeCount >= maxDodges) {
+                clearInterval(scoreInterval);
+
+                // Hit effect
+                if (demoGame) demoGame.classList.add('hit');
+
+                setTimeout(() => {
+                    if (demoGame) {
+                        demoGame.classList.remove('hit');
+                        demoGame.classList.add('gameover');
+                    }
+
+                    // Restart after showing game over
+                    demoTimeout = setTimeout(runDemo, 2500);
+                }, 300);
+            }
+        }, 800);
+    }
+
+    runDemo();
 }
 
 // =====================================================
