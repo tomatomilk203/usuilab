@@ -181,6 +181,70 @@ const state = {
 const audio = new CRTAudio();
 
 // =====================================================
+// BGM SYSTEM
+// =====================================================
+
+const bgmTracks = {
+    ch1: 'assets/bgm/game.mp3',      // CH1 全番組
+    ch2: 'assets/bgm/profile.mp3',   // CH2
+    ch3: 'assets/bgm/koukoku.mp3',   // CH3 全番組
+    ch4_0: 'assets/bgm/news.mp3',    // CH4 Program 0 (キャスター)
+    ch4_1: 'assets/bgm/news2.mp3'    // CH4 Program 1 (スライドショー)
+};
+
+let currentBgm = null;
+let currentBgmKey = null;
+
+function getBgmKey(channel, program) {
+    if (channel === 0) return null;
+    if (channel === 1) return 'ch1';
+    if (channel === 2) return 'ch2';
+    if (channel === 3) return 'ch3';
+    if (channel === 4) return program === 0 ? 'ch4_0' : 'ch4_1';
+    return null;
+}
+
+function playBgm(channel, program = 0) {
+    const key = getBgmKey(channel, program);
+
+    // 同じBGMなら何もしない
+    if (key === currentBgmKey && currentBgm && !currentBgm.paused) return;
+
+    // 現在のBGMを停止
+    stopBgm();
+
+    if (!key || !bgmTracks[key]) return;
+
+    currentBgm = new Audio(bgmTracks[key]);
+    currentBgm.loop = true;
+    currentBgm.volume = (state.volume / 5) * 0.4; // 最大40%
+    currentBgmKey = key;
+    currentBgm.play().catch(() => {});
+}
+
+function stopBgm() {
+    if (currentBgm) {
+        currentBgm.pause();
+        currentBgm.currentTime = 0;
+        currentBgm = null;
+        currentBgmKey = null;
+    }
+}
+
+function updateBgmVolume() {
+    if (currentBgm) {
+        currentBgm.volume = (state.volume / 5) * 0.4;
+    }
+}
+
+function getCurrentProgram(channel) {
+    if (channel === 1) return state.currentProject;
+    if (channel === 3) return state.currentContact;
+    if (channel === 4) return state.currentNews;
+    return 0;
+}
+
+// =====================================================
 // DOM ELEMENTS
 // =====================================================
 
@@ -283,6 +347,7 @@ async function powerOff() {
     state.vhsSeconds = 0;
     state.currentChannel = 0;
     switchChannelInstant(0);
+    stopBgm();
 }
 
 // =====================================================
@@ -314,6 +379,10 @@ async function switchChannel(newChannel) {
 
     state.currentChannel = newChannel;
     updateProgramButtons();
+
+    // Play BGM for this channel
+    const program = getCurrentProgram(newChannel);
+    playBgm(newChannel, program);
 
     // Remove static
     elements.staticNoise.classList.remove('active');
@@ -434,6 +503,9 @@ function switchNews(index) {
     } else {
         stopSlideshow();
     }
+
+    // CH4は番組ごとにBGMが違う
+    playBgm(4, index);
 }
 
 function nextNews() {
@@ -729,6 +801,7 @@ function updateVolumeDisplay() {
     if (audio.masterGain) {
         audio.masterGain.gain.value = lvl / 5 * 0.5;
     }
+    updateBgmVolume();
     showVolumeOsd();
 }
 
