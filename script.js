@@ -158,6 +158,26 @@ class CRTAudio {
         popOsc.stop(this.ctx.currentTime + 0.15);
     }
 
+    // Key type sound (remote button click)
+    playKeyType() {
+        if (!this.ctx) return;
+
+        const clickOsc = this.ctx.createOscillator();
+        const clickGain = this.ctx.createGain();
+
+        clickOsc.type = 'square';
+        clickOsc.frequency.value = 800 + Math.random() * 400;
+
+        clickGain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+        clickGain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.03);
+
+        clickOsc.connect(clickGain);
+        clickGain.connect(this.masterGain);
+
+        clickOsc.start();
+        clickOsc.stop(this.ctx.currentTime + 0.03);
+    }
+
     // Continuous white noise for CH0 standby
     startWhiteNoise(volume = 0.15) {
         if (!this.ctx) return;
@@ -231,7 +251,8 @@ const state = {
     volume: 3,
     currentProfileDesign: 0,
     maxProfileDesigns: 3,  // 0, 1, 2 (not counting secret)
-    secretDesignActive: false
+    secretDesignActive: false,
+    lang: 'ja'
 };
 
 const audio = new CRTAudio();
@@ -387,12 +408,22 @@ function cacheElements() {
         slideshowProgressBar: document.getElementById('slideshow-progress-bar'),
         terminalInput: document.getElementById('terminal-input'),
         terminalOutput: document.getElementById('terminal-output'),
+        p5TerminalInput: document.getElementById('p5-terminal-input'),
+        p5TerminalOutput: document.getElementById('p5-terminal-output'),
         demoScore: document.getElementById('demo-score'),
         volUp: document.getElementById('vol-up'),
         volDown: document.getElementById('vol-down'),
         volumeOsd: document.getElementById('volume-osd'),
         volumeBar: document.getElementById('volume-bar'),
-        volumeLevel: document.getElementById('volume-level')
+        volumeLevel: document.getElementById('volume-level'),
+        winTime: document.getElementById('win-time'),
+        winTerminalInput: document.getElementById('win-terminal-input'),
+        winTerminalOutput: document.getElementById('win-terminal-output'),
+        cafeTerminalInput: document.getElementById('cafe-terminal-input'),
+        cafeTerminalOutput: document.getElementById('cafe-terminal-output'),
+        fglTerminalInput: document.getElementById('fgl-terminal-input'),
+        fglTerminalOutput: document.getElementById('fgl-terminal-output'),
+        langBtn: document.getElementById('lang-btn')
     };
 }
 
@@ -438,6 +469,9 @@ async function powerOn() {
 
     // Start VHS counter
     startVHSCounter();
+
+    // Start clocks (news time + win time)
+    startNewsTime();
 
     // Start demo score
     startDemoScore();
@@ -506,6 +540,7 @@ async function switchChannel(newChannel) {
     // Start/stop profile design rotation
     if (newChannel === 2) {
         startProfileDesignRotation();
+        initCafeRain();
     } else {
         stopProfileDesignRotation();
     }
@@ -771,11 +806,17 @@ function stopNewsTime() {
 }
 
 function updateNewsTime() {
-    if (!elements.newsTime) return;
     const now = new Date();
     const h = now.getHours().toString().padStart(2, '0');
     const m = now.getMinutes().toString().padStart(2, '0');
-    elements.newsTime.textContent = `${h}:${m}`;
+    const timeStr = `${h}:${m}`;
+
+    if (elements.newsTime) {
+        elements.newsTime.textContent = timeStr;
+    }
+    if (elements.winTime) {
+        elements.winTime.textContent = timeStr;
+    }
 }
 
 // 現在のチャンネルに応じた番組切り替え
@@ -860,71 +901,277 @@ function startVHSCounter() {
 // TERMINAL COMMAND SYSTEM
 // =====================================================
 
-const secretCommands = {
-    'sg': 'エル・プサイ・コングルゥ',
-    'steinsgate': 'エル・プサイ・コングルゥ',
-    'elpsykongroo': 'エル・プサイ・コングルゥ',
-    'tuturu': 'トゥットゥルー♪',
-    'help': 'COMMANDS: sg, tuturu, clear'
-};
+function getDefaultMessage() {
+    return state.lang === 'en' ? 'Welcome to my lab.' : 'ようこそ、我がラボへ。';
+}
 
-const defaultMessage = 'ようこそ、我がラボへ。';
+function getSecretResponse(cmd) {
+    const responses = {
+        ja: {
+            'sg': 'エル・プサイ・コングルゥ',
+            'steinsgate': 'エル・プサイ・コングルゥ',
+            'elpsykongroo': 'エル・プサイ・コングルゥ',
+            'tuturu': 'トゥットゥルー♪',
+            'help': 'COMMANDS: sg, tuturu, clear'
+        },
+        en: {
+            'sg': 'El Psy Kongroo',
+            'steinsgate': 'El Psy Kongroo',
+            'elpsykongroo': 'El Psy Kongroo',
+            'tuturu': 'Tuturu~!',
+            'help': 'COMMANDS: sg, tuturu, clear'
+        }
+    };
+    return responses[state.lang][cmd] || null;
+}
+
+const secretCommands = {
+    'sg': true,
+    'steinsgate': true,
+    'elpsykongroo': true,
+    'tuturu': true,
+    'help': true
+};
 
 function handleTerminalCommand(command) {
     const cmd = command.toLowerCase().trim();
 
     if (cmd === '') {
-        return defaultMessage;
+        return getDefaultMessage();
     }
 
     if (cmd === 'clear') {
-        return defaultMessage;
+        return getDefaultMessage();
     }
 
     if (secretCommands[cmd]) {
         // 効果音を鳴らす
         audio.playClick();
-        return secretCommands[cmd];
+        return getSecretResponse(cmd);
     }
 
     return 'Unknown command...';
 }
 
 function initTerminal() {
+    // P5 Terminal
+    const p5Input = elements.p5TerminalInput;
+    const p5Output = elements.p5TerminalOutput;
+    const p5InputRow = p5Input?.parentElement;
+
+    if (p5Input && p5Output) {
+        // Focus/blur for visual feedback
+        p5Input.addEventListener('focus', () => {
+            if (p5InputRow) p5InputRow.classList.add('focused');
+        });
+        p5Input.addEventListener('blur', () => {
+            if (p5InputRow) p5InputRow.classList.remove('focused');
+        });
+
+        // Key type sound
+        p5Input.addEventListener('keydown', (e) => {
+            // Play click sound for typing (not for Enter)
+            if (e.key !== 'Enter' && e.key.length === 1) {
+                audio.playKeyType();
+            }
+
+            if (e.key === 'Enter') {
+                audio.playClick(); // Enter sound
+                const command = p5Input.value.toLowerCase().trim();
+                const response = handleTerminalCommand(command);
+                p5Output.textContent = response;
+                p5Input.value = '';
+
+                // 特殊コマンドの場合、出力にエフェクト追加
+                if (secretCommands[command]) {
+                    p5Output.classList.add('secret-active');
+                    setTimeout(() => p5Output.classList.remove('secret-active'), 500);
+                }
+
+                // 秘密デザイン発動
+                if (command === 'elpsykongroo' || command === 'sg' || command === 'エルプサイコングルゥ') {
+                    activateSecretDesign();
+                }
+
+                // 通常に戻す
+                if (command === 'clear' || command === 'reset') {
+                    deactivateSecretDesign();
+                }
+            }
+        });
+    }
+
+    // Windows Run terminal
+    const winInput = elements.winTerminalInput;
+    const winOutput = elements.winTerminalOutput;
+
+    if (winInput && winOutput) {
+        winInput.addEventListener('focus', () => {
+            winInput.parentElement.classList.add('focused');
+        });
+        winInput.addEventListener('blur', () => {
+            winInput.parentElement.classList.remove('focused');
+        });
+
+        winInput.addEventListener('keydown', (e) => {
+            if (e.key !== 'Enter' && e.key.length === 1) {
+                audio.playKeyType();
+            }
+
+            if (e.key === 'Enter') {
+                audio.playClick();
+                const command = winInput.value.toLowerCase().trim();
+                const response = handleTerminalCommand(command);
+                winOutput.textContent = response;
+                winInput.value = '';
+
+                if (secretCommands[command]) {
+                    winOutput.classList.add('secret-active');
+                    setTimeout(() => winOutput.classList.remove('secret-active'), 500);
+                }
+
+                if (command === 'elpsykongroo' || command === 'sg' || command === 'エルプサイコングルゥ') {
+                    activateSecretDesign();
+                }
+
+                if (command === 'clear' || command === 'reset') {
+                    deactivateSecretDesign();
+                }
+            }
+        });
+    }
+
+    // Cafe terminal
+    const cafeInput = elements.cafeTerminalInput;
+    const cafeOutput = elements.cafeTerminalOutput;
+
+    if (cafeInput && cafeOutput) {
+        const cafeInputRow = cafeInput.parentElement;
+        cafeInput.addEventListener('focus', () => {
+            if (cafeInputRow) cafeInputRow.classList.add('focused');
+        });
+        cafeInput.addEventListener('blur', () => {
+            if (cafeInputRow) cafeInputRow.classList.remove('focused');
+        });
+
+        cafeInput.addEventListener('keydown', (e) => {
+            if (e.key !== 'Enter' && e.key.length === 1) {
+                audio.playKeyType();
+            }
+
+            if (e.key === 'Enter') {
+                audio.playClick();
+                const command = cafeInput.value.toLowerCase().trim();
+                const response = handleTerminalCommand(command);
+                cafeOutput.textContent = response;
+                cafeInput.value = '';
+
+                if (secretCommands[command]) {
+                    cafeOutput.classList.add('secret-active');
+                    setTimeout(() => cafeOutput.classList.remove('secret-active'), 500);
+                }
+
+                if (command === 'elpsykongroo' || command === 'sg' || command === 'エルプサイコングルゥ') {
+                    activateSecretDesign();
+                }
+
+                if (command === 'clear' || command === 'reset') {
+                    deactivateSecretDesign();
+                }
+            }
+        });
+    }
+
+    // FGL terminal (D-Mail送信端末)
+    const fglInput = elements.fglTerminalInput;
+    const fglOutput = elements.fglTerminalOutput;
+
+    if (fglInput && fglOutput) {
+        const fglInputRow = fglInput.parentElement;
+        fglInput.addEventListener('focus', () => {
+            if (fglInputRow) fglInputRow.classList.add('focused');
+        });
+        fglInput.addEventListener('blur', () => {
+            if (fglInputRow) fglInputRow.classList.remove('focused');
+        });
+
+        fglInput.addEventListener('keydown', (e) => {
+            if (e.key !== 'Enter' && e.key.length === 1) {
+                audio.playKeyType();
+            }
+
+            if (e.key === 'Enter') {
+                audio.playClick();
+                const command = fglInput.value.toLowerCase().trim();
+                const response = handleTerminalCommand(command);
+                fglOutput.textContent = response;
+                fglInput.value = '';
+
+                if (secretCommands[command]) {
+                    fglOutput.classList.add('secret-active');
+                    setTimeout(() => fglOutput.classList.remove('secret-active'), 500);
+                }
+
+                if (command === 'elpsykongroo' || command === 'sg' || command === 'エルプサイコングルゥ') {
+                    activateSecretDesign();
+                }
+
+                if (command === 'clear' || command === 'reset') {
+                    deactivateSecretDesign();
+                }
+            }
+        });
+    }
+
+    // Legacy terminal (for other designs)
     const input = elements.terminalInput;
     const output = elements.terminalOutput;
 
-    if (!input || !output) return;
+    if (input && output) {
+        input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                const command = input.value.toLowerCase().trim();
+                const response = handleTerminalCommand(command);
+                output.textContent = response;
+                input.value = '';
 
-    input.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            const command = input.value.toLowerCase().trim();
-            const response = handleTerminalCommand(command);
-            output.textContent = response;
-            input.value = '';
+                if (secretCommands[command]) {
+                    output.classList.add('secret-active');
+                    setTimeout(() => output.classList.remove('secret-active'), 500);
+                }
 
-            // 特殊コマンドの場合、出力にエフェクト追加
-            if (secretCommands[command]) {
-                output.classList.add('secret-active');
-                setTimeout(() => output.classList.remove('secret-active'), 500);
+                if (command === 'elpsykongroo' || command === 'sg' || command === 'エルプサイコングルゥ') {
+                    activateSecretDesign();
+                }
+
+                if (command === 'clear' || command === 'reset') {
+                    deactivateSecretDesign();
+                }
             }
-
-            // 秘密デザイン発動
-            if (command === 'elpsykongroo' || command === 'sg' || command === 'エルプサイコングルゥ') {
-                activateSecretDesign();
-            }
-
-            // 通常に戻す
-            if (command === 'clear' || command === 'reset') {
-                deactivateSecretDesign();
-            }
-        }
-    });
+        });
+    }
 }
 
 // =====================================================
 // PROFILE DESIGN SHOWCASE
 // =====================================================
+
+// Generate rain drops for cafe design
+function initCafeRain() {
+    const rainContainer = document.getElementById('cafe-rain');
+    if (!rainContainer || rainContainer.children.length > 0) return;
+
+    for (let i = 0; i < 50; i++) {
+        const drop = document.createElement('div');
+        drop.className = 'rain-drop';
+        const x = Math.random() * 120;
+        drop.style.setProperty('--x', x + '%');
+        drop.style.left = x + '%';
+        drop.style.animationDuration = (0.6 + Math.random() * 0.4) + 's';
+        drop.style.animationDelay = Math.random() * 3 + 's';
+        rainContainer.appendChild(drop);
+    }
+}
 
 let profileDesignInterval = null;
 const PROFILE_DESIGN_DURATION = 20000; // 20 seconds
@@ -1191,6 +1438,7 @@ function checkKonami(key) {
 }
 
 function activateSecretMode() {
+    const isEn = state.lang === 'en';
     const secretMsg = document.createElement('div');
     secretMsg.style.cssText = `
         position: fixed;
@@ -1207,8 +1455,8 @@ function activateSecretMode() {
     `;
     secretMsg.innerHTML = `
         <h3 style="color: #ffd000; font-size: 2rem; margin-bottom: 20px;">SECRET CHANNEL</h3>
-        <p style="color: #00ff41; font-size: 1.5rem;">エル・プサイ・コングルゥ</p>
-        <p style="color: #888; font-size: 1rem; margin-top: 30px;">Click to close</p>
+        <p style="color: #00ff41; font-size: 1.5rem;">${isEn ? 'El Psy Kongroo' : 'エル・プサイ・コングルゥ'}</p>
+        <p style="color: #888; font-size: 1rem; margin-top: 30px;">${isEn ? 'Click to close' : 'Click to close'}</p>
     `;
 
     document.body.appendChild(secretMsg);
@@ -1223,6 +1471,216 @@ function activateSecretMode() {
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// =====================================================
+// LANGUAGE / TRANSLATION SYSTEM
+// =====================================================
+
+const translations = {
+    // CH0 - Welcome
+    '.logo-welcome': { ja: 'ようこそ', en: 'WELCOME' },
+    '.logo-sub': { ja: 'ウスイ研究所', en: 'USUI LABORATORY' },
+
+    // CH1 - Projects
+    '.project-slide[data-project="0"] .project-desc': {
+        ja: 'YouTubeのコメントが弾幕になって襲いかかる！<br>避けて撃って、コメントを制圧せよ。',
+        en: 'YouTube comments become bullet hell!<br>Dodge, shoot, and conquer the comments.',
+        html: true
+    },
+    '.project-slide[data-project="0"] .project-btn.primary': { ja: '▶ PLAY / 詳細', en: '▶ PLAY / Details' },
+    '.project-slide[data-project="1"] .project-desc': {
+        ja: '脳が溶ける何か。<br>詳細は不明。',
+        en: 'Something that melts your brain.<br>Details unknown.',
+        html: true
+    },
+    '.project-slide[data-project="2"] .project-desc': { ja: '次なる実験は何になるのか...？', en: 'What will the next experiment be...?' },
+    '.demo-bullets': { items: [
+        { ja: 'すごい！', en: 'Amazing!' },
+        { ja: '面白い', en: 'Fun!' },
+        { ja: '最高www', en: 'LOL best' }
+    ]},
+
+    // CH2 - P5 Design
+    '.p5-name-sub': { ja: 'ウスイ', en: 'USUI' },
+    '.p5-terminal-hint': { ja: 'ここに入力 ↓', en: 'Type here ↓' },
+    '.p5-services .service-text': { items: [
+        { ja: 'AI / 生成AI', en: 'AI / Generative AI' },
+        { ja: 'AI講師', en: 'AI Instructor' },
+        { ja: 'アプリ開発', en: 'App Development' },
+        { ja: 'Web Design', en: 'Web Design' }
+    ]},
+
+    // CH2 - Windows Design
+    '.run-window .win-title': { ja: '▸ Run - ここに入力', en: '▸ Run - Type here' },
+    '.tips-window .win-title': { ja: '💡 Tips - 豆知識', en: '💡 Tips - Fun Facts' },
+    '.error-msg': {
+        ja: '才能が見つかりません<br>やる気で補いますか？',
+        en: 'Talent not found.<br>Compensate with willpower?',
+        html: true
+    },
+    '.tips-q': { ja: '▸ 知ってた？', en: '▸ Did you know?' },
+    '.tips-a': {
+        ja: 'シロナガスクジラより大きいクラゲがおり、名前は<strong>キタユウレイクラゲ</strong>という',
+        en: 'There is a jellyfish larger than a blue whale, called the <strong>Lion\'s Mane Jellyfish</strong>',
+        html: true
+    },
+    '.win-services .win-service': { items: [
+        { ja: '▸ AI / 生成AI', en: '▸ AI / Generative AI' },
+        { ja: '▸ AI講師', en: '▸ AI Instructor' },
+        { ja: '▸ アプリ開発', en: '▸ App Development' },
+        { ja: '▸ Web Design', en: '▸ Web Design' }
+    ]},
+    '.memo-window .notepad': {
+        ja: '<p>■ 買い物リスト</p><p>☑ 人参</p><p>☑ じゃがいも</p><p>☑ アスパラ</p><p>☑ シチュールー</p><p>☑ カレールー</p>',
+        en: '<p>■ Shopping List</p><p>☑ Carrots</p><p>☑ Potatoes</p><p>☑ Asparagus</p><p>☑ Stew roux</p><p>☑ Curry roux</p>',
+        html: true
+    },
+    '.error-btn': { items: [
+        { ja: 'はい', en: 'Yes' },
+        { ja: 'はい', en: 'Yes' }
+    ]},
+
+    // CH2 - Cafe Design
+    '.cafe-section:first-child .section-title': { ja: '- 本日のおすすめ -', en: '- Today\'s Specials -' },
+    '.cafe-hours': { ja: 'OPEN : いつでもご相談ください', en: 'OPEN : Feel free to reach out' },
+    '.cafe-terminal-header': { ja: 'ご注文は？', en: 'Your order?' },
+    '.cafe-menu .item-name': { items: [
+        { ja: 'AI / 生成AI', en: 'AI / Generative AI' },
+        { ja: 'AI講師', en: 'AI Instructor' },
+        { ja: 'アプリ開発', en: 'App Development' },
+        { ja: 'Web Design', en: 'Web Design' }
+    ]},
+
+    // CH2 - FGL Secret Design
+    '.fgl-welcome': { ja: '☆★☆ ようこそ！！ ☆★☆', en: '☆★☆ WELCOME!! ☆★☆' },
+    '.fgl-title': { ja: 'ウスイラボのホームページ', en: 'Usui Lab Homepage' },
+    '.fgl-est': {
+        ja: 'Since 2024 // 管理人：ウスイ // <span class="fgl-new">NEW!</span>',
+        en: 'Since 2024 // Admin: Usui // <span class="fgl-new">NEW!</span>',
+        html: true
+    },
+    '.fgl-notice-title': { ja: '◆ おしらせ ◆', en: '◆ NOTICE ◆' },
+    '.fgl-notice-text': {
+        ja: '・HP開設しました！！（工事中）<br>・無断リンク禁止です<br>・IE5.0推奨 800x600以上',
+        en: '・Website launched!! (Under construction)<br>・No hotlinking!<br>・IE5.0 recommended, 800x600+',
+        html: true
+    },
+    '.fgl-left .fgl-section-title': { ja: '◆ 管理人プロフ ◆', en: '◆ Admin Profile ◆' },
+    '.fgl-right .fgl-section-title': { ja: '◆ コンテンツ ◆', en: '◆ CONTENTS ◆' },
+    '.fgl-hitokoto-text': { ja: '「世界は欺瞞に満ちている」', en: '"The world is full of deception"' },
+    '.fgl-terminal-header span:first-child': { ja: '秘密の端末', en: 'Secret Terminal' },
+    '.fgl-terminal-hint': { ja: '「reset」で戻る', en: 'Type "reset" to return' },
+    '.fgl-counter marquee': {
+        ja: '★☆★ あなたは<span id="fgl-visitor">000198</span>人目の訪問者です ★☆★ ｷﾘ番ｹﾞｯﾄした人はBBSに報告してね！ ★☆★',
+        en: '★☆★ You are visitor #<span id="fgl-visitor">000198</span> ★☆★ Got a round number? Post on BBS! ★☆★',
+        html: true
+    },
+    '.fgl-table .fgl-label': { items: [
+        { ja: '名前', en: 'Name' },
+        { ja: '所属', en: 'Org' },
+        { ja: '研究', en: 'Research' },
+        { ja: '機材', en: 'Tools' },
+        { ja: '状態', en: 'Status' }
+    ]},
+    '.fgl-table tr:nth-child(2) td:last-child': { ja: 'USUI LAB 主任研究員', en: 'USUI LAB Chief Researcher' },
+    '.fgl-table tr:nth-child(3) td:last-child': {
+        ja: 'AI / 生成AI / AI講師<br>アプリ開発 / Web Design',
+        en: 'AI / Gen AI / AI Instructor<br>App Dev / Web Design',
+        html: true
+    },
+    '.fgl-table tr:nth-child(5) .fgl-blink': { ja: '■ 実験中', en: '■ Experimenting' },
+    '.fgl-links .fgl-link': { items: [
+        { ja: '▶ トップページ', en: '▶ Top Page' },
+        { ja: '▶ 実験記録（日記） <span class="fgl-new">NEW!</span>', en: '▶ Lab Log (Diary) <span class="fgl-new">NEW!</span>', html: true },
+        { ja: '▶ 作品集', en: '▶ Portfolio' },
+        { ja: '▶ ゲストブック', en: '▶ Guestbook' },
+        { ja: '▶ 管理人にメール', en: '▶ Email Admin' },
+        { ja: '▶ リンク集', en: '▶ Link Collection' }
+    ]},
+
+    // CH3 - Contact
+    '.ad-header-text': { ja: 'こんなことにお困りではありませんか？', en: 'Having any of these problems?' },
+    '.solution-text': { ja: 'そんなあなたに！', en: 'Just for you!' },
+    '.cta-sub': { ja: 'お気軽にご連絡ください', en: 'Feel free to contact me' },
+    '.cta-hint': { ja: 'PROG ▶ で連絡先へ', en: 'PROG ▶ for contacts' },
+    '.ad-disclaimer': { ja: '※個人の趣味です。返信は気まぐれです。', en: '*This is a hobby. Replies may vary.' },
+    '.footer-note': { ja: '個人の趣味で運営しています', en: 'Run as a personal hobby' },
+    '.ad-problems .problem-text': { items: [
+        { ja: 'ちょっとしたツールが欲しい...', en: 'I need a small tool...' },
+        { ja: 'こんな機能あったらいいのに...', en: 'If only this feature existed...' },
+        { ja: '誰かにアイデア聞いてほしい...', en: 'I want someone to hear my idea...' }
+    ]},
+
+    // CH4 - News
+    '.telop-category': { ja: '特集', en: 'SPECIAL' },
+    '.telop-headline': { ja: '美しい写真の数々　狙いは無しか？', en: 'A beautiful photo collection \u2014 any hidden agenda?' },
+    '.telop-sub': { ja: 'USUI LAB が届ける至高のフォトギャラリー', en: 'The ultimate photo gallery by USUI LAB' },
+    '.news-hint': { ja: 'PROG ▶ でスライドショーへ', en: 'PROG ▶ for slideshow' }
+};
+
+const placeholderTranslations = {
+    '#cafe-terminal-input': { ja: 'ここに入力', en: 'type here' },
+    '#fgl-terminal-input': { ja: 'ここに入力', en: 'type here' }
+};
+
+const terminalDefaults = {
+    'cafe-terminal-output': { ja: 'ごゆっくりどうぞ。', en: 'Take your time.' },
+    'fgl-terminal-output': { ja: 'ようこそ、我がラボへ。', en: 'Welcome to my lab.' }
+};
+
+// =====================================================
+// LANGUAGE SWITCHING
+// =====================================================
+
+function switchLanguage() {
+    const newLang = state.lang === 'ja' ? 'en' : 'ja';
+    state.lang = newLang;
+
+    // Static text
+    for (const [selector, data] of Object.entries(translations)) {
+        if (data.items) {
+            // Array mapping for multiple elements
+            const els = document.querySelectorAll(selector);
+            els.forEach((el, i) => {
+                if (i < data.items.length) {
+                    const item = data.items[i];
+                    if (item.html) {
+                        el.innerHTML = item[newLang];
+                    } else {
+                        el.textContent = item[newLang];
+                    }
+                }
+            });
+        } else {
+            const els = document.querySelectorAll(selector);
+            els.forEach(el => {
+                if (data.html) {
+                    el.innerHTML = data[newLang];
+                } else {
+                    el.textContent = data[newLang];
+                }
+            });
+        }
+    }
+
+    // Placeholders
+    for (const [selector, data] of Object.entries(placeholderTranslations)) {
+        const el = document.querySelector(selector);
+        if (el) el.placeholder = data[newLang];
+    }
+
+    // Terminal defaults
+    for (const [id, data] of Object.entries(terminalDefaults)) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = data[newLang];
+    }
+
+    // Update button
+    const langBtn = document.getElementById('lang-btn');
+    if (langBtn) langBtn.textContent = newLang === 'ja' ? 'EN' : 'JA';
+
+    audio.playClick();
 }
 
 // =====================================================
@@ -1267,6 +1725,11 @@ function init() {
     }
     if (elements.volDown) {
         elements.volDown.addEventListener('click', volumeDown);
+    }
+
+    // Language toggle button
+    if (elements.langBtn) {
+        elements.langBtn.addEventListener('click', switchLanguage);
     }
 
     // 初期状態で番組ボタンを更新
