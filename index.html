@@ -20,7 +20,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Permanent+Marker&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Permanent+Marker&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="tv-off">
@@ -846,5 +846,192 @@
     </div>
 
     <script src="script.js" defer></script>
+
+    <!-- ========== MOBILE SITE (スマホ専用 / hidden on desktop) ========== -->
+    <div id="mobile-site">
+        <!-- Navigation -->
+        <nav class="m-nav">
+            <span class="m-nav-logo">USUI LAB</span>
+            <div class="m-nav-right">
+                <div class="m-nav-links">
+                    <a href="#m-projects" class="m-nav-link" data-ja="WORKS" data-en="WORKS">WORKS</a>
+                    <a href="#m-about" class="m-nav-link" data-ja="ABOUT" data-en="ABOUT">ABOUT</a>
+                    <a href="#m-contact" class="m-nav-link" data-ja="CONTACT" data-en="CONTACT">CONTACT</a>
+                </div>
+                <button id="m-lang-btn" class="m-lang-btn">EN</button>
+            </div>
+        </nav>
+
+        <!-- Hero -->
+        <section class="m-hero">
+            <div class="m-hero-eyebrow" data-ja="ウスイ研究所" data-en="USUI LAB">ウスイ研究所</div>
+            <div class="m-hero-avatar-wrap">
+                <img src="assets/avatar.png" alt="Usui" class="m-hero-avatar">
+            </div>
+            <div class="m-hero-name-wrap">
+                <h1 class="m-hero-name">USUI</h1>
+            </div>
+            <div class="m-hero-title-wrap">
+                <div class="m-hero-title">CREATOR × ENGINEER</div>
+            </div>
+            <p class="m-hero-desc" data-ja="AIから個人アプリ開発まで、自分の好奇心が向く方向に全力投球。東京を拠点に実験を続けています。" data-en="Full-force in every direction curiosity points — from AI to indie app development. Experimenting from Tokyo.">AIから個人アプリ開発まで、自分の好奇心が向く方向に全力投球。東京を拠点に実験を続けています。</p>
+            <div class="m-hero-tags">
+                <span class="m-hero-tag" data-ja="AI / 生成AI" data-en="AI / Gen AI">AI / 生成AI</span>
+                <span class="m-hero-tag" data-ja="AI講師" data-en="AI Instructor">AI講師</span>
+                <span class="m-hero-tag" data-ja="アプリ開発" data-en="App Dev">アプリ開発</span>
+                <span class="m-hero-tag">Web Design</span>
+            </div>
+            <div class="m-hero-bg-num" aria-hidden="true">USI</div>
+        </section>
+
+        <!-- Projects -->
+        <section class="m-section" id="m-projects">
+            <div class="m-section-header m-anim-left">
+                <span class="m-section-num" data-ja="01 — PROJECTS" data-en="01 — PROJECTS">01 — PROJECTS</span>
+                <h2 class="m-section-title"><span class="m-title-inner" data-ja="WORKS" data-en="WORKS">WORKS</span></h2>
+                <div class="m-section-bg-num" aria-hidden="true">01</div>
+            </div>
+            <div class="m-projects-list m-stagger">
+                <!-- YouTube Shooting -->
+                <a href="youtube-shooting/" class="m-project-card m-anim">
+                    <div class="m-project-top">
+                        <div class="m-project-icon">🎯</div>
+                        <div class="m-project-meta">
+                            <span class="m-project-badge">✓ RELEASED</span>
+                            <div class="m-project-name">YouTube Shooting</div>
+                            <div class="m-project-category">Chrome Extension</div>
+                        </div>
+                    </div>
+                    <p class="m-project-desc" data-ja="YouTubeのコメントが弾幕になって襲いかかる！避けて撃って、コメントを制圧せよ。" data-en="YouTube comments turn into danmaku and attack! Dodge and shoot — take control of the comments.">YouTubeのコメントが弾幕になって襲いかかる！避けて撃って、コメントを制圧せよ。</p>
+                    <div class="m-project-links">
+                        <span class="m-project-btn primary" data-ja="▶ PLAY / 詳細" data-en="▶ PLAY / Details">▶ PLAY / 詳細</span>
+                        <a href="https://github.com/tomatomilk203/Yotubeshooting" target="_blank" rel="noopener noreferrer" class="m-project-btn secondary" onclick="event.stopPropagation()">GitHub</a>
+                    </div>
+                </a>
+                <!-- Brainrot Collectors -->
+                <a href="brainrot-collection/" class="m-project-card m-anim">
+                    <div class="m-project-top">
+                        <div class="m-project-icon m-project-icon-img">
+                            <img src="brainrot-collection/gameicon.png" alt="ブレインロットコレクターズ">
+                        </div>
+                        <div class="m-project-meta">
+                            <span class="m-project-badge">✓ RELEASED</span>
+                            <div class="m-project-name" data-ja="ブレインロットコレクターズ" data-en="Brainrot Collectors">ブレインロットコレクターズ</div>
+                            <div class="m-project-category" data-ja="iOS カジュアルコレクションゲーム" data-en="iOS Casual Collection Game">iOS カジュアルコレクションゲーム</div>
+                        </div>
+                    </div>
+                    <p class="m-project-desc" data-ja="50体以上のイタリアンブレインロットキャラを収集。時間帯・天気・ステージで出現が変わる本格コレクション。" data-en="Collect 50+ Italian Brainrot characters. A full-fledged collection where appearances vary by time, weather, and stage.">50体以上のイタリアンブレインロットキャラを収集。時間帯・天気・ステージで出現が変わる本格コレクション。</p>
+                    <div class="m-project-links">
+                        <span class="m-project-btn primary" data-ja="▶ 詳細を見る" data-en="▶ View Details">▶ 詳細を見る</span>
+                    </div>
+                </a>
+                <!-- Next Project -->
+                <div class="m-project-card m-project-card-tba m-anim">
+                    <div class="m-project-top">
+                        <div class="m-project-icon">❓</div>
+                        <div class="m-project-meta">
+                            <span class="m-project-badge tba">? TBA</span>
+                            <div class="m-project-name">Next Project</div>
+                            <div class="m-project-category">To Be Announced</div>
+                        </div>
+                    </div>
+                    <p class="m-project-desc" data-ja="次なる実験は何になるのか...？" data-en="What will the next experiment be...?">次なる実験は何になるのか...？</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About -->
+        <section class="m-section" id="m-about">
+            <div class="m-section-header m-anim-left">
+                <span class="m-section-num" data-ja="02 — ABOUT" data-en="02 — ABOUT">02 — ABOUT</span>
+                <h2 class="m-section-title"><span class="m-title-inner" data-ja="PROFILE" data-en="PROFILE">PROFILE</span></h2>
+                <div class="m-section-bg-num" aria-hidden="true">02</div>
+            </div>
+            <div class="m-about-hero m-anim">
+                <img src="assets/avatar.png" alt="Usui" class="m-about-avatar">
+                <div>
+                    <div class="m-about-name">USUI</div>
+                    <div class="m-about-role">CREATOR × ENGINEER</div>
+                </div>
+            </div>
+            <div class="m-services">
+                <div class="m-block-title" data-ja="SERVICES" data-en="SERVICES">SERVICES</div>
+                <div class="m-service-list m-stagger">
+                    <div class="m-service-item m-anim"><span class="m-service-icon">▶</span><span data-ja="AI / 生成AI" data-en="AI / Generative AI">AI / 生成AI</span></div>
+                    <div class="m-service-item m-anim"><span class="m-service-icon">◆</span><span data-ja="AI講師" data-en="AI Instructor">AI講師</span></div>
+                    <div class="m-service-item m-anim"><span class="m-service-icon">■</span><span data-ja="アプリ開発" data-en="App Development">アプリ開発</span></div>
+                    <div class="m-service-item m-anim"><span class="m-service-icon">★</span>Web Design</div>
+                </div>
+            </div>
+            <div>
+                <div class="m-block-title">TECH STACK</div>
+                <div class="m-skills-grid m-anim">
+                    <span class="m-skill">JavaScript</span>
+                    <span class="m-skill">React</span>
+                    <span class="m-skill">Node.js</span>
+                    <span class="m-skill">Python</span>
+                    <span class="m-skill">Chrome Ext</span>
+                    <span class="m-skill">Figma</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section class="m-section" id="m-contact">
+            <div class="m-section-header m-anim-left">
+                <span class="m-section-num" data-ja="03 — CONTACT" data-en="03 — CONTACT">03 — CONTACT</span>
+                <h2 class="m-section-title"><span class="m-title-inner" data-ja="GET IN TOUCH" data-en="GET IN TOUCH">GET IN TOUCH</span></h2>
+                <div class="m-section-bg-num" aria-hidden="true">03</div>
+            </div>
+            <div class="m-contact-cards m-stagger">
+                <a href="https://github.com/tomatomilk203" target="_blank" rel="noopener noreferrer" class="m-contact-card m-anim">
+                    <div class="m-contact-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                        </svg>
+                    </div>
+                    <div class="m-contact-info">
+                        <div class="m-contact-name">GitHub</div>
+                        <div class="m-contact-handle">@tomatomilk203</div>
+                    </div>
+                    <span class="m-contact-arrow">→</span>
+                </a>
+                <a href="https://x.com/Usui_good" target="_blank" rel="noopener noreferrer" class="m-contact-card m-anim">
+                    <div class="m-contact-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                    </div>
+                    <div class="m-contact-info">
+                        <div class="m-contact-name">X (Twitter)</div>
+                        <div class="m-contact-handle">@Usui_good</div>
+                    </div>
+                    <span class="m-contact-arrow">→</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Gallery -->
+        <section class="m-section" id="m-news">
+            <div class="m-section-header m-anim-left">
+                <span class="m-section-num" data-ja="04 — GALLERY" data-en="04 — GALLERY">04 — GALLERY</span>
+                <h2 class="m-section-title"><span class="m-title-inner" data-ja="NEWS" data-en="NEWS">NEWS</span></h2>
+                <div class="m-section-bg-num" aria-hidden="true">04</div>
+            </div>
+            <div class="m-news-grid m-stagger">
+                <div class="m-news-photo m-anim"><img src="assets/news/photo-01.jpg" alt="" loading="lazy"></div>
+                <div class="m-news-photo m-anim"><img src="assets/news/photo-02.jpg" alt="" loading="lazy"></div>
+                <div class="m-news-photo m-anim"><img src="assets/news/photo-03.jpg" alt="" loading="lazy"></div>
+                <div class="m-news-photo m-anim"><img src="assets/news/photo-04.jpg" alt="" loading="lazy"></div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="m-footer m-anim">
+            <div class="m-footer-logo">USUI LAB</div>
+            <div class="m-footer-sub" data-ja="ウスイ研究所" data-en="USUI Laboratory">ウスイ研究所</div>
+            <div class="m-footer-copy">© 2024–2025 USUI</div>
+        </footer>
+    </div>
 </body>
 </html>

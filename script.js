@@ -1851,5 +1851,77 @@ function init() {
     console.log('%c ↑↑↓↓←→←→BA で隠しチャンネル', 'color: #888; font-size: 12px; font-family: monospace;');
 }
 
+// =====================================================
+// MOBILE SITE — Animations + Language
+// =====================================================
+
+function initMobile() {
+    if (window.innerWidth > 768) return;
+
+    // --- Scroll reveal via IntersectionObserver ---
+    // First, apply stagger delays to .m-stagger containers
+    document.querySelectorAll('.m-stagger').forEach(container => {
+        Array.from(container.children).forEach((child, i) => {
+            if (child.classList.contains('m-anim') || child.classList.contains('m-anim-left')) {
+                child.style.transitionDelay = (i * 0.12) + 's';
+            }
+        });
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('m-anim-visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.m-anim, .m-anim-left').forEach(el => {
+        observer.observe(el);
+    });
+
+    // --- Mobile language toggle ---
+    const mLangBtn = document.getElementById('m-lang-btn');
+    if (mLangBtn) {
+        mLangBtn.addEventListener('click', () => {
+            switchLanguage();
+            // sync button label
+            mLangBtn.textContent = state.lang === 'ja' ? 'EN' : 'JA';
+        });
+    }
+
+    // Sync mobile lang button whenever desktop lang changes
+    const desktopLangBtn = document.getElementById('lang-btn');
+    if (desktopLangBtn) {
+        const orig = desktopLangBtn.onclick;
+        desktopLangBtn.addEventListener('click', () => {
+            if (mLangBtn) mLangBtn.textContent = state.lang === 'ja' ? 'EN' : 'JA';
+        });
+    }
+
+    // --- Apply data-ja/data-en on language switch ---
+    const origSwitch = window._switchLangOrig;
+}
+
+function applyMobileLang(lang) {
+    document.querySelectorAll('#mobile-site [data-ja]').forEach(el => {
+        const val = lang === 'ja' ? el.dataset.ja : el.dataset.en;
+        if (val !== undefined) el.textContent = val;
+    });
+    const mLangBtn = document.getElementById('m-lang-btn');
+    if (mLangBtn) mLangBtn.textContent = lang === 'ja' ? 'EN' : 'JA';
+}
+
+// Patch switchLanguage to also handle mobile data-ja/data-en elements
+const _origSwitchLanguage = switchLanguage;
+switchLanguage = function() {
+    _origSwitchLanguage();
+    applyMobileLang(state.lang);
+};
+
 // Start when DOM is ready
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded', () => {
+    init();
+    initMobile();
+});
