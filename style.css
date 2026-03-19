@@ -820,6 +820,99 @@ body.tv-on .channels {
     border-color: #888;
 }
 
+.project-badge.indev {
+    color: #4fc3f7;
+    border-color: #4fc3f7;
+}
+
+/* ── Dropper demo ── */
+.demo-dropper {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    background: #060c18;
+    border: 1px solid rgba(79,195,247,0.2);
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.drop-hud {
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: #4fc3f7;
+    padding: 6px 10px;
+    background: rgba(79,195,247,0.05);
+    border-bottom: 1px solid rgba(79,195,247,0.1);
+    flex-shrink: 0;
+}
+
+.drop-lanes {
+    position: absolute;
+    inset: 28px 0 0 0;
+    display: flex;
+    justify-content: center;
+    gap: 0;
+}
+
+.drop-lane {
+    flex: 1;
+    border-right: 1px solid rgba(255,255,255,0.04);
+    max-width: 80px;
+}
+
+.drop-lane:last-child { border-right: none; }
+
+.drop-player {
+    position: absolute;
+    bottom: 14px;
+    font-size: 1.1rem;
+    color: #ff4d6d;
+    text-shadow: 0 0 12px rgba(255,77,109,0.7);
+    transition: left 0.18s cubic-bezier(0.16,1,0.3,1);
+    z-index: 5;
+    user-select: none;
+}
+
+.drop-block {
+    position: absolute;
+    height: 18px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    font-family: 'Courier New', monospace;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+}
+
+.drop-hit {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) scale(0);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.1em;
+    color: #ff4d6d;
+    text-shadow: 0 0 20px rgba(255,77,109,0.8);
+    transition: transform 0.15s, opacity 0.3s;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.drop-hit.show {
+    transform: translate(-50%,-50%) scale(1);
+    opacity: 1;
+}
+
 .project-icon {
     font-size: 3.9rem;
     margin-bottom: 13px;

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fall in Love — USUI LAB</title>
+  <meta name="description" content="Fall in Love — 恋に、堕ちろ。故意に、落ちろ。">
+  <link rel="icon" type="image/png" href="../assets/avatar.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:    #080d1a;
+      --navy2:   #0d1530;
+      --pink:    #ff4d6d;
+      --blue:    #4fc3f7;
+      --white:   #f0f0f0;
+      --dim:     rgba(255,255,255,0.12);
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: var(--navy);
+      color: var(--white);
+      font-family: 'Noto Sans JP', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── Back button ── */
+    .back-btn {
+      position: fixed;
+      top: 18px;
+      left: 18px;
+      z-index: 100;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px;
+      letter-spacing: 0.1em;
+      padding: 8px 18px;
+      border: 1.5px solid rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      border-radius: 2px;
+      transition: border-color 0.2s, color 0.2s;
+      backdrop-filter: blur(4px);
+    }
+    .back-btn:hover { border-color: var(--pink); color: var(--pink); }
+
+    /* ── Falling blocks container ── */
+    .blocks-field {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .fall-block {
+      position: absolute;
+      top: -120px;
+      border: 1.5px solid rgba(255,255,255,0.15);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 0.12em;
+      background: rgba(255,255,255,0.04);
+      animation: blockFall linear infinite;
+      will-change: transform;
+    }
+
+    @keyframes blockFall {
+      0%   { transform: translateY(0) rotate(var(--rot)); opacity: 0; }
+      8%   { opacity: 1; }
+      88%  { opacity: 1; }
+      100% { transform: translateY(110vh) rotate(var(--rot)); opacity: 0; }
+    }
+
+    /* ── Noise texture overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 20% 50%, rgba(79,195,247,0.04) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255,77,109,0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Grid lines (shaft aesthetic) ── */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          90deg,
+          rgba(255,255,255,0.02) 0px,
+          rgba(255,255,255,0.02) 1px,
+          transparent 1px,
+          transparent 80px
+        );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Main content ── */
+    main {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 24px;
+    }
+
+    .badge {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      color: var(--pink);
+      border: 1px solid rgba(255,77,109,0.4);
+      padding: 5px 18px;
+      border-radius: 2px;
+      margin-bottom: 32px;
+      animation: badgePulse 2.5s ease-in-out infinite;
+    }
+
+    @keyframes badgePulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(64px, 18vw, 160px);
+      line-height: 0.88;
+      letter-spacing: 0.02em;
+      color: var(--white);
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .title .love {
+      color: var(--pink);
+      display: block;
+      -webkit-text-stroke: 2px var(--pink);
+      text-shadow: 0 0 40px rgba(255,77,109,0.4);
+    }
+
+    .title-sub {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(14px, 3vw, 22px);
+      letter-spacing: 0.35em;
+      color: var(--blue);
+      margin-bottom: 40px;
+    }
+
+    .tagline {
+      font-size: clamp(15px, 2.5vw, 20px);
+      line-height: 2;
+      color: rgba(255,255,255,0.55);
+      max-width: 480px;
+      margin-bottom: 56px;
+    }
+
+    .tagline strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    /* ── Status box ── */
+    .status-box {
+      border: 1.5px solid rgba(255,255,255,0.12);
+      border-radius: 6px;
+      padding: 24px 36px;
+      max-width: 360px;
+      width: 100%;
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(8px);
+      margin-bottom: 40px;
+    }
+
+    .status-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.28em;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 12px;
+    }
+
+    .progress-bar-wrap {
+      width: 100%;
+      height: 4px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 35%;
+      background: linear-gradient(90deg, var(--blue), var(--pink));
+      border-radius: 2px;
+      animation: progressPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes progressPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    .progress-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.4);
+      text-align: right;
+    }
+
+    /* ── CTA ── */
+    .cta-btn {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      padding: 14px 40px;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      border-radius: 2px;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+    .cta-btn:hover {
+      border-color: var(--pink);
+      color: var(--white);
+      background: rgba(255,77,109,0.08);
+    }
+
+    /* ── Footer ── */
+    footer {
+      position: relative;
+      z-index: 10;
+      padding: 32px 24px;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.2em;
+      color: rgba(255,255,255,0.25);
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 480px) {
+      .status-box { padding: 20px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../" class="back-btn">← USUI LAB</a>
+
+  <!-- Falling 準備中 blocks -->
+  <div class="blocks-field" id="blocks-field"></div>
+
+  <main>
+    <div class="badge">🚧 COMING SOON</div>
+
+    <h1 class="title">
+      FALL<br>
+      <span class="love">IN LOVE</span>
+    </h1>
+
+    <p class="title-sub">DROPPER GAME — STEAM</p>
+
+    <p class="tagline">
+      <strong>恋に、堕ちろ。故意に、落ちろ。</strong><br>
+      どこまでも落ちていけ。ただし、死ぬな。<br>
+      落下しながらブロックをよけ、最深部を目指せ。
+    </p>
+
+    <div class="status-box">
+      <div class="status-title">DEVELOPMENT PROGRESS</div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill"></div>
+      </div>
+      <div class="progress-label">鋭意開発中...</div>
+    </div>
+
+    <a href="../" class="cta-btn">← USUI LABに戻る</a>
+  </main>
+
+  <footer>
+    <div class="footer-logo">USUI LAB</div>
+  </footer>
+
+  <script>
+    // Generate falling blocks
+    const field = document.getElementById('blocks-field');
+    const labels = ['準備中', 'COMING SOON', 'IN DEV', '開発中', 'FALL', '▼', '▽', '準備中', 'SOON'];
+    const sizes = [
+      { w: 110, h: 40, fs: 12 },
+      { w: 80,  h: 36, fs: 11 },
+      { w: 140, h: 44, fs: 13 },
+      { w: 60,  h: 32, fs: 10 },
+    ];
+
+    for (let i = 0; i < 22; i++) {
+      const block = document.createElement('div');
+      block.className = 'fall-block';
+
+      const size = sizes[Math.floor(Math.random() * sizes.length)];
+      const label = labels[Math.floor(Math.random() * labels.length)];
+      const x = Math.random() * 95;
+      const dur = 4 + Math.random() * 7;
+      const delay = -(Math.random() * dur); // negative = already mid-fall
+      const rot = (Math.random() - 0.5) * 12;
+
+      block.style.cssText = `
+        left: ${x}%;
+        width: ${size.w}px;
+        height: ${size.h}px;
+        font-size: ${size.fs}px;
+        --rot: ${rot}deg;
+        animation-duration: ${dur}s;
+        animation-delay: ${delay}s;
+        color: rgba(255,255,255,${0.15 + Math.random() * 0.2});
+        border-color: rgba(255,255,255,${0.06 + Math.random() * 0.1});
+      `;
+      block.textContent = label;
+      field.appendChild(block);
+    }
+  </script>
+</body>
+</html>

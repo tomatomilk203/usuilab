@@ -478,6 +478,9 @@ async function powerOn() {
 
     // Start brainrot catch demo
     startCatchDemo();
+
+    // Start Fall in Love dropper demo
+    startDropperDemo();
 }
 
 async function powerOff() {
@@ -498,6 +501,11 @@ async function powerOff() {
     switchChannelInstant(0);
     stopBgm();
     stopVoice();
+
+    // Stop dropper demo
+    if (dropperRAF) { cancelAnimationFrame(dropperRAF); dropperRAF = null; }
+    dropperBlocks.forEach(b => b.el.remove());
+    dropperBlocks = [];
 }
 
 // =====================================================
@@ -1309,6 +1317,116 @@ function startDemoScore() {
 
 // =====================================================
 // BRAINROT CATCH DEMO
+
+// ── DROPPER DEMO (Fall in Love CH) ────────────────────
+let dropperRAF = null;
+let dropperBlocks = [];
+let dropperScore = 0;
+let dropperPlayerLane = 1; // 0,1,2
+let dropperRunning = false;
+
+function startDropperDemo() {
+    const container = document.getElementById('demo-dropper');
+    if (!container) return;
+
+    const scoreEl  = document.getElementById('drop-score');
+    const playerEl = document.getElementById('drop-player');
+    const hitEl    = document.getElementById('drop-hit');
+    if (!playerEl) return;
+
+    const LANES = 3;
+    const LANE_WIDTH = 80;
+    const containerW = container.offsetWidth || 240;
+    const laneOffset = (containerW - LANES * LANE_WIDTH) / 2;
+
+    function laneCenterX(lane) {
+        return laneOffset + lane * LANE_WIDTH + LANE_WIDTH / 2;
+    }
+
+    function setPlayer(lane) {
+        dropperPlayerLane = lane;
+        playerEl.style.left = (laneCenterX(lane) - 10) + 'px';
+    }
+
+    function spawnBlock() {
+        const lane = Math.floor(Math.random() * LANES);
+        const el = document.createElement('div');
+        el.className = 'drop-block';
+        el.style.width  = (LANE_WIDTH - 8) + 'px';
+        el.style.left   = (laneOffset + lane * LANE_WIDTH + 4) + 'px';
+        el.style.top    = '28px';
+        el.textContent  = ['▬','▬▬','━━'][Math.floor(Math.random() * 3)];
+        container.appendChild(el);
+        dropperBlocks.push({ el, lane, y: 28, speed: 1.4 + Math.random() * 0.8 });
+    }
+
+    let frameCount = 0;
+    let hitCooldown = 0;
+    let autoMoveTimer = 0;
+
+    function loop() {
+        frameCount++;
+        hitCooldown = Math.max(0, hitCooldown - 1);
+        autoMoveTimer++;
+
+        // Auto-dodge: check upcoming blocks in player's lane, move away
+        if (autoMoveTimer > 25) {
+            autoMoveTimer = 0;
+            const threatLane = dropperPlayerLane;
+            const threat = dropperBlocks.find(b => b.lane === threatLane && b.y < 140 && b.y > 50);
+            if (threat) {
+                // pick a free lane
+                const free = [0,1,2].filter(l => l !== threatLane);
+                setPlayer(free[Math.floor(Math.random() * free.length)]);
+            }
+        }
+
+        // Spawn blocks
+        if (frameCount % 42 === 0) spawnBlock();
+
+        // Move blocks
+        const playerBottom = container.offsetHeight - 28;
+        for (let i = dropperBlocks.length - 1; i >= 0; i--) {
+            const b = dropperBlocks[i];
+            b.y += b.speed;
+            b.el.style.top = b.y + 'px';
+
+            // Collision
+            if (b.lane === dropperPlayerLane && b.y + 18 > playerBottom - 18 && b.y < playerBottom + 4 && hitCooldown === 0) {
+                hitCooldown = 60;
+                hitEl.classList.add('show');
+                setTimeout(() => hitEl.classList.remove('show'), 600);
+                // dodge away after hit
+                const alt = [0,1,2].filter(l => l !== b.lane);
+                setPlayer(alt[Math.floor(Math.random() * alt.length)]);
+            }
+
+            // Remove off-screen
+            if (b.y > container.offsetHeight) {
+                b.el.remove();
+                dropperBlocks.splice(i, 1);
+                if (hitCooldown === 0) {
+                    dropperScore += 3;
+                    if (scoreEl) scoreEl.textContent = dropperScore;
+                }
+            }
+        }
+
+        dropperRAF = requestAnimationFrame(loop);
+    }
+
+    // Reset
+    if (dropperRAF) cancelAnimationFrame(dropperRAF);
+    dropperBlocks.forEach(b => b.el.remove());
+    dropperBlocks = [];
+    dropperScore = 0;
+    if (scoreEl) scoreEl.textContent = '0';
+    setPlayer(1);
+    spawnBlock();
+    dropperRAF = requestAnimationFrame(loop);
+}
+
+// ── END DROPPER DEMO ───────────────────────────────────
 
 let catchDemoTimeout = null;
 let catchDemoCount = 0;
