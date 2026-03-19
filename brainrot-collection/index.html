@@ -10,7 +10,7 @@
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800;900&family=Fredoka+One&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&family=Fredoka+One&display=swap" rel="stylesheet">
 
   <style>
     /* ─── CSS Variables ─── */
@@ -39,11 +39,14 @@
     html { scroll-behavior: smooth; }
 
     body {
-      font-family: 'M PLUS Rounded 1c', sans-serif;
+      font-family: 'Noto Sans JP', sans-serif;
       background: var(--mint);
       color: var(--ink);
       overflow-x: hidden;
       line-height: 1.7;
+      text-rendering: geometricPrecision;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
 
     /* ─── Polka dot background ─── */
@@ -174,12 +177,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 70px;
+      overflow: hidden;
       margin: 0 auto 28px;
       position: relative;
       z-index: 2;
       animation: icon-bounce 2.5s cubic-bezier(.36,.07,.19,.97) infinite;
     }
+    .app-icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 26px; }
 
     @keyframes icon-bounce {
       0%, 100% { transform: translateY(0) rotate(-2deg); }
@@ -489,6 +493,70 @@
     }
     .mutation-text p { font-size: 15px; color: rgba(255,255,255,0.8); line-height: 1.8; }
 
+    /* ─── CHARACTER GALLERY ─── */
+    .char-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 16px;
+      margin-top: 48px;
+    }
+    .char-card {
+      background: var(--white);
+      border: var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.15s, box-shadow 0.15s;
+      text-align: center;
+      cursor: default;
+    }
+    .char-card:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 7px 7px 0px var(--ink);
+    }
+    .char-card .char-img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: contain;
+      padding: 16px;
+      background: var(--mint);
+      display: block;
+    }
+    .char-card .char-name {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 8px 10px;
+      line-height: 1.4;
+      color: var(--ink);
+    }
+
+    /* mutation compare */
+    .mutation-compare {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .mutation-compare .compare-item { text-align: center; }
+    .mutation-compare img {
+      width: 90px;
+      height: 90px;
+      object-fit: contain;
+      border-radius: 16px;
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+    .mutation-compare .compare-label {
+      font-size: 11px;
+      color: rgba(255,255,255,0.6);
+      margin-top: 6px;
+      font-weight: 700;
+    }
+    .mutation-compare .arrow {
+      font-size: 28px;
+      color: rgba(255,255,255,0.5);
+      flex-shrink: 0;
+    }
+
     /* ─── STAGES ─── */
     .stages { background: var(--mint); }
 
@@ -512,17 +580,21 @@
     }
 
     .stage-visual {
-      height: 120px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 64px;
+      height: 180px;
+      overflow: hidden;
       position: relative;
     }
-    .stage-card:nth-child(1) .stage-visual { background: linear-gradient(180deg, #A8F5A0 0%, #C8F7B0 100%); }
-    .stage-card:nth-child(2) .stage-visual { background: linear-gradient(180deg, #F5D88A 0%, #F5C440 100%); }
-    .stage-card:nth-child(3) .stage-visual { background: linear-gradient(180deg, #5A9CF5 0%, #2060CC 100%); }
-    .stage-card:nth-child(4) .stage-visual { background: linear-gradient(180deg, #C8C8C8 0%, #888 100%); }
+    .stage-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .stage-card:hover .stage-visual img { transform: scale(1.06); }
+
+    /* weather icon tags */
+    .tag { display: inline-flex; align-items: center; gap: 4px; }
+    .tag img { width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0; }
 
     .stage-body { padding: 20px; }
 
@@ -857,7 +929,7 @@
       <span class="i18n" data-ja="🍎 iOS 配信中！" data-en="🍎 Now on iOS!">🍎 iOS 配信中！</span>
     </span>
 
-    <div class="app-icon">🧠</div>
+    <div class="app-icon"><img src="gameicon.png" alt="ブレコレ"></div>
 
     <h1 class="hero-title">
       <span class="i18n" data-ja="ブレインロット" data-en="Brainrot">ブレインロット</span><br>
@@ -981,7 +1053,18 @@
 
       <!-- Mutation Banner -->
       <div class="mutation-banner reveal">
-        <div class="mutation-aura"></div>
+        <div class="mutation-compare">
+          <div class="compare-item">
+            <img src="追加ブレインロット/トラコトゥコトゥル・デラペラドゥス.png" alt="通常">
+            <div class="compare-label">NORMAL</div>
+          </div>
+          <div class="arrow">→</div>
+          <div class="compare-item" style="position:relative;">
+            <div style="position:absolute;inset:-4px;border-radius:16px;background:conic-gradient(#FF3B3B,#FF8C22,#FFD93D,#5DC99A,#2060CC,#9B45CC,#FF3B3B);animation:spin-aura 3s linear infinite;opacity:0.6;z-index:0;"></div>
+            <img src="追加ブレインロット/トラコトゥコトゥル・デラペラドゥス変異体.png" alt="変異体" style="position:relative;z-index:1;">
+            <div class="compare-label" style="background:linear-gradient(90deg,#FF8C22,#9B45CC);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">MUTATION ✨</div>
+          </div>
+        </div>
         <div class="mutation-text">
           <h3>
             <span class="i18n" data-ja="✨ <span>変異体</span>（色違い）出現！" data-en="✨ <span>Mutation</span> Variant Appears!">✨ <span>変異体</span>（色違い）出現！</span>
@@ -991,6 +1074,46 @@
             data-en="Every character has a rare color-alternate 'mutation' variant. Instantly recognizable by its rainbow aura! Registered in a separate Pokédex tab — aim to collect all mutations. Mutation rate can be boosted via the upgrade system!">
             すべてのキャラには一定確率で色違いの「変異体」が存在します。虹色に輝くオーラで一目でわかる！図鑑の別タブに登録され、全キャラの変異体コンプリートを目指せ。変異体出現率は強化システムでアップ可能！
           </p>
+        </div>
+      </div>
+
+      <!-- Character Gallery -->
+      <div class="char-gallery">
+        <div class="char-card reveal">
+          <img class="char-img" src="追加ブレインロット/バナニータ・ドルフィニータ.png" alt="バナニータ・ドルフィニータ">
+          <div class="char-name">バナニータ・ドルフィニータ</div>
+        </div>
+        <div class="char-card reveal">
+          <img class="char-img" src="追加ブレインロット/ゴリロ・ウォーターメロンドリロ.png" alt="ゴリロ・ウォーターメロンドリロ">
+          <div class="char-name">ゴリロ・ウォーターメロンドリロ</div>
+        </div>
+        <div class="char-card reveal">
+          <img class="char-img" src="追加ブレインロット/トラコトゥコトゥル・デラペラドゥス.png" alt="トラコトゥコトゥル・デラペラドゥス">
+          <div class="char-name">トラコトゥコトゥル・デラペラドゥス</div>
+        </div>
+        <div class="char-card reveal">
+          <img class="char-img" src="追加ブレインロット/バレリーナ・カプチーノ.png" alt="バレリーナ・カプチーノ">
+          <div class="char-name">バレリーナ・カプチーノ</div>
+        </div>
+        <div class="char-card reveal">
+          <img class="char-img" src="追加ブレインロット/カプチーノ・バボオイノ.png" alt="カプチーノ・バボオイノ">
+          <div class="char-name">カプチーノ・バボオイノ</div>
+        </div>
+        <div class="char-card reveal">
+          <img class="char-img" src="追加ブレインロット/ペロケッロ・レモンチェッロ.png" alt="ペロケッロ・レモンチェッロ">
+          <div class="char-name">ペロケッロ・レモンチェッロ</div>
+        </div>
+        <div class="char-card reveal">
+          <img class="char-img" src="追加ブレインロット/エスプレッソーナ・シニョーラ.png" alt="エスプレッソーナ・シニョーラ">
+          <div class="char-name">エスプレッソーナ・シニョーラ</div>
+        </div>
+        <div class="char-card reveal">
+          <img class="char-img" src="追加ブレインロット/ココッシニ・ママ.png" alt="ココッシニ・ママ">
+          <div class="char-name">ココッシニ・ママ</div>
+        </div>
+        <div class="char-card reveal">
+          <img class="char-img" src="追加ブレインロット/スノオッフィ・ゼッフィルッリ.png" alt="スノオッフィ・ゼッフィルッリ">
+          <div class="char-name">スノオッフィ・ゼッフィルッリ</div>
         </div>
       </div>
     </div>
@@ -1013,49 +1136,57 @@
 
       <div class="stages-grid">
         <div class="stage-card reveal">
-          <div class="stage-visual">🌿</div>
+          <div class="stage-visual">
+            <img src="stage/3D9514C6-C875-428B-8A10-79128FC22692.png" alt="草原">
+          </div>
           <div class="stage-body">
             <h3 class="stage-name i18n" data-ja="🌿 草原" data-en="🌿 Grassland">🌿 草原</h3>
             <p class="stage-desc i18n" data-ja="緑豊かな大地。コモン〜レアのキャラが多数生息。初心者にも優しい基本ステージ。" data-en="Lush green land. Lots of Common-to-Rare characters. The beginner-friendly starter stage.">緑豊かな大地。コモン〜レアのキャラが多数生息。初心者にも優しい基本ステージ。</p>
             <div class="stage-tags">
-              <span class="tag i18n" data-ja="☀️ 昼に強い" data-en="☀️ Day-heavy">☀️ 昼に強い</span>
-              <span class="tag i18n" data-ja="🌧️ 雨で希少出現" data-en="🌧️ Rain = rare">🌧️ 雨で希少出現</span>
+              <span class="tag"><img src="時間帯アイコン/IMG_9905.png" alt="朝"><span class="i18n" data-ja="朝に強い" data-en="Morning-heavy">朝に強い</span></span>
+              <span class="tag"><img src="時間帯アイコン/IMG_9907.png" alt="雨"><span class="i18n" data-ja="雨で希少出現" data-en="Rain = rare">雨で希少出現</span></span>
             </div>
           </div>
         </div>
 
         <div class="stage-card reveal">
-          <div class="stage-visual">🏜️</div>
+          <div class="stage-visual">
+            <img src="stage/E9678CAD-5C73-4D9E-8DB8-CCB6DCFA8D36.png" alt="砂漠">
+          </div>
           <div class="stage-body">
             <h3 class="stage-name i18n" data-ja="🏜️ 砂漠" data-en="🏜️ Desert">🏜️ 砂漠</h3>
             <p class="stage-desc i18n" data-ja="灼熱の砂地。アンコモン〜スーパーレアが多い中級ステージ。嵐の夜には幻のキャラが！" data-en="Scorching desert. Lots of Uncommon-to-SR. Rare characters appear in stormy nights!">灼熱の砂地。アンコモン〜スーパーレアが多い中級ステージ。嵐の夜には幻のキャラが！</p>
             <div class="stage-tags">
-              <span class="tag i18n" data-ja="🌙 夜に強い" data-en="🌙 Night-heavy">🌙 夜に強い</span>
-              <span class="tag i18n" data-ja="⛈️ 嵐でレジェンド" data-en="⛈️ Storm = legend">⛈️ 嵐でレジェンド</span>
+              <span class="tag"><img src="時間帯アイコン/IMG_9904.png" alt="夜"><span class="i18n" data-ja="夜に強い" data-en="Night-heavy">夜に強い</span></span>
+              <span class="tag"><img src="時間帯アイコン/IMG_9903.png" alt="昼"><span class="i18n" data-ja="昼はレジェンド" data-en="Day = legend">昼はレジェンド</span></span>
             </div>
           </div>
         </div>
 
         <div class="stage-card reveal">
-          <div class="stage-visual">🌊</div>
+          <div class="stage-visual">
+            <img src="stage/19753820-748E-4AE3-ABF5-E0D87636B191.png" alt="深海">
+          </div>
           <div class="stage-body">
             <h3 class="stage-name i18n" data-ja="🌊 深海" data-en="🌊 Deep Sea">🌊 深海</h3>
             <p class="stage-desc i18n" data-ja="謎めいた深海世界。レア〜レジェンドの水生キャラが生息。雨天で出現率が跳ね上がる！" data-en="Mysterious deep sea. Rare-to-Legend aquatic characters. Rain drastically boosts spawn rates!">謎めいた深海世界。レア〜レジェンドの水生キャラが生息。雨天で出現率が跳ね上がる！</p>
             <div class="stage-tags">
-              <span class="tag i18n" data-ja="🌧️ 雨天で激増" data-en="🌧️ Rain = surge">🌧️ 雨天で激増</span>
-              <span class="tag i18n" data-ja="🌙 深夜限定" data-en="🌙 Late night only">🌙 深夜限定</span>
+              <span class="tag"><img src="時間帯アイコン/IMG_9907.png" alt="雨"><span class="i18n" data-ja="雨天で激増" data-en="Rain = surge">雨天で激増</span></span>
+              <span class="tag"><img src="時間帯アイコン/IMG_9904.png" alt="夜"><span class="i18n" data-ja="深夜限定" data-en="Late night only">深夜限定</span></span>
             </div>
           </div>
         </div>
 
         <div class="stage-card reveal">
-          <div class="stage-visual">🏙️</div>
+          <div class="stage-visual">
+            <img src="stage/2BC65FDA-886A-4D75-9398-641AB313C2B5.png" alt="都市">
+          </div>
           <div class="stage-body">
             <h3 class="stage-name i18n" data-ja="🏙️ 都市" data-en="🏙️ City">🏙️ 都市</h3>
             <p class="stage-desc i18n" data-ja="ネオンが輝く夜の都市。スーパーレア〜レジェンドが集中する上級ステージ。曇り空が鍵！" data-en="Neon-lit city at night. SR-to-Legend concentration. Cloudy skies are the key!">ネオンが輝く夜の都市。スーパーレア〜レジェンドが集中する上級ステージ。曇り空が鍵！</p>
             <div class="stage-tags">
-              <span class="tag i18n" data-ja="☁️ 曇りで激化" data-en="☁️ Cloudy = intense">☁️ 曇りで激化</span>
-              <span class="tag i18n" data-ja="🌆 夕方が熱い" data-en="🌆 Evening hot">🌆 夕方が熱い</span>
+              <span class="tag"><img src="時間帯アイコン/IMG_9906.png" alt="曇り"><span class="i18n" data-ja="曇りで激化" data-en="Cloudy = intense">曇りで激化</span></span>
+              <span class="tag"><img src="時間帯アイコン/IMG_9902.png" alt="夕方"><span class="i18n" data-ja="夕方が熱い" data-en="Evening hot">夕方が熱い</span></span>
             </div>
           </div>
         </div>
