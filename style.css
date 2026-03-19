@@ -1007,6 +1007,111 @@ body.tv-on .channels {
     50% { opacity: 0; }
 }
 
+/* ─── Brainrot Catch Demo ─── */
+.demo-catch {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #7ADCB0 0%, #C2F2DC 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.demo-catch::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(0,0,0,0.06) 1.5px, transparent 1.5px);
+    background-size: 18px 18px;
+    pointer-events: none;
+}
+
+.catch-hud {
+    position: absolute;
+    top: 10px;
+    left: 12px;
+    font-family: 'DotGothic16', monospace;
+    font-size: 1.2rem;
+    color: #1A1A1A;
+    background: rgba(255,255,255,0.75);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1.5px solid #1A1A1A;
+    z-index: 10;
+}
+
+.catch-char {
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    filter: drop-shadow(2px 3px 4px rgba(0,0,0,0.2));
+    transition: none;
+}
+
+.catch-char.bob {
+    animation: catch-bob 1.8s ease-in-out infinite;
+}
+.catch-char:nth-child(2) { animation-delay: 0s; }
+.catch-char:nth-child(3) { animation-delay: 0.4s; }
+.catch-char:nth-child(4) { animation-delay: 0.8s; }
+.catch-char:nth-child(5) { animation-delay: 1.2s; }
+
+@keyframes catch-bob {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-7px) rotate(3deg); }
+}
+
+.catch-char.caught {
+    animation: catch-flash 0.45s ease-out forwards !important;
+}
+
+@keyframes catch-flash {
+    0%   { transform: scale(1);   filter: brightness(1) drop-shadow(2px 3px 4px rgba(0,0,0,0.2)); }
+    35%  { transform: scale(1.5); filter: brightness(3) drop-shadow(0 0 12px #FFD93D); }
+    100% { transform: scale(0);   opacity: 0; }
+}
+
+.catch-net {
+    position: absolute;
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    opacity: 0;
+    z-index: 20;
+    pointer-events: none;
+    transition: left 0.45s cubic-bezier(.4,0,.2,1), top 0.45s cubic-bezier(.4,0,.2,1), opacity 0.25s;
+    animation: net-spin 0.6s linear infinite;
+}
+
+@keyframes net-spin {
+    0%   { transform: rotate(0deg) scale(1); }
+    50%  { transform: rotate(180deg) scale(1.1); }
+    100% { transform: rotate(360deg) scale(1); }
+}
+
+.catch-get {
+    position: absolute;
+    font-family: 'DotGothic16', monospace;
+    font-size: 1.4rem;
+    color: #FF3B3B;
+    font-weight: 900;
+    z-index: 30;
+    opacity: 0;
+    pointer-events: none;
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.25);
+}
+
+.catch-get.pop {
+    animation: get-pop 0.85s ease-out forwards;
+}
+
+@keyframes get-pop {
+    0%   { opacity: 0; transform: scale(0.4) translateY(0); }
+    25%  { opacity: 1; transform: scale(1.3) translateY(-4px); }
+    65%  { opacity: 1; transform: scale(1)   translateY(-12px); }
+    100% { opacity: 0; transform: scale(0.8) translateY(-22px); }
+}
+
 /* Project links */
 .project-links {
     display: flex;

@@ -475,6 +475,9 @@ async function powerOn() {
 
     // Start demo score
     startDemoScore();
+
+    // Start brainrot catch demo
+    startCatchDemo();
 }
 
 async function powerOff() {
@@ -1302,6 +1305,100 @@ function startDemoScore() {
     }
 
     runDemo();
+}
+
+// =====================================================
+// BRAINROT CATCH DEMO
+
+let catchDemoTimeout = null;
+let catchDemoCount = 0;
+
+const CATCH_POSITIONS = [
+    { left: '10%', top: '18%' },
+    { left: '54%', top: '12%' },
+    { left: '68%', top: '52%' },
+    { left: '16%', top: '58%' },
+];
+
+function startCatchDemo() {
+    if (catchDemoTimeout) clearTimeout(catchDemoTimeout);
+
+    const container = document.getElementById('demo-catch');
+    if (!container) return;
+
+    const countEl  = document.getElementById('catch-count');
+    const netEl    = document.getElementById('catch-net');
+    const getEl    = document.getElementById('catch-get');
+    const chars    = ['cc-0','cc-1','cc-2','cc-3'].map(id => document.getElementById(id)).filter(Boolean);
+
+    function resetDemo() {
+        catchDemoCount = 0;
+        if (countEl) countEl.textContent = '0';
+        if (netEl)  { netEl.style.opacity = '0'; netEl.style.left = '-60px'; netEl.style.top = '40%'; }
+        if (getEl)  { getEl.classList.remove('pop'); getEl.style.opacity = '0'; }
+        chars.forEach((c, i) => {
+            c.classList.remove('caught');
+            c.classList.add('bob');
+            c.style.opacity = '1';
+            c.style.left = CATCH_POSITIONS[i].left;
+            c.style.top  = CATCH_POSITIONS[i].top;
+        });
+    }
+
+    function catchSequence(index) {
+        if (!state.tvOn || state.currentChannel !== 1) {
+            catchDemoTimeout = setTimeout(() => catchSequence(index), 800);
+            return;
+        }
+
+        if (index >= chars.length) {
+            catchDemoTimeout = setTimeout(() => { resetDemo(); catchDemoTimeout = setTimeout(() => catchSequence(0), 600); }, 1400);
+            return;
+        }
+
+        const char = chars[index];
+        const pos  = CATCH_POSITIONS[index];
+
+        // Show net and fly toward character
+        if (netEl) {
+            netEl.style.transition = 'none';
+            netEl.style.opacity = '1';
+            netEl.style.left = '5%';
+            netEl.style.top  = '80%';
+            // Force reflow then animate
+            void netEl.offsetWidth;
+            netEl.style.transition = 'left 0.45s cubic-bezier(.4,0,.2,1), top 0.45s cubic-bezier(.4,0,.2,1)';
+            netEl.style.left = pos.left;
+            netEl.style.top  = pos.top;
+        }
+
+        // Catch after net arrives
+        catchDemoTimeout = setTimeout(() => {
+            char.classList.remove('bob');
+            char.classList.add('caught');
+            catchDemoCount++;
+            if (countEl) countEl.textContent = catchDemoCount;
+
+            // GET! popup
+            if (getEl) {
+                getEl.style.left = pos.left;
+                getEl.style.top  = `calc(${pos.top} - 10px)`;
+                getEl.classList.remove('pop');
+                void getEl.offsetWidth;
+                getEl.classList.add('pop');
+            }
+
+            // Retract net
+            if (netEl) {
+                setTimeout(() => { if (netEl) netEl.style.opacity = '0'; }, 250);
+            }
+
+            catchDemoTimeout = setTimeout(() => catchSequence(index + 1), 700);
+        }, 500);
+    }
+
+    resetDemo();
+    catchDemoTimeout = setTimeout(() => catchSequence(0), 800);
 }
 
 // =====================================================
