@@ -698,23 +698,15 @@
     }
 
     .upgrade-icon {
-      width: 52px;
-      height: 52px;
-      border-radius: 14px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
       border: 2px solid var(--ink);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 26px;
+      overflow: hidden;
       flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
     }
-    .upgrade-item:nth-child(1) .upgrade-icon { background: #FFF0DE; }
-    .upgrade-item:nth-child(2) .upgrade-icon { background: #DEFFF0; }
-    .upgrade-item:nth-child(3) .upgrade-icon { background: #DEEEFF; }
-    .upgrade-item:nth-child(4) .upgrade-icon { background: #FFEEEE; }
-    .upgrade-item:nth-child(5) .upgrade-icon { background: #F8DEFF; }
-    .upgrade-item:nth-child(6) .upgrade-icon { background: #FFFADE; }
-    .upgrade-item:nth-child(7) .upgrade-icon { background: #DEF0FF; }
+    .upgrade-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     .upgrade-info {}
     .upgrade-name { font-family: 'Fredoka One', sans-serif; font-size: 16px; margin-bottom: 4px; }
@@ -941,11 +933,11 @@
 
     <div class="hero-tagline">
       <span class="i18n"
-        data-ja="<strong>全50体</strong>のイタリアンブレインロットキャラを集めよう。<br>トゥントゥンサフールやトラランレロに出会えるかも…？<br>時間・天気・ステージで出現が変わる本格コレクション。"
-        data-en="Collect all <strong>50</strong> Italian Brainrot characters.<br>Will you encounter Tung Tung Tung Sahur or Tralalero?<br>Appearances change by time, weather &amp; stage.">
-        <strong>全50体</strong>のイタリアンブレインロットキャラを集めよう。<br>
+        data-ja="<strong>50体以上</strong>のイタリアンブレインロットキャラを集めよう。<br>トゥントゥンサフールやトラランレロに出会えるかも…？<br>時間帯・ゲーム内天気・ステージで出現が変わる本格コレクション。"
+        data-en="Collect <strong>50+ and growing</strong> Italian Brainrot characters.<br>Will you encounter Tung Tung Tung Sahur or Tralalero?<br>Appearances change by time of day, in-game weather &amp; stage.">
+        <strong>50体以上</strong>のイタリアンブレインロットキャラを集めよう。<br>
         トゥントゥンサフールやトラランレロに出会えるかも…？<br>
-        時間・天気・ステージで出現が変わる本格コレクション。
+        時間帯・ゲーム内天気・ステージで出現が変わる本格コレクション。
       </span>
     </div>
 
@@ -982,7 +974,7 @@
         <div class="feature-card reveal">
           <span class="feature-icon">⏰</span>
           <h3 class="feature-title i18n" data-ja="時間・天気で変わる出現" data-en="Time &amp; Weather Spawns">時間・天気で変わる出現</h3>
-          <p class="feature-desc i18n" data-ja="朝・昼・夕・夜と晴れ・雨・雪などリアルの天気情報に連動。レアキャラは特定の条件でしか出ない！" data-en="Tied to real-time weather — clear, rain, snow &amp; more. Rare characters only appear in special conditions!">朝・昼・夕・夜と晴れ・雨・雪などリアルの天気情報に連動。レアキャラは特定の条件でしか出ない！</p>
+          <p class="feature-desc i18n" data-ja="朝・昼・夕・夜の時間帯と、晴れ・雨・雪などゲーム独自の天気が出現を左右する。レアキャラは特定の条件でしか出ない！" data-en="Time of day and the game's own independent weather system — clear, rain, snow &amp; more — determine who appears. Rare characters only show up in special conditions!">朝・昼・夕・夜の時間帯と、晴れ・雨・雪などゲーム独自の天気が出現を左右する。レアキャラは特定の条件でしか出ない！</p>
         </div>
         <div class="feature-card reveal">
           <span class="feature-icon">🗺️</span>
@@ -1078,6 +1070,11 @@
       </div>
 
       <!-- Character Gallery -->
+      <div style="text-align:center;margin-top:48px;margin-bottom:24px;">
+        <span style="font-family:'Fredoka One',sans-serif;font-size:18px;background:var(--yellow);border:2px solid var(--ink);border-radius:50px;padding:6px 20px;box-shadow:3px 3px 0 var(--ink);">
+          <span class="i18n" data-ja="キャラクター一部紹介 ✦ まだまだいるぞ！" data-en="Some Characters ✦ There are way more!">キャラクター一部紹介 ✦ まだまだいるぞ！</span>
+        </span>
+      </div>
       <div class="char-gallery">
         <div class="char-card reveal">
           <img class="char-img" src="追加ブレインロット/バナニータ・ドルフィニータ.png" alt="バナニータ・ドルフィニータ">
@@ -1115,6 +1112,11 @@
           <img class="char-img" src="追加ブレインロット/スノオッフィ・ゼッフィルッリ.png" alt="スノオッフィ・ゼッフィルッリ">
           <div class="char-name">スノオッフィ・ゼッフィルッリ</div>
         </div>
+        <div class="char-card reveal" style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--ink);color:var(--white);min-height:160px;">
+          <div style="font-size:36px;margin-bottom:8px;">＋</div>
+          <div style="font-family:'Fredoka One',sans-serif;font-size:22px;color:var(--yellow);" class="i18n" data-ja="50体以上！" data-en="50+ More!">50体以上！</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-top:4px;" class="i18n" data-ja="続々追加予定" data-en="More coming soon">続々追加予定</div>
+        </div>
       </div>
     </div>
   </section>
@@ -1141,7 +1143,7 @@
           </div>
           <div class="stage-body">
             <h3 class="stage-name i18n" data-ja="🌿 草原" data-en="🌿 Grassland">🌿 草原</h3>
-            <p class="stage-desc i18n" data-ja="緑豊かな大地。コモン〜レアのキャラが多数生息。初心者にも優しい基本ステージ。" data-en="Lush green land. Lots of Common-to-Rare characters. The beginner-friendly starter stage.">緑豊かな大地。コモン〜レアのキャラが多数生息。初心者にも優しい基本ステージ。</p>
+            <p class="stage-desc i18n" data-ja="広大な草原にブレインロットたちが野生で徘徊している。朝は新鮮な顔ぶれが多く、雨上がりにはレアな姿も。最初に足を運ぶならここ。" data-en="Brainrots roam wild across the open grasslands. Mornings bring fresh faces, and rare ones appear after the rain. The best place to start.">広大な草原にブレインロットたちが野生で徘徊している。朝は新鮮な顔ぶれが多く、雨上がりにはレアな姿も。最初に足を運ぶならここ。</p>
             <div class="stage-tags">
               <span class="tag"><img src="時間帯アイコン/IMG_9905.png" alt="朝"><span class="i18n" data-ja="朝に強い" data-en="Morning-heavy">朝に強い</span></span>
               <span class="tag"><img src="時間帯アイコン/IMG_9907.png" alt="雨"><span class="i18n" data-ja="雨で希少出現" data-en="Rain = rare">雨で希少出現</span></span>
@@ -1155,7 +1157,7 @@
           </div>
           <div class="stage-body">
             <h3 class="stage-name i18n" data-ja="🏜️ 砂漠" data-en="🏜️ Desert">🏜️ 砂漠</h3>
-            <p class="stage-desc i18n" data-ja="灼熱の砂地。アンコモン〜スーパーレアが多い中級ステージ。嵐の夜には幻のキャラが！" data-en="Scorching desert. Lots of Uncommon-to-SR. Rare characters appear in stormy nights!">灼熱の砂地。アンコモン〜スーパーレアが多い中級ステージ。嵐の夜には幻のキャラが！</p>
+            <p class="stage-desc i18n" data-ja="灼熱のサボテン地帯。昼間は日差しに強いブレインロットたちが跳梁し、夜になると普段は姿を見せないレジェンド級が砂の向こうから現れる。" data-en="Scorching cactus country. Heat-loving Brainrots run wild in the day; Legends emerge from the desert dark at night.">灼熱のサボテン地帯。昼間は日差しに強いブレインロットたちが跳梁し、夜になると普段は姿を見せないレジェンド級が砂の向こうから現れる。</p>
             <div class="stage-tags">
               <span class="tag"><img src="時間帯アイコン/IMG_9904.png" alt="夜"><span class="i18n" data-ja="夜に強い" data-en="Night-heavy">夜に強い</span></span>
               <span class="tag"><img src="時間帯アイコン/IMG_9903.png" alt="昼"><span class="i18n" data-ja="昼はレジェンド" data-en="Day = legend">昼はレジェンド</span></span>
@@ -1169,7 +1171,7 @@
           </div>
           <div class="stage-body">
             <h3 class="stage-name i18n" data-ja="🌊 深海" data-en="🌊 Deep Sea">🌊 深海</h3>
-            <p class="stage-desc i18n" data-ja="謎めいた深海世界。レア〜レジェンドの水生キャラが生息。雨天で出現率が跳ね上がる！" data-en="Mysterious deep sea. Rare-to-Legend aquatic characters. Rain drastically boosts spawn rates!">謎めいた深海世界。レア〜レジェンドの水生キャラが生息。雨天で出現率が跳ね上がる！</p>
+            <p class="stage-desc i18n" data-ja="沈没船が眠る深海の底。水中に適応したブレインロットたちが静かに漂っている。雨が降ると深部からレアな個体が浮かび上がり、深夜は最も多くの種類が出現する。" data-en="The deep sea floor where a sunken ship sleeps. Adapted Brainrots drift silently below. Rain draws rare specimens up from the depths; the most species appear at midnight.">沈没船が眠る深海の底。水中に適応したブレインロットたちが静かに漂っている。雨が降ると深部からレアな個体が浮かび上がり、深夜は最も多くの種類が出現する。</p>
             <div class="stage-tags">
               <span class="tag"><img src="時間帯アイコン/IMG_9907.png" alt="雨"><span class="i18n" data-ja="雨天で激増" data-en="Rain = surge">雨天で激増</span></span>
               <span class="tag"><img src="時間帯アイコン/IMG_9904.png" alt="夜"><span class="i18n" data-ja="深夜限定" data-en="Late night only">深夜限定</span></span>
@@ -1183,7 +1185,7 @@
           </div>
           <div class="stage-body">
             <h3 class="stage-name i18n" data-ja="🏙️ 都市" data-en="🏙️ City">🏙️ 都市</h3>
-            <p class="stage-desc i18n" data-ja="ネオンが輝く夜の都市。スーパーレア〜レジェンドが集中する上級ステージ。曇り空が鍵！" data-en="Neon-lit city at night. SR-to-Legend concentration. Cloudy skies are the key!">ネオンが輝く夜の都市。スーパーレア〜レジェンドが集中する上級ステージ。曇り空が鍵！</p>
+            <p class="stage-desc i18n" data-ja="提灯が揺れる夜の路地裏。都市に潜んだブレインロットたちは警戒心が強く、曇り空の夕方にこそその姿を現す。スーパーレアとレジェンドの宝庫。" data-en="A lantern-lit back alley at night. City Brainrots are wary—they reveal themselves under cloudy evening skies. The richest hunting ground for Super Rares and Legends.">提灯が揺れる夜の路地裏。都市に潜んだブレインロットたちは警戒心が強く、曇り空の夕方にこそその姿を現す。スーパーレアとレジェンドの宝庫。</p>
             <div class="stage-tags">
               <span class="tag"><img src="時間帯アイコン/IMG_9906.png" alt="曇り"><span class="i18n" data-ja="曇りで激化" data-en="Cloudy = intense">曇りで激化</span></span>
               <span class="tag"><img src="時間帯アイコン/IMG_9902.png" alt="夕方"><span class="i18n" data-ja="夕方が熱い" data-en="Evening hot">夕方が熱い</span></span>
@@ -1246,49 +1248,49 @@
 
       <div class="upgrade-grid">
         <div class="upgrade-item reveal">
-          <div class="upgrade-icon">🪙</div>
+          <div class="upgrade-icon"><img src="コインボーナス.png" alt="コインボーナス"></div>
           <div class="upgrade-info">
             <div class="upgrade-name i18n" data-ja="コインボーナス" data-en="Coin Bonus">コインボーナス</div>
             <div class="upgrade-desc i18n" data-ja="捕獲時に獲得できるコインが増加。コインが多いほど強化も早い！" data-en="Increases coins earned per catch. More coins = faster upgrades!">捕獲時に獲得できるコインが増加。コインが多いほど強化も早い！</div>
           </div>
         </div>
         <div class="upgrade-item reveal">
-          <div class="upgrade-icon">🔄</div>
+          <div class="upgrade-icon"><img src="リフレッシュ回数増加.png" alt="リフレッシュ回数増加"></div>
           <div class="upgrade-info">
             <div class="upgrade-name i18n" data-ja="リフレッシュ回数増加" data-en="Refresh Count +">リフレッシュ回数増加</div>
             <div class="upgrade-desc i18n" data-ja="無料で使えるリフレッシュの回数が増える。何度でもキャラを一新！" data-en="More free refreshes per day. Repopulate the screen as many times as you want!">無料で使えるリフレッシュの回数が増える。何度でもキャラを一新！</div>
           </div>
         </div>
         <div class="upgrade-item reveal">
-          <div class="upgrade-icon">👾</div>
+          <div class="upgrade-icon"><img src="出現数.png" alt="出現数増加"></div>
           <div class="upgrade-info">
             <div class="upgrade-name i18n" data-ja="出現数増加" data-en="Spawn Count +">出現数増加</div>
             <div class="upgrade-desc i18n" data-ja="同時に画面に表示されるキャラ数が増える。一度に多く捕獲チャンス！" data-en="More characters appear on screen at once. More chances to catch per session!">同時に画面に表示されるキャラ数が増える。一度に多く捕獲チャンス！</div>
           </div>
         </div>
         <div class="upgrade-item reveal">
-          <div class="upgrade-icon">⚡</div>
+          <div class="upgrade-icon"><img src="出現間隔短縮.png" alt="出現間隔短縮"></div>
           <div class="upgrade-info">
             <div class="upgrade-name i18n" data-ja="出現間隔短縮" data-en="Spawn Interval −">出現間隔短縮</div>
             <div class="upgrade-desc i18n" data-ja="次のキャラが出現するまでの待ち時間が短くなる。テンポよく遊べる！" data-en="Reduces wait time between character appearances. Keep the pace going!">次のキャラが出現するまでの待ち時間が短くなる。テンポよく遊べる！</div>
           </div>
         </div>
         <div class="upgrade-item reveal">
-          <div class="upgrade-icon">🌈</div>
+          <div class="upgrade-icon"><img src="変異体出現率UP.png" alt="変異体出現率アップ"></div>
           <div class="upgrade-info">
             <div class="upgrade-name i18n" data-ja="変異体出現率アップ" data-en="Mutation Rate +">変異体出現率アップ</div>
-            <div class="upgrade-desc i18n" data-ja="レアな色違いキャラ（変異体）の出現確率が上がる。図鑑コンプには必須！" data-en="Increases mutation variant spawn rate. Essential for full Pokédex completion!">レアな色違いキャラ（変異体）の出現確率が上がる。図鑑コンプには必須！</div>
+            <div class="upgrade-desc i18n" data-ja="レアな色違いキャラ（変異体）の出現確率が上がる。図鑑コンプには必須！" data-en="Increases mutation variant spawn rate. Essential for full collection completion!">レアな色違いキャラ（変異体）の出現確率が上がる。図鑑コンプには必須！</div>
           </div>
         </div>
         <div class="upgrade-item reveal">
-          <div class="upgrade-icon">🎯</div>
+          <div class="upgrade-icon"><img src="捕獲網.png" alt="捕獲網"></div>
           <div class="upgrade-info">
             <div class="upgrade-name i18n" data-ja="捕獲網の解放" data-en="Net Unlock">捕獲網の解放</div>
-            <div class="upgrade-desc i18n" data-ja="特定のキャラを狙い撃ちできる捕獲網が使えるようになる。欲しいキャラを確実にゲット！" data-en="Unlock nets to target specific characters. Get exactly the character you want!">特定のキャラを狙い撃ちできる捕獲網が使えるようになる。欲しいキャラを確実にゲット！</div>
+            <div class="upgrade-desc i18n" data-ja="一気に画面内のブレインロットをまとめて獲得できる！一網打尽で効率爆上がり。" data-en="Catch all Brainrots on screen at once! Sweep them all up for maximum efficiency.">一気に画面内のブレインロットをまとめて獲得できる！一網打尽で効率爆上がり。</div>
           </div>
         </div>
         <div class="upgrade-item reveal">
-          <div class="upgrade-icon">🌤️</div>
+          <div class="upgrade-icon"><img src="天気予報.png" alt="天気予報"></div>
           <div class="upgrade-info">
             <div class="upgrade-name i18n" data-ja="天気予報の解放" data-en="Forecast Unlock">天気予報の解放</div>
             <div class="upgrade-desc i18n" data-ja="3日×3時間帯の出現予測グリッドが表示される。いつ・どこに行けばレアに会えるか丸わかり！" data-en="Shows a 3-day × 3-time-slot spawn forecast grid. Plan exactly when and where to hunt rare characters!">3日×3時間帯の出現予測グリッドが表示される。いつ・どこに行けばレアに会えるか丸わかり！</div>
@@ -1315,25 +1317,25 @@
         <div class="coin-section reveal">
           <div class="eco-title">🪙 <span class="i18n" data-ja="コインシステム" data-en="Coin System">コインシステム</span></div>
           <p style="font-size:14px;color:var(--ink-light);margin-bottom:20px;" class="i18n"
-            data-ja="無償コインはゲームプレイで獲得。有償コイン（💗ピンク色）はリアルマネーで購入可能。"
-            data-en="Earn free coins by playing. Paid coins (💗 pink) can be purchased with real money.">
-            無償コインはゲームプレイで獲得。有償コイン（💗ピンク色）はリアルマネーで購入可能。
+            data-ja="無償コインはゲームプレイで獲得。有償コイン（ダークコイン）はリアルマネーで購入可能。"
+            data-en="Earn free coins by playing. Paid dark coins can be purchased with real money.">
+            無償コインはゲームプレイで獲得。有償コイン（ダークコイン）はリアルマネーで購入可能。
           </p>
           <div class="coin-packs">
             <div class="coin-pack">
-              <div><div class="amount">🪙 150</div><div class="type i18n" data-ja="スモールパック" data-en="Small Pack">スモールパック</div></div>
+              <div style="display:flex;align-items:center;gap:8px;"><img src="無料コイン.png" style="width:28px;height:28px;border-radius:50%;"><div><div class="amount">150</div><div class="type i18n" data-ja="スモールパック" data-en="Small Pack">スモールパック</div></div></div>
             </div>
             <div class="coin-pack">
-              <div><div class="amount">🪙 900</div><div class="type i18n" data-ja="ミニパック" data-en="Mini Pack">ミニパック</div></div>
+              <div style="display:flex;align-items:center;gap:8px;"><img src="無料コイン.png" style="width:28px;height:28px;border-radius:50%;"><div><div class="amount">900</div><div class="type i18n" data-ja="ミニパック" data-en="Mini Pack">ミニパック</div></div></div>
             </div>
             <div class="coin-pack">
-              <div><div class="amount">🪙 3,000</div><div class="type i18n" data-ja="スタンダード" data-en="Standard">スタンダード</div></div>
+              <div style="display:flex;align-items:center;gap:8px;"><img src="無料コイン.png" style="width:28px;height:28px;border-radius:50%;"><div><div class="amount">3,000</div><div class="type i18n" data-ja="スタンダード" data-en="Standard">スタンダード</div></div></div>
             </div>
             <div class="coin-pack paid">
-              <div><div class="amount">💗 8,800</div><div class="type i18n" data-ja="ビッグパック" data-en="Big Pack">ビッグパック</div></div>
+              <div style="display:flex;align-items:center;gap:8px;"><img src="有償コイン.png" style="width:28px;height:28px;border-radius:50%;"><div><div class="amount">8,800</div><div class="type i18n" data-ja="ビッグパック" data-en="Big Pack">ビッグパック</div></div></div>
             </div>
             <div class="coin-pack paid">
-              <div><div class="amount">💗 20,000</div><div class="type i18n" data-ja="メガパック" data-en="Mega Pack">メガパック</div></div>
+              <div style="display:flex;align-items:center;gap:8px;"><img src="有償コイン.png" style="width:28px;height:28px;border-radius:50%;"><div><div class="amount">20,000</div><div class="type i18n" data-ja="メガパック" data-en="Mega Pack">メガパック</div></div></div>
             </div>
           </div>
         </div>
@@ -1348,7 +1350,7 @@
               <li class="i18n" data-ja="同時出現数 +5体" data-en="Spawn Count +5">同時出現数 +5体</li>
               <li class="i18n" data-ja="出現間隔 −3分" data-en="Spawn Interval −3 min">出現間隔 −3分</li>
               <li class="i18n" data-ja="バナー広告 非表示" data-en="No Banner Ads">バナー広告 非表示</li>
-              <li class="i18n" data-ja="強化が通常の 1/10 の価格" data-en="Upgrades at 1/10 price">強化が通常の 1/10 の価格</li>
+              <li class="i18n" data-ja="強化が通常の 1/2 の価格" data-en="Upgrades at half price">強化が通常の 1/2 の価格</li>
             </ul>
           </div>
           <p style="font-size:13px;color:var(--ink-light);margin-top:16px;line-height:1.7;" class="i18n"
@@ -1372,9 +1374,9 @@
         </span>
       </h2>
       <p class="i18n"
-        data-ja="ブレインロットコレクターズ — 今すぐダウンロードして全50体を集めよう！"
-        data-en="Brainrot Collectors — Download now and catch all 50 characters!">
-        ブレインロットコレクターズ — 今すぐダウンロードして全50体を集めよう！
+        data-ja="ブレインロットコレクターズ — 今すぐダウンロードして50体以上を集めよう！"
+        data-en="Brainrot Collectors — Download now and catch 50+ characters (and counting)!">
+        ブレインロットコレクターズ — 今すぐダウンロードして50体以上を集めよう！
       </p>
       <div class="cta-buttons">
         <a href="#" class="cta-btn big">
