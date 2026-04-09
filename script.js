@@ -237,7 +237,7 @@ class CRTAudio {
 const state = {
     tvOn: false,
     currentChannel: 0,
-    maxChannel: 4,
+    maxChannel: 5,
     currentProject: 0,
     maxProjects: 3,
     currentContact: 0,

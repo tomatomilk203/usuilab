@@ -759,6 +759,299 @@ body.tv-on .channels {
 /* =====================================================
    CH 1: PROJECTS
    ===================================================== */
+/* =====================================================
+   CH 2: BLOG  — Bold program identity
+   ===================================================== */
+.ch-blog {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background: #ff5c1a;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Bold diagonal color stripes */
+.blog-bg-stripe {
+    position: absolute;
+    height: 100%;
+    pointer-events: none;
+}
+.blog-bg-stripe.s1 {
+    width: 50%;
+    right: -5%;
+    background: #ff9900;
+    clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%);
+}
+.blog-bg-stripe.s2 {
+    width: 32%;
+    right: -5%;
+    background: #ffcc00;
+    clip-path: polygon(22% 0, 100% 0, 100% 100%, 0 100%);
+}
+.blog-bg-stripe.s3 {
+    width: 16%;
+    right: -5%;
+    background: #fff8e0;
+    clip-path: polygon(28% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Center body */
+.blog-body {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 0 32px;
+    width: 100%;
+    text-align: center;
+}
+
+/* Program badge */
+.blog-program-badge {
+    font-size: 0.65rem;
+    letter-spacing: .16em;
+    color: rgba(255,255,255,.75);
+    background: rgba(0,0,0,.35);
+    padding: 4px 12px;
+    border-radius: 2px;
+    display: inline-block;
+    opacity: 0;
+}
+.channel.active .blog-program-badge {
+    animation: bp-in .4s ease forwards .1s;
+}
+
+/* Main catchphrase — BIG and BOLD */
+.blog-main-catch {
+    font-size: clamp(3.8rem, 10vw, 6rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+    margin: 0;
+    letter-spacing: -.02em;
+    text-shadow: 0 4px 32px rgba(0,0,0,.35);
+    opacity: 0;
+    transform: translateY(24px);
+}
+.channel.active .blog-main-catch {
+    animation: bp-rise .55s cubic-bezier(.16,1,.3,1) forwards .28s;
+}
+
+/* Sub catchphrase */
+.blog-sub-catch {
+    font-size: clamp(1.1rem, 2.8vw, 1.6rem);
+    font-weight: 600;
+    color: rgba(255,255,255,.92);
+    letter-spacing: .12em;
+    margin: 0;
+    opacity: 0;
+    text-shadow: 0 2px 10px rgba(0,0,0,.2);
+}
+.channel.active .blog-sub-catch {
+    animation: bp-in .45s ease forwards .52s;
+}
+
+/* Read button — big, clear, unmissable */
+.blog-read-btn {
+    display: inline-block;
+    margin-top: 12px;
+    background: #fff;
+    color: #0d0d0d;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 900;
+    letter-spacing: .1em;
+    padding: 18px 48px;
+    border-radius: 4px;
+    transition: background .2s, transform .2s, box-shadow .2s;
+    opacity: 0;
+    box-shadow: 0 8px 36px rgba(0,0,0,.3);
+}
+.blog-read-btn:hover {
+    background: #ffcc00;
+    transform: translateY(-3px);
+    box-shadow: 0 14px 48px rgba(0,0,0,.35);
+}
+.channel.active .blog-read-btn {
+    animation: bp-in .45s ease forwards .75s;
+}
+
+/* ── Background blobs ── */
+.blog-blob {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: screen;
+    opacity: .18;
+}
+.blog-blob.b1 {
+    width: 180px; height: 180px;
+    background: #fff;
+    top: -40px; left: 10%;
+    animation: blob-drift1 7s ease-in-out infinite;
+}
+.blog-blob.b2 {
+    width: 120px; height: 120px;
+    background: #ffcc00;
+    bottom: 10%; left: 5%;
+    animation: blob-drift2 9s ease-in-out infinite;
+}
+.blog-blob.b3 {
+    width: 90px; height: 90px;
+    background: #fff;
+    top: 20%; right: 8%;
+    animation: blob-drift1 6s ease-in-out infinite reverse;
+}
+.blog-blob.b4 {
+    width: 140px; height: 140px;
+    background: #ffaa00;
+    bottom: -20px; right: 15%;
+    animation: blob-drift2 11s ease-in-out infinite reverse;
+}
+@keyframes blob-drift1 {
+    0%,100% { transform: translate(0,0) scale(1); }
+    33%     { transform: translate(14px,-18px) scale(1.08); }
+    66%     { transform: translate(-10px,12px) scale(.94); }
+}
+@keyframes blob-drift2 {
+    0%,100% { transform: translate(0,0) scale(1); }
+    40%     { transform: translate(-16px,14px) scale(1.1); }
+    70%     { transform: translate(10px,-10px) scale(.96); }
+}
+
+/* ── Floating side cards ── */
+.blog-float-col {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    z-index: 3;
+}
+.blog-float-col.left  { left: 18px; align-items: flex-start; }
+.blog-float-col.right { right: 18px; align-items: flex-end; }
+
+.bfc-card {
+    background: rgba(255,255,255,.95);
+    border-radius: 16px;
+    padding: 18px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 200px;
+    box-shadow: 0 6px 28px rgba(0,0,0,.15);
+    transform: rotate(var(--r, 0deg)) translateY(16px);
+    opacity: 0;
+    cursor: pointer;
+    transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s;
+}
+.bfc-card:hover {
+    transform: rotate(0deg) translateY(-4px) !important;
+    box-shadow: 0 14px 40px rgba(0,0,0,.22);
+}
+.channel.active .bfc-card {
+    animation: bfc-in .55s cubic-bezier(.34,1.56,.64,1) forwards var(--delay, .5s);
+}
+@keyframes bfc-in {
+    to { opacity: 1; transform: rotate(var(--r, 0deg)) translateY(0); }
+}
+
+.bfc-tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    padding: 4px 12px;
+    border-radius: 8px;
+    color: var(--tc);
+    background: var(--tb);
+    align-self: flex-start;
+}
+.bfc-text {
+    font-size: 1rem;
+    font-weight: 800;
+    color: #1a1a1a;
+    line-height: 1.3;
+    letter-spacing: .01em;
+}
+
+/* ── Mascot ── */
+.blog-mascot {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+    z-index: 4;
+    opacity: 0;
+}
+.channel.active .blog-mascot {
+    animation: bp-in .5s ease forwards 1.3s;
+}
+
+.blog-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 16px rgba(0,0,0,.2);
+    flex-shrink: 0;
+}
+
+.blog-bubble {
+    background: #fff;
+    color: #1a1a1a;
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: .02em;
+    padding: 22px 36px;
+    border-radius: 20px;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0,0,0,.15);
+    white-space: nowrap;
+    animation: bubble-hover 2.4s ease-in-out infinite;
+}
+/* しっぽ：左向き（アバター側へ） */
+.bubble-tail {
+    position: absolute;
+    left: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0; height: 0;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 11px solid #fff;
+}
+
+@keyframes bubble-hover {
+    0%,100% { transform: translateY(0); }
+    50%     { transform: translateY(-6px); }
+}
+
+/* ── Keyframes ── */
+@keyframes bp-in   { to { opacity: 1; } }
+@keyframes bp-rise { to { opacity: 1; transform: translateY(0); } }
+
+/* ── Shared ── */
+@keyframes b-fadein  { to { opacity: 1; } }
+@keyframes b-slidein { to { opacity: 1; transform: translateX(0); } }
+@keyframes b-itemin  { to { opacity: 1; transform: translateX(0); } }
+
+/* =====================================================
+   CH 1: PROJECTS
+   ===================================================== */
 .ch-projects {
     width: 100%;
     height: 100%;
