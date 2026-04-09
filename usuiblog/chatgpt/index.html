@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPTって何者？5分でわかる基本のキ — usui blog</title>
+  <meta name="description" content="「ChatGPT」って名前は聞いたことあるけど、何ができるの？誰が作ったの？お金かかるの？むずかしい言葉なしで、ゆっくり説明します。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─── Design Tokens ──────────────────────── */
+    :root {
+      --bg:        #f5f4ed;
+      --ivory:     #faf9f5;
+      --ink:       #141413;
+      --terra:     #c96442;
+      --coral:     #f4845f;
+      --coral-bg:  #fde8de;
+      --coral-bd:  #f4c4a8;
+      --mint:      #7ecbb0;
+      --mint-bg:   #d8f0e8;
+      --mint-tx:   #3a9070;
+      --lav-bg:    #ece4f4;
+      --lav-tx:    #8060b0;
+      --gold-bg:   #fdf0cc;
+      --gold-tx:   #9a7020;
+      --stone:     #5e5d59;
+      --muted:     #87867f;
+      --border:    #e8e6dc;
+      --border-lt: #f0eee6;
+    }
+
+    /* ─── Reset ──────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.8;
+    }
+
+    /* ─── Fixed Nav ───────────────────────────── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 28px;
+      background: rgba(245,244,237,.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-lt);
+    }
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--stone);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: color .2s;
+    }
+    .nav-back:hover { color: var(--terra); }
+    .nav-back-dot {
+      width: 6px; height: 6px;
+      background: var(--mint);
+      border-radius: 50%;
+      animation: blink 1.8s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+    .nav-label {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 400;
+      letter-spacing: .06em;
+    }
+
+    /* ─── Article Header ─────────────────────── */
+    .article-header {
+      padding: 120px 28px 64px;
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+    }
+    .article-header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%; transform: translateX(-50%);
+      width: 120%; height: 100%;
+      background:
+        radial-gradient(ellipse at 70% 30%, rgba(246,200,168,.55) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 70%, rgba(184,232,216,.22) 0%, transparent 45%);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .article-tag {
+      display: inline-block;
+      background: var(--coral-bg);
+      color: var(--terra);
+      border: 1px solid var(--coral-bd);
+      padding: 5px 16px;
+      border-radius: 16px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fade-up .5s ease forwards .1s;
+    }
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .article-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(32px, 6vw, 58px);
+      line-height: 1.12;
+      color: var(--ink);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fade-up .7s cubic-bezier(.16,1,.3,1) forwards .2s;
+    }
+    .article-title em {
+      font-style: italic;
+      color: var(--terra);
+    }
+    .article-lead {
+      font-size: 17px;
+      color: var(--stone);
+      font-weight: 300;
+      line-height: 1.8;
+      max-width: 540px;
+      margin: 0 auto 36px;
+      opacity: 0;
+      animation: fade-up .6s ease forwards .35s;
+    }
+    .article-meta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: .05em;
+      opacity: 0;
+      animation: fade-up .5s ease forwards .5s;
+    }
+    .meta-sep { color: var(--border); }
+
+    /* ─── Divider ─────────────────────────────── */
+    .divider {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 28px;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ─── Article Body ───────────────────────── */
+    .article-body {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 64px 28px 120px;
+    }
+
+    /* Section heading */
+    .article-body h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(24px, 3.5vw, 32px);
+      color: var(--ink);
+      margin-top: 72px;
+      margin-bottom: 20px;
+      line-height: 1.25;
+      position: relative;
+      padding-bottom: 14px;
+    }
+    .article-body h2::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: 0;
+      width: 40px; height: 2px;
+      background: var(--terra);
+      border-radius: 2px;
+    }
+    .article-body h2:first-child { margin-top: 0; }
+
+    /* Sub heading */
+    .article-body h3 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-top: 40px;
+      margin-bottom: 12px;
+    }
+
+    /* Paragraph */
+    .article-body p {
+      font-size: 16px;
+      line-height: 1.88;
+      color: #2e2e2c;
+      margin-bottom: 22px;
+      font-weight: 400;
+    }
+    .article-body p strong {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    /* Big quote / highlight sentence */
+    .pull-quote {
+      border-left: 3px solid var(--terra);
+      padding: 16px 24px;
+      margin: 36px 0;
+      background: var(--ivory);
+      border-radius: 0 12px 12px 0;
+    }
+    .pull-quote p {
+      font-size: 18px;
+      font-style: italic;
+      color: var(--ink);
+      font-weight: 300;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    /* Info box */
+    .box {
+      border-radius: 14px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .box-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .box-title::before {
+      content: '';
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .box p { font-size: 15px; margin-bottom: 10px; }
+    .box p:last-child { margin-bottom: 0; }
+
+    .box-coral {
+      background: var(--coral-bg);
+      border: 1px solid var(--coral-bd);
+    }
+    .box-coral .box-title { color: var(--terra); }
+    .box-coral .box-title::before { background: var(--terra); }
+    .box-coral p { color: #7a3a28; }
+
+    .box-mint {
+      background: var(--mint-bg);
+      border: 1px solid #a8dcc8;
+    }
+    .box-mint .box-title { color: var(--mint-tx); }
+    .box-mint .box-title::before { background: var(--mint); }
+    .box-mint p { color: #2a6050; }
+
+    .box-lav {
+      background: var(--lav-bg);
+      border: 1px solid #c8aee0;
+    }
+    .box-lav .box-title { color: var(--lav-tx); }
+    .box-lav .box-title::before { background: #c4a8e0; }
+    .box-lav p { color: #5a3880; }
+
+    .box-gold {
+      background: var(--gold-bg);
+      border: 1px solid #e0cc88;
+    }
+    .box-gold .box-title { color: var(--gold-tx); }
+    .box-gold .box-title::before { background: #f0c060; }
+    .box-gold p { color: #6a5010; }
+
+    /* Feature list */
+    .feature-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin: 28px 0;
+    }
+    .feature-list li {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      font-size: 15.5px;
+      line-height: 1.7;
+      color: #2e2e2c;
+    }
+    .feature-icon {
+      width: 32px; height: 32px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .fi-coral { background: var(--coral-bg); }
+    .fi-mint  { background: var(--mint-bg); }
+    .fi-lav   { background: var(--lav-bg); }
+    .fi-gold  { background: var(--gold-bg); }
+
+    /* Step flow */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin: 32px 0;
+    }
+    .step {
+      display: flex;
+      gap: 20px;
+      position: relative;
+    }
+    .step:not(:last-child)::before {
+      content: '';
+      position: absolute;
+      left: 15px; top: 36px;
+      width: 2px;
+      height: calc(100% - 4px);
+      background: var(--border);
+    }
+    .step-num {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--ink);
+      color: var(--ivory);
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      letter-spacing: .04em;
+      z-index: 1;
+    }
+    .step-body {
+      padding: 4px 0 36px;
+      flex: 1;
+    }
+    .step-body strong {
+      display: block;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 5px;
+    }
+    .step-body span {
+      font-size: 14.5px;
+      color: var(--stone);
+      line-height: 1.7;
+    }
+    .step:last-child .step-body { padding-bottom: 8px; }
+
+    /* Comparison table */
+    .compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin: 32px 0;
+    }
+    .compare-col {
+      border-radius: 14px;
+      padding: 22px 20px;
+    }
+    .compare-col-free {
+      background: var(--ivory);
+      border: 1px solid var(--border);
+    }
+    .compare-col-paid {
+      background: var(--ink);
+      color: var(--ivory);
+    }
+    .compare-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .compare-col-free .compare-label { color: var(--stone); }
+    .compare-col-paid .compare-label { color: #c8c6be; }
+    .compare-badge {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    .compare-col-free .compare-badge { background: var(--mint-bg); color: var(--mint-tx); }
+    .compare-col-paid .compare-badge { background: var(--gold-bg); color: var(--gold-tx); }
+    .compare-item {
+      font-size: 14px;
+      padding: 9px 0;
+      border-bottom: 1px solid;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      line-height: 1.5;
+    }
+    .compare-col-free .compare-item { border-color: var(--border-lt); color: var(--stone); }
+    .compare-col-paid .compare-item { border-color: rgba(255,255,255,.08); color: #bbb9b0; }
+    .compare-item:last-child { border-bottom: none; }
+    .check { font-size: 12px; flex-shrink: 0; }
+
+    /* Warning box */
+    .warn {
+      background: var(--gold-bg);
+      border: 1px solid #e0cc88;
+      border-left: 3px solid #f0c060;
+      border-radius: 0 12px 12px 0;
+      padding: 20px 24px;
+      margin: 32px 0;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .warn-icon {
+      font-size: 20px;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .warn-body strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gold-tx);
+      margin-bottom: 6px;
+      letter-spacing: .02em;
+    }
+    .warn-body p {
+      font-size: 14.5px;
+      color: #6a5010;
+      margin: 0;
+      line-height: 1.75;
+    }
+
+    /* Summary box */
+    .summary {
+      background: var(--ink);
+      color: var(--ivory);
+      border-radius: 18px;
+      padding: 36px 40px;
+      margin: 56px 0 0;
+    }
+    .summary-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+    .summary-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .summary-list li {
+      font-size: 15px;
+      color: #c8c6be;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      line-height: 1.65;
+    }
+    .summary-list li::before {
+      content: '◆';
+      font-size: 8px;
+      color: var(--terra);
+      flex-shrink: 0;
+      margin-top: 7px;
+    }
+
+    /* Next articles */
+    .next-section {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 28px 100px;
+    }
+    .next-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 22px;
+      margin-bottom: 20px;
+      color: var(--ink);
+    }
+    .next-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .next-card {
+      background: var(--ivory);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 22px 18px;
+      text-decoration: none;
+      display: block;
+      transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s;
+    }
+    .next-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 16px 48px rgba(0,0,0,.08);
+    }
+    .next-card-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .next-card-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 17px;
+      color: var(--ink);
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+    .next-card-arrow {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 28px;
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      color: var(--ink);
+    }
+    .footer-copy {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+    .footer-link {
+      font-size: 13px;
+      color: var(--stone);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .footer-link:hover { color: var(--ink); }
+
+    /* ─── Responsive ─────────────────────────── */
+    @media (max-width: 640px) {
+      .nav { padding: 12px 18px; }
+      .article-header { padding: 90px 20px 48px; }
+      .article-body { padding: 48px 20px 80px; }
+      .compare { grid-template-columns: 1fr; }
+      .next-cards { grid-template-columns: 1fr; }
+      .next-section { padding: 0 20px 80px; }
+      .summary { padding: 28px 24px; }
+      .footer { padding: 32px 20px; flex-direction: column; gap: 20px; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="nav">
+    <a href="../" class="nav-back">
+      <span class="nav-back-dot"></span>
+      ◁ ブログ一覧
+    </a>
+    <span class="nav-label">USUI BLOG — 入門</span>
+  </nav>
+
+  <!-- Article Header -->
+  <header class="article-header">
+    <span class="article-tag">入門</span>
+    <h1 class="article-title">
+      ChatGPTって<em>何者？</em><br>
+      5分でわかる基本のキ
+    </h1>
+    <p class="article-lead">
+      「ChatGPT」という言葉は聞いたことあるけど、実際何ができるの？<br>
+      誰が作ったの？お金かかるの？<br>
+      むずかしい言葉なしで、ゆっくり説明します。
+    </p>
+    <div class="article-meta">
+      <span>2026年4月</span>
+      <span class="meta-sep">|</span>
+      <span>5 min read</span>
+      <span class="meta-sep">|</span>
+      <span>USUI</span>
+    </div>
+  </header>
+
+  <div class="divider"></div>
+
+  <!-- Article Body -->
+  <main class="article-body">
+
+    <h2>そもそも「AI」って何？</h2>
+    <p>
+      いきなり「ChatGPT」の話をする前に、まず「AI（エーアイ）」という言葉から整理しましょう。
+    </p>
+    <p>
+      AIとは <strong>「Artificial Intelligence（アーティフィシャル・インテリジェンス）」の略</strong> で、日本語にすると「人工知能」。むずかしく聞こえますが、一言でいうと <strong>「コンピューターが、人間みたいに考えたり答えたりする技術」</strong> のことです。
+    </p>
+
+    <div class="pull-quote">
+      <p>AIは「賢いコンピューター」。ただそれだけです。SFの話でも、ロボットの話でもない。</p>
+    </div>
+
+    <p>
+      スマホの音声アシスタント（SiriやGoogleアシスタント）も、Amazonのおすすめ商品も、迷惑メールフィルターも、全部AIを使っています。実はすでに、みなさんの生活のいたるところにAIはいます。
+    </p>
+
+    <h2>ChatGPTとは？</h2>
+    <p>
+      ChatGPTは、アメリカの会社 <strong>「OpenAI（オープンエーアイ）」</strong> が作った、<strong>「会話ができるAI」</strong> です。
+    </p>
+    <p>
+      使い方はとてもシンプル。スマホやパソコンから、まるで友達にLINEするみたいに、<strong>文章で話しかけるだけ。</strong> するとAIが文章で答えてくれます。
+    </p>
+
+    <div class="box box-coral">
+      <div class="box-title">ちょっとだけ豆知識</div>
+      <p>「GPT」は "Generative Pre-trained Transformer（ジェネレーティブ・プリトレインド・トランスフォーマー）" の略です。完全に覚えなくていいです。「すごい技術の名前」くらいに思ってください。</p>
+      <p>「Chat（チャット）」は英語で「おしゃべり」という意味。つまり ChatGPT ＝ 「おしゃべりできるAI」です。</p>
+    </div>
+
+    <h2>何ができるの？</h2>
+    <p>ChatGPTにできることは、本当にたくさんあります。代表的なものをまとめました。</p>
+
+    <ul class="feature-list">
+      <li>
+        <div class="feature-icon fi-coral">🤔</div>
+        <div>
+          <strong style="display:block;font-weight:600;margin-bottom:3px;">質問に答える</strong>
+          「富士山の高さは？」→「3776メートルです」。知らないことをすぐ調べてくれます。
+        </div>
+      </li>
+      <li>
+        <div class="feature-icon fi-mint">✍️</div>
+        <div>
+          <strong style="display:block;font-weight:600;margin-bottom:3px;">文章を書いてくれる</strong>
+          「上司へのお断りメールを書いて」「誕生日メッセージ作って」などもお任せ。
+        </div>
+      </li>
+      <li>
+        <div class="feature-icon fi-lav">🌍</div>
+        <div>
+          <strong style="display:block;font-weight:600;margin-bottom:3px;">翻訳する</strong>
+          日本語⇔英語はもちろん、中国語・スペイン語・フランス語など多言語に対応。
+        </div>
+      </li>
+      <li>
+        <div class="feature-icon fi-gold">💡</div>
+        <div>
+          <strong style="display:block;font-weight:600;margin-bottom:3px;">アイデアを出す</strong>
+          「夜ごはんのメニューを10個考えて」「旅行の計画を立てて」なども得意。
+        </div>
+      </li>
+      <li>
+        <div class="feature-icon fi-coral">📝</div>
+        <div>
+          <strong style="display:block;font-weight:600;margin-bottom:3px;">要約する</strong>
+          長い文章をコピペして「これを3行で説明して」と頼めば、ポイントをまとめてくれます。
+        </div>
+      </li>
+      <li>
+        <div class="feature-icon fi-mint">💻</div>
+        <div>
+          <strong style="display:block;font-weight:600;margin-bottom:3px;">プログラムを書く</strong>
+          プログラミングを知らなくても、やりたいことを説明するとコードを書いてくれます。
+        </div>
+      </li>
+    </ul>
+
+    <h2>どうやって使うの？</h2>
+    <p>ChatGPTの使い方は、たった3ステップ。アプリのインストールも不要です。</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-body">
+          <strong>chatgpt.com にアクセスする</strong>
+          <span>スマホでもパソコンでも、ブラウザ（Safari・Chromeなど）から開くだけでOK。</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-body">
+          <strong>アカウントを作る（無料）</strong>
+          <span>メールアドレスかGoogleアカウントで登録できます。5分もかかりません。</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-body">
+          <strong>話しかけるだけ！</strong>
+          <span>入力欄に日本語で話しかければ、すぐ答えてくれます。「こんにちは」から始めてOK。</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-mint">
+      <div class="box-title">まずはこれを試してみて</div>
+      <p>「私の趣味は料理です。初心者でも作れる、簡単な夕食レシピを3つ教えてください。」</p>
+      <p>こんな感じで話しかけてみると、すぐに答えてくれます。難しく考えなくて大丈夫です。</p>
+    </div>
+
+    <h2>無料で使える？有料版との違いは？</h2>
+    <p>ChatGPTには<strong>無料版</strong>と<strong>有料版（ChatGPT Plus）</strong>があります。</p>
+
+    <div class="compare">
+      <div class="compare-col compare-col-free">
+        <div class="compare-label">
+          無料版
+          <span class="compare-badge">FREE</span>
+        </div>
+        <div class="compare-item"><span class="check">✓</span> 基本的な会話・質問</div>
+        <div class="compare-item"><span class="check">✓</span> 文章作成・翻訳</div>
+        <div class="compare-item"><span class="check">✓</span> 要約・アイデア出し</div>
+        <div class="compare-item"><span class="check">✓</span> GPT-4oが使える（上限あり）</div>
+        <div class="compare-item" style="opacity:.4;"><span class="check">—</span> 使える回数に制限あり</div>
+      </div>
+      <div class="compare-col compare-col-paid">
+        <div class="compare-label">
+          有料版 Plus
+          <span class="compare-badge">$20/月</span>
+        </div>
+        <div class="compare-item"><span class="check" style="color:#7ecbb0;">✓</span> すべての無料機能</div>
+        <div class="compare-item"><span class="check" style="color:#7ecbb0;">✓</span> より賢いモデルが使える</div>
+        <div class="compare-item"><span class="check" style="color:#7ecbb0;">✓</span> 画像生成ができる</div>
+        <div class="compare-item"><span class="check" style="color:#7ecbb0;">✓</span> ファイルや画像を読み込める</div>
+        <div class="compare-item"><span class="check" style="color:#7ecbb0;">✓</span> 回数制限が大幅に緩い</div>
+      </div>
+    </div>
+
+    <p>
+      最初は<strong>無料版で十分</strong>です。「もっと使いたい」「仕事でガンガン使いたい」と思ったときに有料版を検討すればOK。
+    </p>
+
+    <h2>一つだけ、大事な注意</h2>
+    <p>
+      ChatGPTはとても便利ですが、<strong>一つだけ必ず覚えておいてほしいこと</strong>があります。
+    </p>
+
+    <div class="warn">
+      <div class="warn-icon">⚠️</div>
+      <div class="warn-body">
+        <strong>ChatGPTは「嘘をつく」ことがある</strong>
+        <p>正確には「間違ったことを、自信満々に答える」ことがあります。これを「ハルシネーション（幻覚）」と呼びます。医療・法律・金融など、正確さが大事な情報は、必ず別の手段でも確認しましょう。</p>
+      </div>
+    </div>
+
+    <div class="box box-lav">
+      <div class="box-title">個人情報は入れないで</div>
+      <p>本名・住所・電話番号・パスワードなどの個人情報は、ChatGPTに入力しないようにしましょう。入力した内容は学習データとして使われる可能性があります。</p>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary">
+      <div class="summary-title">この記事のまとめ</div>
+      <ul class="summary-list">
+        <li>ChatGPTはアメリカのOpenAIが作った「会話できるAI」</li>
+        <li>質問・文章作成・翻訳・要約・アイデア出しなど、何でも相談できる</li>
+        <li>chatgpt.com からアカウントを作るだけ。無料で使える</li>
+        <li>最初は無料版で十分。慣れてから有料版を検討すればOK</li>
+        <li>間違いを自信満々に言うことがある。大事なことは必ず確認する</li>
+        <li>個人情報（名前・住所など）は絶対に入力しない</li>
+      </ul>
+    </div>
+
+  </main>
+
+  <!-- Next Articles -->
+  <section class="next-section">
+    <div class="next-title">次に読む記事</div>
+    <div class="next-cards">
+      <a href="../prompt/" class="next-card">
+        <span class="next-card-tag" style="color:var(--mint-tx);">使い方</span>
+        <div class="next-card-title">プロンプトって何？うまい話しかけ方のコツ</div>
+        <div class="next-card-arrow">→ 3 min read</div>
+      </a>
+      <a href="../hallucination/" class="next-card">
+        <span class="next-card-tag" style="color:var(--lav-tx);">疑問</span>
+        <div class="next-card-title">AIはなぜ嘘をつく？ハルシネーションとは</div>
+        <div class="next-card-arrow">→ 4 min read</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div>
+      <div class="footer-brand">usui blog</div>
+      <div class="footer-copy">© 2026 USUI LAB</div>
+    </div>
+    <div class="footer-links">
+      <a href="../" class="footer-link">← 記事一覧</a>
+      <a href="https://usuilab.com" class="footer-link">usuilab.com</a>
+    </div>
+  </footer>
+
+</body>
+</html>
