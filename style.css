@@ -5321,12 +5321,13 @@ body.tv-off .keyboard-hints span:first-child {
         color: rgba(255,255,255,.88);
         letter-spacing: .08em;
     }
-    .m-blog-btn {
+    #mobile-site .m-blog-btn {
         display: inline-block;
         margin-top: 6px;
         background: #fff;
         color: #0d0d0d;
         text-decoration: none;
+        font-family: 'Noto Sans JP', sans-serif;
         font-size: 0.85rem;
         font-weight: 800;
         letter-spacing: .08em;
@@ -5334,6 +5335,7 @@ body.tv-off .keyboard-hints span:first-child {
         border-radius: 4px;
         box-shadow: 0 4px 16px rgba(0,0,0,.2);
     }
+    #mobile-site .m-blog-btn:visited { color: #0d0d0d; }
     .m-blog-articles {
         display: flex;
         flex-direction: column;
@@ -5342,18 +5344,20 @@ body.tv-off .keyboard-hints span:first-child {
         border-radius: 12px;
         overflow: hidden;
     }
-    .m-blog-article {
+    #mobile-site .m-blog-article {
         display: flex;
         align-items: center;
         gap: 12px;
         padding: 14px 16px;
         text-decoration: none;
-        color: inherit;
+        color: #141413;
+        font-family: 'Noto Sans JP', sans-serif;
         border-bottom: 1px solid #f0eee6;
         transition: background .15s;
     }
-    .m-blog-article:last-child { border-bottom: none; }
-    .m-blog-article:active { background: #f5f4ed; }
+    #mobile-site .m-blog-article:last-child { border-bottom: none; }
+    #mobile-site .m-blog-article:active { background: #f5f4ed; }
+    #mobile-site .m-blog-article:visited { color: #141413; }
     .m-blog-tag {
         font-size: 0.6rem;
         font-weight: 700;
@@ -5368,6 +5372,7 @@ body.tv-off .keyboard-hints span:first-child {
         font-size: 0.88rem;
         font-weight: 600;
         color: #141413;
+        font-family: 'Noto Sans JP', sans-serif;
     }
     .m-blog-arrow {
         font-size: 0.9rem;
