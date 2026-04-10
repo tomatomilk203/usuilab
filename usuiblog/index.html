@@ -530,7 +530,7 @@
   <section class="articles">
     <div class="section-head">
       <h2 class="section-title">記事一覧</h2>
-      <span class="section-count">5 articles</span>
+      <span class="section-count">6 articles</span>
     </div>
 
     <div class="cats">
@@ -601,13 +601,26 @@
         </div>
       </article>
 
-      <!-- Card 5 — wide, Gemini -->
-      <article class="card c5" onclick="location.href='gemini/'" style="cursor:pointer; grid-column: 1 / -1; --rot: 0.2deg; --accent: var(--mint); --wash: #b8e8d8;">
+      <!-- Card 5 + 6 — Gemini & Claude (row) -->
+      <article class="card" onclick="location.href='gemini/'" style="cursor:pointer; grid-column: 1 / 7; --rot: 0.2deg; --accent: var(--mint); --wash: #b8e8d8;">
         <div class="card-wash"></div>
         <span class="card-tag tag-intro">入門</span>
         <h3 class="card-title">Geminiって何？<br>Googleが作ったAIを使ってみよう</h3>
         <p class="card-excerpt">
           実はあなたのスマホにも入ってるかも。Gmail・Googleマップとも繋がる、いちばん身近なAIを解説します。
+        </p>
+        <div class="card-foot">
+          <span class="card-time">5 min read</span>
+          <div class="card-arrow">→</div>
+        </div>
+      </article>
+
+      <article class="card" onclick="location.href='claude/'" style="cursor:pointer; grid-column: 7 / 13; --rot: -0.3deg; --accent: var(--lav); --wash: #dcc8f0;">
+        <div class="card-wash"></div>
+        <span class="card-tag tag-intro">入門</span>
+        <h3 class="card-title">Claudeって何？<br>「安全なAI」を目指した話し相手</h3>
+        <p class="card-excerpt">
+          ChatGPT・Geminiと並ぶ第3のAI。長文読み込みが得意で、答えが丁寧。知る人ぞ知る実力派を解説します。
         </p>
         <div class="card-foot">
           <span class="card-time">5 min read</span>

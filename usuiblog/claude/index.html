@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claudeって何？「安全なAI」を目指して作られた賢い話し相手 — usui blog</title>
+  <meta name="description" content="ChatGPT・Geminiと並ぶ第3のAI「Claude」。長い文章を読むのが得意で、答えが丁寧。Anthropicが作ったAIを分かりやすく解説します。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:        #f5f4ed;
+      --ivory:     #faf9f5;
+      --ink:       #141413;
+      --terra:     #c96442;
+      --coral:     #f4845f;
+      --coral-bg:  #fde8de;
+      --coral-bd:  #f4c4a8;
+      --mint:      #7ecbb0;
+      --mint-bg:   #d8f0e8;
+      --mint-tx:   #3a9070;
+      --lav-bg:    #ece4f4;
+      --lav-tx:    #8060b0;
+      --gold-bg:   #fdf0cc;
+      --gold-tx:   #9a7020;
+      --stone:     #5e5d59;
+      --muted:     #87867f;
+      --border:    #e8e6dc;
+      --border-lt: #f0eee6;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.8;
+    }
+
+    /* ─── Nav ─────────────────────────────────── */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 28px;
+      background: rgba(245,244,237,.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-lt);
+    }
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--stone);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: color .2s;
+    }
+    .nav-back:hover { color: var(--terra); }
+    .nav-back-dot {
+      width: 6px; height: 6px;
+      background: var(--mint);
+      border-radius: 50%;
+      animation: blink 1.8s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+    .nav-label { font-size: 11px; color: var(--muted); letter-spacing: .06em; }
+
+    .sidebar { display: none; }
+
+    /* ─── Header ──────────────────────────────── */
+    .article-header {
+      padding: 120px 28px 64px;
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+    }
+    .article-header::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%; transform: translateX(-50%);
+      width: 120%; height: 100%;
+      background:
+        radial-gradient(ellipse at 70% 30%, rgba(246,200,168,.55) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 70%, rgba(184,232,216,.22) 0%, transparent 45%);
+      pointer-events: none;
+      z-index: -1;
+    }
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .article-tag {
+      display: inline-block;
+      background: var(--coral-bg);
+      color: var(--terra);
+      border: 1px solid var(--coral-bd);
+      padding: 5px 16px;
+      border-radius: 16px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fade-up .5s ease forwards .1s;
+    }
+    .article-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(32px, 6vw, 58px);
+      line-height: 1.12;
+      color: var(--ink);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fade-up .7s cubic-bezier(.16,1,.3,1) forwards .2s;
+    }
+    .article-title em { font-style: italic; color: var(--terra); }
+    .article-lead {
+      font-size: 17px;
+      color: var(--stone);
+      font-weight: 300;
+      line-height: 1.8;
+      max-width: 540px;
+      margin: 0 auto 36px;
+      opacity: 0;
+      animation: fade-up .6s ease forwards .35s;
+    }
+    .article-meta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: .05em;
+      opacity: 0;
+      animation: fade-up .5s ease forwards .5s;
+    }
+    .meta-sep { color: var(--border); }
+
+    .divider { max-width: 760px; margin: 0 auto; padding: 0 28px; height: 1px; background: var(--border); }
+
+    /* ─── Article Body ───────────────────────── */
+    .article-body { max-width: 680px; margin: 0 auto; padding: 64px 28px 120px; }
+
+    .article-body h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(24px, 3.5vw, 32px);
+      color: var(--ink);
+      margin-top: 72px;
+      margin-bottom: 20px;
+      line-height: 1.25;
+      position: relative;
+      padding-bottom: 14px;
+    }
+    .article-body h2::after {
+      content: '';
+      position: absolute;
+      left: 0; bottom: 0;
+      width: 40px; height: 2px;
+      background: var(--terra);
+      border-radius: 2px;
+    }
+    .article-body h2:first-child { margin-top: 0; }
+    .article-body h3 { font-size: 17px; font-weight: 600; color: var(--ink); margin-top: 40px; margin-bottom: 12px; }
+    .article-body p { font-size: 16px; line-height: 1.88; color: #2e2e2c; margin-bottom: 22px; }
+    .article-body p strong { color: var(--ink); font-weight: 600; }
+
+    .pull-quote {
+      border-left: 3px solid var(--terra);
+      padding: 16px 24px;
+      margin: 36px 0;
+      background: var(--ivory);
+      border-radius: 0 12px 12px 0;
+    }
+    .pull-quote p { font-size: 18px; font-style: italic; color: var(--ink); font-weight: 300; margin: 0; line-height: 1.7; }
+
+    /* Boxes */
+    .box { border-radius: 14px; padding: 24px 28px; margin: 32px 0; }
+    .box-title {
+      font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+    }
+    .box-title::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .box p { font-size: 15px; margin-bottom: 10px; }
+    .box p:last-child { margin-bottom: 0; }
+
+    .box-coral  { background: var(--coral-bg); border: 1px solid var(--coral-bd); }
+    .box-coral .box-title { color: var(--terra); }
+    .box-coral .box-title::before { background: var(--terra); }
+    .box-coral p { color: #7a3a28; }
+
+    .box-mint   { background: var(--mint-bg); border: 1px solid #a8dcc8; }
+    .box-mint .box-title { color: var(--mint-tx); }
+    .box-mint .box-title::before { background: var(--mint); }
+    .box-mint p { color: #2a6050; }
+
+    .box-lav    { background: var(--lav-bg); border: 1px solid #c8aee0; }
+    .box-lav .box-title { color: var(--lav-tx); }
+    .box-lav .box-title::before { background: #c4a8e0; }
+    .box-lav p { color: #5a3880; }
+
+    .box-gold   { background: var(--gold-bg); border: 1px solid #e0cc88; }
+    .box-gold .box-title { color: var(--gold-tx); }
+    .box-gold .box-title::before { background: #f0c060; }
+    .box-gold p { color: #6a5010; }
+
+    /* Feature list */
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 14px; margin: 28px 0; }
+    .feature-list li { display: flex; gap: 16px; align-items: flex-start; font-size: 15.5px; line-height: 1.7; color: #2e2e2c; }
+    .feature-icon { width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .fi-coral { background: var(--coral-bg); }
+    .fi-mint  { background: var(--mint-bg); }
+    .fi-lav   { background: var(--lav-bg); }
+    .fi-gold  { background: var(--gold-bg); }
+
+    /* 3 AI comparison */
+    .three-col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin: 32px 0;
+    }
+    .tc-col {
+      border-radius: 14px;
+      padding: 20px 16px;
+      border: 1px solid var(--border);
+    }
+    .tc-col-gpt  { background: var(--coral-bg); border-color: var(--coral-bd); }
+    .tc-col-gem  { background: #e8f0fe; border-color: #aecbfa; }
+    .tc-col-cld  { background: var(--ink); }
+    .tc-name {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .tc-col-gpt  .tc-name { color: var(--terra); }
+    .tc-col-gem  .tc-name { color: #1558b0; }
+    .tc-col-cld  .tc-name { color: #c8c6be; }
+    .tc-item {
+      font-size: 13px;
+      padding: 7px 0;
+      border-bottom: 1px solid;
+      line-height: 1.45;
+    }
+    .tc-col-gpt  .tc-item { color: #7a3a28; border-color: var(--coral-bd); }
+    .tc-col-gem  .tc-item { color: #1a3a70; border-color: #aecbfa; }
+    .tc-col-cld  .tc-item { color: #bbb9b0; border-color: rgba(255,255,255,.08); }
+    .tc-item:last-child { border-bottom: none; }
+
+    /* Steps */
+    .steps { display: flex; flex-direction: column; margin: 32px 0; }
+    .step { display: flex; gap: 20px; position: relative; }
+    .step:not(:last-child)::before {
+      content: ''; position: absolute; left: 15px; top: 36px;
+      width: 2px; height: calc(100% - 4px); background: var(--border);
+    }
+    .step-num {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--ink); color: var(--ivory);
+      font-size: 12px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; z-index: 1;
+    }
+    .step-body { padding: 4px 0 36px; flex: 1; }
+    .step-body strong { display: block; font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 5px; }
+    .step-body span { font-size: 14.5px; color: var(--stone); line-height: 1.7; }
+    .step:last-child .step-body { padding-bottom: 8px; }
+
+    /* Plan compare */
+    .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 32px 0; }
+    .compare-col { border-radius: 14px; padding: 22px 20px; }
+    .compare-col-free { background: var(--ivory); border: 1px solid var(--border); }
+    .compare-col-paid { background: var(--ink); color: var(--ivory); }
+    .compare-label { font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+    .compare-col-free .compare-label { color: var(--stone); }
+    .compare-col-paid .compare-label { color: #c8c6be; }
+    .compare-badge { font-size: 10px; padding: 2px 8px; border-radius: 6px; font-weight: 600; }
+    .compare-col-free .compare-badge { background: var(--mint-bg); color: var(--mint-tx); }
+    .compare-col-paid .compare-badge { background: var(--gold-bg); color: var(--gold-tx); }
+    .compare-item { font-size: 14px; padding: 9px 0; border-bottom: 1px solid; display: flex; align-items: flex-start; gap: 8px; line-height: 1.5; }
+    .compare-col-free .compare-item { border-color: var(--border-lt); color: var(--stone); }
+    .compare-col-paid .compare-item { border-color: rgba(255,255,255,.08); color: #bbb9b0; }
+    .compare-item:last-child { border-bottom: none; }
+    .check { font-size: 12px; flex-shrink: 0; margin-top: 1px; }
+
+    /* Warning */
+    .warn {
+      background: var(--gold-bg); border: 1px solid #e0cc88; border-left: 3px solid #f0c060;
+      border-radius: 0 12px 12px 0; padding: 20px 24px; margin: 32px 0;
+      display: flex; gap: 14px; align-items: flex-start;
+    }
+    .warn-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+    .warn-body strong { display: block; font-size: 14px; font-weight: 700; color: var(--gold-tx); margin-bottom: 6px; }
+    .warn-body p { font-size: 14.5px; color: #6a5010; margin: 0; line-height: 1.75; }
+
+    /* Summary */
+    .summary { background: var(--ink); color: var(--ivory); border-radius: 18px; padding: 36px 40px; margin: 56px 0 0; }
+    .summary-title { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 20px; color: #fff; }
+    .summary-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+    .summary-list li { font-size: 15px; color: #c8c6be; display: flex; gap: 12px; align-items: flex-start; line-height: 1.65; }
+    .summary-list li::before { content: '◆'; font-size: 8px; color: var(--terra); flex-shrink: 0; margin-top: 7px; }
+
+    /* Next */
+    .next-section { max-width: 680px; margin: 0 auto; padding: 0 28px 100px; }
+    .next-title { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 20px; color: var(--ink); }
+    .next-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .next-card { background: var(--ivory); border: 1px solid var(--border); border-radius: 14px; padding: 22px 22px 18px; text-decoration: none; display: block; transition: transform .25s cubic-bezier(.34,1.56,.64,1), box-shadow .25s; }
+    .next-card:hover { transform: translateY(-5px); box-shadow: 0 16px 48px rgba(0,0,0,.08); }
+    .next-card-tag { font-size: 10px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; margin-bottom: 10px; display: block; }
+    .next-card-title { font-family: 'DM Serif Display', serif; font-size: 17px; color: var(--ink); line-height: 1.3; margin-bottom: 10px; }
+    .next-card-arrow { font-size: 12px; color: var(--muted); }
+
+    /* Footer */
+    .footer { border-top: 1px solid var(--border); padding: 40px 28px; max-width: 760px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+    .footer-brand { font-family: 'DM Serif Display', serif; font-size: 20px; color: var(--ink); }
+    .footer-copy { font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-link { font-size: 13px; color: var(--stone); text-decoration: none; transition: color .2s; }
+    .footer-link:hover { color: var(--ink); }
+
+    /* ─── Desktop ─────────────────────────────── */
+    @media (min-width: 900px) {
+      .article-header {
+        max-width: none; padding: 0; text-align: left;
+        display: grid; grid-template-columns: 1fr 360px;
+        min-height: 500px; margin: 0;
+      }
+      .article-header::before { display: none; }
+      .header-left {
+        padding: 130px 72px 80px;
+        background:
+          radial-gradient(ellipse at 95% 5%, rgba(246,200,168,.65) 0%, transparent 48%),
+          radial-gradient(ellipse at 0% 95%, rgba(184,232,216,.2) 0%, transparent 42%),
+          var(--bg);
+        display: flex; flex-direction: column; justify-content: center;
+      }
+      .header-right {
+        background: var(--terra);
+        position: relative; overflow: hidden;
+        clip-path: polygon(12% 0, 100% 0, 100% 100%, 0 100%);
+        display: flex; flex-direction: column; justify-content: flex-end;
+        padding: 48px 52px 52px 72px; gap: 12px;
+      }
+      .header-right::before {
+        content: 'C';
+        position: absolute; top: -40px; right: -10px;
+        font-family: 'DM Serif Display', serif;
+        font-size: 320px; font-weight: 400;
+        color: rgba(255,255,255,.06); line-height: 1;
+        pointer-events: none; user-select: none;
+      }
+      .hr-badge {
+        display: inline-flex; align-items: center; gap: 6px;
+        background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.3);
+        border-radius: 20px; padding: 6px 14px;
+        font-size: 11.5px; font-weight: 600; color: rgba(255,255,255,.95);
+        letter-spacing: .06em; width: fit-content;
+      }
+      .hr-no { font-family: 'DM Serif Display', serif; font-size: 52px; color: rgba(255,255,255,.2); line-height: 1; position: absolute; top: 40px; left: 60px; font-style: italic; }
+      .hr-label { font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: rgba(255,255,255,.45); position: absolute; top: 100px; left: 60px; }
+      .article-tag { margin-bottom: 20px; align-self: flex-start; }
+      .article-lead { max-width: 520px; margin: 0 0 32px; }
+      .article-meta { justify-content: flex-start; }
+      .divider { max-width: none; padding: 0 72px; }
+
+      .page-wrap {
+        display: grid; grid-template-columns: 220px 1fr; gap: 64px;
+        max-width: 1140px; margin: 0 auto; padding: 72px 72px 0; align-items: start;
+      }
+      .sidebar { display: block; position: sticky; top: 80px; }
+      .toc-label { font-size: 10px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+      .toc-nav { display: flex; flex-direction: column; gap: 2px; }
+      .toc-link { display: block; font-size: 13px; color: var(--stone); text-decoration: none; padding: 7px 10px; border-radius: 7px; line-height: 1.4; transition: background .15s, color .15s; border-left: 2px solid transparent; }
+      .toc-link:hover, .toc-link.active { background: var(--ivory); color: var(--ink); border-left-color: var(--terra); }
+      .sidebar-divider { height: 1px; background: var(--border); margin: 20px 0; }
+      .sidebar-info { font-size: 12px; color: var(--muted); display: flex; flex-direction: column; gap: 6px; padding-left: 10px; }
+
+      .article-body { max-width: none; margin: 0; padding: 0 0 100px; }
+      .three-col { grid-template-columns: repeat(3, 1fr); }
+      .next-section { max-width: 1140px; padding: 40px 72px 100px; }
+      .footer { max-width: none; padding: 40px 72px; }
+    }
+
+    /* ─── Mobile ──────────────────────────────── */
+    @media (max-width: 640px) {
+      .nav { padding: 12px 18px; }
+      .article-header { padding: 90px 20px 48px; }
+      .article-body { padding: 48px 20px 80px; }
+      .three-col { grid-template-columns: 1fr; }
+      .compare { grid-template-columns: 1fr; }
+      .next-cards { grid-template-columns: 1fr; }
+      .next-section { padding: 0 20px 80px; }
+      .summary { padding: 28px 24px; }
+      .footer { padding: 32px 20px; flex-direction: column; gap: 20px; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="../" class="nav-back">
+      <span class="nav-back-dot"></span>
+      ◁ ブログ一覧
+    </a>
+    <span class="nav-label">USUI BLOG — 入門</span>
+  </nav>
+
+  <header class="article-header">
+    <div class="header-left">
+      <span class="article-tag">入門</span>
+      <h1 class="article-title">
+        <em>Claude</em>って何？<br>
+        「安全なAI」を目指した<br>賢い話し相手
+      </h1>
+      <p class="article-lead">
+        ChatGPT・Geminiと並ぶ第3のAI。<br>
+        長い文章を読むのが得意で、答えが丁寧。<br>
+        知る人ぞ知る実力派を解説します。
+      </p>
+      <div class="article-meta">
+        <span>2026年4月</span>
+        <span class="meta-sep">|</span>
+        <span>5 min read</span>
+        <span class="meta-sep">|</span>
+        <span>USUI</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="hr-no">03</div>
+      <div class="hr-label">BEGINNER GUIDE</div>
+      <div class="hr-badge">長文読み込みが得意</div>
+      <div class="hr-badge">丁寧で誠実な回答</div>
+      <div class="hr-badge">安全性を最優先に設計</div>
+      <div class="hr-badge">無料で使える</div>
+    </div>
+  </header>
+
+  <div class="divider"></div>
+
+  <div class="page-wrap">
+
+  <aside class="sidebar">
+    <div class="toc-label">目次</div>
+    <nav class="toc-nav">
+      <a href="#s1" class="toc-link">Claudeとは？</a>
+      <a href="#s2" class="toc-link">3つのAIを比べると</a>
+      <a href="#s3" class="toc-link">何が得意なの？</a>
+      <a href="#s4" class="toc-link">どうやって使う？</a>
+      <a href="#s5" class="toc-link">無料 vs 有料</a>
+      <a href="#s6" class="toc-link">注意点</a>
+    </nav>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-info">
+      <span>2026年4月</span>
+      <span>5 min read</span>
+      <span>著者: USUI</span>
+    </div>
+  </aside>
+
+  <main class="article-body">
+
+    <h2 id="s1">Claudeとは？</h2>
+    <p>
+      ClaudeはアメリカのAI企業 <strong>「Anthropic（アンソロピック）」</strong> が作ったAIです。2023年に登場し、ChatGPT・Geminiと並んで世界中で使われています。
+    </p>
+    <p>
+      Anthropicはもともと、ChatGPTを作ったOpenAIから独立した研究者たちが設立した会社です。<strong>「AIを安全に作る」ことをいちばんの目標に掲げており</strong>、Claudeはその理念をベースに開発されています。
+    </p>
+
+    <div class="pull-quote">
+      <p>「賢いだけじゃなく、正直で誠実なAIにする」——それがAnthropicの哲学です。</p>
+    </div>
+
+    <p>
+      名前の「Claude」はフランス語の人名から来ています。ちょっと人間らしい名前をつけることで、会話のしやすさを意識したとも言われています。
+    </p>
+
+    <div class="box box-coral">
+      <div class="box-title">Anthropicってどんな会社？</div>
+      <p>2021年にOpenAIの元研究者が設立。Googleなどが出資する、AI安全研究に特化した企業です。「AIが社会に害を与えないようにする」ことを最優先に研究しています。</p>
+    </div>
+
+    <h2 id="s2">ChatGPT・Geminiと何が違うの？</h2>
+    <p>
+      3つのAIはどれも「会話できるAI」ですが、それぞれ少しずつ個性が違います。
+    </p>
+
+    <div class="three-col">
+      <div class="tc-col tc-col-gpt">
+        <div class="tc-name">ChatGPT</div>
+        <div class="tc-item">OpenAI製</div>
+        <div class="tc-item">プラグイン・拡張が豊富</div>
+        <div class="tc-item">先駆者・ユーザー数最多</div>
+        <div class="tc-item">画像生成も得意</div>
+      </div>
+      <div class="tc-col tc-col-gem">
+        <div class="tc-name">Gemini</div>
+        <div class="tc-item">Google製</div>
+        <div class="tc-item">最新情報に強い</div>
+        <div class="tc-item">Gmail・Docs連携</div>
+        <div class="tc-item">Android標準搭載</div>
+      </div>
+      <div class="tc-col tc-col-cld">
+        <div class="tc-name">Claude</div>
+        <div class="tc-item">Anthropic製</div>
+        <div class="tc-item">長文処理が圧倒的</div>
+        <div class="tc-item">誠実・丁寧な回答</div>
+        <div class="tc-item">安全性を最優先に設計</div>
+      </div>
+    </div>
+
+    <div class="box box-mint">
+      <div class="box-title">Claudeが特に光る場面</div>
+      <p>長い資料・本・契約書などをまるごと貼り付けて「要点を教えて」「問題点はある？」と聞く使い方が得意です。他のAIより一度に読める文章量が多く、内容を正確に把握してくれます。</p>
+    </div>
+
+    <h2 id="s3">何が得意なの？</h2>
+    <p>Claudeの強みをわかりやすく紹介します。</p>
+
+    <ul class="feature-list">
+      <li>
+        <div class="feature-icon fi-coral">📄</div>
+        <div>
+          <strong style="display:block;font-weight:600;margin-bottom:3px;">長い文章をまるごと読んでくれる</strong>
+          本1冊分、契約書全文、長いメール履歴など、大量のテキストを一度に読み込んで理解できます。「この書類で注意すべき点は？」のような使い方が得意。
+        </div>
+      </li>
+      <li>
+        <div class="feature-icon fi-mint">✍️</div>
+        <div>
+          <strong style="display:block;font-weight:600;margin-bottom:3px;">文章の質が高い</strong>
+          メール・報告書・ブログ記事など、人間らしい自然な文章を書くのが上手です。「固すぎず、砕けすぎず」のバランスが取りやすいと評判。
+        </div>
+      </li>
+      <li>
+        <div class="feature-icon fi-lav">🤝</div>
+        <div>
+          <strong style="display:block;font-weight:600;margin-bottom:3px;">「わからない」をちゃんと言う</strong>
+          知らないことや不確かなことに対して、自信満々に嘘をつくより「これは確認が必要です」「私には判断できません」と正直に伝える傾向があります。
+        </div>
+      </li>
+      <li>
+        <div class="feature-icon fi-gold">💻</div>
+        <div>
+          <strong style="display:block;font-weight:600;margin-bottom:3px;">プログラムを書く・直す</strong>
+          コードを書いたり、エラーの原因を探したりする作業も得意。エンジニアの間でもよく使われています。
+        </div>
+      </li>
+      <li>
+        <div class="feature-icon fi-coral">🔍</div>
+        <div>
+          <strong style="display:block;font-weight:600;margin-bottom:3px;">深い分析・考察</strong>
+          「この文章の問題点を指摘して」「pros・consを整理して」のような、じっくり考えて答えを出す作業が得意です。
+        </div>
+      </li>
+    </ul>
+
+    <h2 id="s4">どうやって使うの？</h2>
+    <p>Claude.aiにアクセスするだけ。アカウント登録も無料です。</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-body">
+          <strong>claude.ai にアクセスする</strong>
+          <span>スマホ・パソコンどちらでもブラウザから使えます。アプリも配信されています（iOS / Android）。</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-body">
+          <strong>アカウントを作る（無料）</strong>
+          <span>メールアドレスかGoogleアカウントで登録できます。特別な設定は不要。</span>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-body">
+          <strong>話しかけてみる</strong>
+          <span>テキストを貼り付けて「要約して」でも、「今悩んでることを聞いてほしい」でも何でもOK。</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-lav">
+      <div class="box-title">まずこれを試してみて</div>
+      <p>長めのニュース記事や、読みたいけど長くて読めていないメールをコピーして貼り付け、「これを3行で要約して、重要なポイントを箇条書きで教えて」と頼んでみてください。Claudeの得意技がよく分かります。</p>
+    </div>
+
+    <h2 id="s5">無料で使える？有料版との違いは？</h2>
+    <p>基本機能は<strong>無料で使えます。</strong>有料版は「Claude Pro」といい、月額$20（約3,000円）です。</p>
+
+    <div class="compare">
+      <div class="compare-col compare-col-free">
+        <div class="compare-label">
+          無料版
+          <span class="compare-badge">FREE</span>
+        </div>
+        <div class="compare-item"><span class="check">✓</span> 基本的な会話・質問</div>
+        <div class="compare-item"><span class="check">✓</span> 長文の読み込み・要約</div>
+        <div class="compare-item"><span class="check">✓</span> 文章作成・添削</div>
+        <div class="compare-item"><span class="check">✓</span> コードの作成・修正</div>
+        <div class="compare-item" style="opacity:.45;"><span class="check">—</span> 1日に使える回数に上限あり</div>
+      </div>
+      <div class="compare-col compare-col-paid">
+        <div class="compare-label">
+          Claude Pro
+          <span class="compare-badge">$20/月</span>
+        </div>
+        <div class="compare-item"><span class="check" style="color:#7ecbb0;">✓</span> すべての無料機能</div>
+        <div class="compare-item"><span class="check" style="color:#7ecbb0;">✓</span> 使用回数が大幅に増える</div>
+        <div class="compare-item"><span class="check" style="color:#7ecbb0;">✓</span> 最上位モデルへの優先アクセス</div>
+        <div class="compare-item"><span class="check" style="color:#7ecbb0;">✓</span> 混雑時も優先的に使える</div>
+        <div class="compare-item"><span class="check" style="color:#7ecbb0;">✓</span> より長い文章を扱える</div>
+      </div>
+    </div>
+
+    <p>
+      無料版でも十分な機能があります。毎日ガンガン使いたい・仕事でフル活用したいという人は有料版を検討してみてください。
+    </p>
+
+    <h2 id="s6">注意点</h2>
+
+    <div class="warn">
+      <div class="warn-icon">⚠️</div>
+      <div class="warn-body">
+        <strong>それでも間違えることはある</strong>
+        <p>Claudeは「わからないことは正直に言う」設計ですが、それでも誤情報を出すことはあります。医療・法律・お金の話など、重要な判断には必ず専門家や公式情報を確認してください。</p>
+      </div>
+    </div>
+
+    <div class="box box-gold">
+      <div class="box-title">最新情報は苦手なことも</div>
+      <p>Claudeは知識に「学習した時点」の制限があります。最新ニュースや今日の出来事を調べたい場合は、Gemini（Google検索と連携）の方が向いています。用途によって使い分けるのがベストです。</p>
+    </div>
+
+    <div class="box box-coral">
+      <div class="box-title">入力した内容はAnthropicに送られる</div>
+      <p>他のAIと同様に、Claudeに入力した内容はAnthropicのサーバーに送られます。個人情報・会社の機密情報・パスワードなどは入力しないようにしましょう。</p>
+    </div>
+
+    <div class="summary">
+      <div class="summary-title">この記事のまとめ</div>
+      <ul class="summary-list">
+        <li>ClaudeはAnthropicが作ったAI。「安全で誠実なAI」を目標に設計されている</li>
+        <li>最大の強みは「長文処理」。本や契約書など大量のテキストをまるごと読んで答えてくれる</li>
+        <li>知らないことを正直に「わからない」と言う誠実さが特徴</li>
+        <li>claude.ai からアカウントを作れば、今すぐ無料で使える</li>
+        <li>最新情報は苦手。リアルタイム検索が必要な場面はGeminiが向いている</li>
+        <li>それでも間違えることはある。重要な情報は必ず別で確認する</li>
+      </ul>
+    </div>
+
+  </main>
+
+  </div><!-- /.page-wrap -->
+
+  <section class="next-section">
+    <div class="next-title">次に読む記事</div>
+    <div class="next-cards">
+      <a href="../chatgpt/" class="next-card">
+        <span class="next-card-tag" style="color:var(--terra);">入門</span>
+        <div class="next-card-title">ChatGPTって何者？5分でわかる基本のキ</div>
+        <div class="next-card-arrow">→ 5 min read</div>
+      </a>
+      <a href="../gemini/" class="next-card">
+        <span class="next-card-tag" style="color:var(--terra);">入門</span>
+        <div class="next-card-title">Geminiって何？Googleが作ったAIを使ってみよう</div>
+        <div class="next-card-arrow">→ 5 min read</div>
+      </a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>
+      <div class="footer-brand">usui blog</div>
+      <div class="footer-copy">© 2026 USUI LAB</div>
+    </div>
+    <div class="footer-links">
+      <a href="../" class="footer-link">← 記事一覧</a>
+      <a href="https://usuilab.com" class="footer-link">usuilab.com</a>
+    </div>
+  </footer>
+
+  <script>
+    const sections = document.querySelectorAll('h2[id]');
+    const tocLinks = document.querySelectorAll('.toc-link');
+    if (sections.length && tocLinks.length) {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            tocLinks.forEach(l => l.classList.remove('active'));
+            const link = document.querySelector(`.toc-link[href="#${e.target.id}"]`);
+            if (link) link.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-20% 0px -70% 0px' });
+      sections.forEach(s => io.observe(s));
+    }
+  </script>
+
+</body>
+</html>
