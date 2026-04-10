@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>プロンプトって何？AIへの話しかけ方で結果が全然変わる — usui blog</title>
+  <meta name="description" content="「プロンプト」はAIへの指示文のこと。同じ質問でも、ちょっと工夫するだけで返ってくる答えが激変します。今日から使えるコツを解説。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#f5f4ed;--ivory:#faf9f5;--ink:#141413;--terra:#c96442;
+      --coral-bg:#fde8de;--coral-bd:#f4c4a8;
+      --mint:#7ecbb0;--mint-bg:#d8f0e8;--mint-bd:#a8dcc8;--mint-tx:#3a9070;
+      --lav-bg:#ece4f4;--lav-bd:#c8aee0;--lav-tx:#8060b0;
+      --gold-bg:#fdf0cc;--gold-tx:#9a7020;
+      --stone:#5e5d59;--muted:#87867f;--border:#e8e6dc;--border-lt:#f0eee6;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;line-height:1.8}
+
+    .nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(245,244,237,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-lt)}
+    .nav-back{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:12px;font-weight:500;color:var(--stone);letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
+    .nav-back:hover{color:var(--mint-tx)}
+    .nav-back-dot{width:6px;height:6px;background:var(--mint);border-radius:50%;animation:blink 1.8s ease-in-out infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+    .nav-label{font-size:11px;color:var(--muted);letter-spacing:.06em}
+    .sidebar{display:none}
+
+    .article-header{padding:120px 28px 64px;max-width:760px;margin:0 auto;text-align:center;position:relative}
+    .article-header::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:120%;height:100%;background:radial-gradient(ellipse at 65% 25%,rgba(126,203,176,.3) 0%,transparent 50%),radial-gradient(ellipse at 20% 80%,rgba(184,232,216,.2) 0%,transparent 45%);pointer-events:none;z-index:-1}
+    @keyframes fade-up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .article-tag{display:inline-block;background:var(--mint-bg);color:var(--mint-tx);border:1px solid var(--mint-bd);padding:5px 16px;border-radius:16px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:28px;opacity:0;animation:fade-up .5s ease forwards .1s}
+    .article-title{font-family:'DM Serif Display',serif;font-size:clamp(32px,6vw,58px);line-height:1.12;color:var(--ink);margin-bottom:24px;opacity:0;animation:fade-up .7s cubic-bezier(.16,1,.3,1) forwards .2s}
+    .article-title em{font-style:italic;color:var(--mint-tx)}
+    .article-lead{font-size:17px;color:var(--stone);font-weight:300;line-height:1.8;max-width:540px;margin:0 auto 36px;opacity:0;animation:fade-up .6s ease forwards .35s}
+    .article-meta{display:flex;align-items:center;justify-content:center;gap:20px;font-size:12px;color:var(--muted);letter-spacing:.05em;opacity:0;animation:fade-up .5s ease forwards .5s}
+    .meta-sep{color:var(--border)}
+    .divider{max-width:760px;margin:0 auto;padding:0 28px;height:1px;background:var(--border)}
+
+    .article-body{max-width:680px;margin:0 auto;padding:64px 28px 120px}
+    .article-body h2{font-family:'DM Serif Display',serif;font-size:clamp(24px,3.5vw,32px);color:var(--ink);margin-top:72px;margin-bottom:20px;line-height:1.25;position:relative;padding-bottom:14px}
+    .article-body h2::after{content:'';position:absolute;left:0;bottom:0;width:40px;height:2px;background:var(--mint-tx);border-radius:2px}
+    .article-body h2:first-child{margin-top:0}
+    .article-body p{font-size:16px;line-height:1.88;color:#2e2e2c;margin-bottom:22px}
+    .article-body p strong{color:var(--ink);font-weight:600}
+
+    .pull-quote{border-left:3px solid var(--mint-tx);padding:16px 24px;margin:36px 0;background:var(--ivory);border-radius:0 12px 12px 0}
+    .pull-quote p{font-size:18px;font-style:italic;color:var(--ink);font-weight:300;margin:0;line-height:1.7}
+
+    .box{border-radius:14px;padding:24px 28px;margin:32px 0}
+    .box-title{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+    .box-title::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .box p{font-size:15px;margin-bottom:10px}
+    .box p:last-child{margin-bottom:0}
+    .box-mint{background:var(--mint-bg);border:1px solid var(--mint-bd)}
+    .box-mint .box-title{color:var(--mint-tx)}
+    .box-mint .box-title::before{background:var(--mint)}
+    .box-mint p{color:#2a6050}
+    .box-coral{background:var(--coral-bg);border:1px solid var(--coral-bd)}
+    .box-coral .box-title{color:var(--terra)}
+    .box-coral .box-title::before{background:var(--terra)}
+    .box-coral p{color:#7a3a28}
+    .box-lav{background:var(--lav-bg);border:1px solid var(--lav-bd)}
+    .box-lav .box-title{color:var(--lav-tx)}
+    .box-lav .box-title::before{background:#c4a8e0}
+    .box-lav p{color:#5a3880}
+
+    /* Before/After */
+    .qa-compare{margin:32px 0;border-radius:14px;overflow:hidden;border:1px solid var(--border)}
+    .qa-bad{background:#fff8f8;border-bottom:1px solid var(--border);padding:20px 24px}
+    .qa-good{background:#f0faf6;padding:20px 24px}
+    .qa-badge{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;border-radius:4px;padding:3px 9px;display:inline-block;margin-bottom:10px}
+    .qa-badge-bad{background:var(--coral-bg);color:var(--terra)}
+    .qa-badge-good{background:var(--mint-bg);color:var(--mint-tx)}
+    .qa-prompt{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:8px;padding-left:12px;border-left:3px solid}
+    .qa-bad .qa-prompt{border-color:var(--terra)}
+    .qa-good .qa-prompt{border-color:var(--mint)}
+    .qa-response{font-size:13.5px;color:var(--stone);line-height:1.7;padding-left:15px}
+    .qa-why{font-size:12px;color:var(--muted);margin-top:10px;padding:8px 12px;background:rgba(0,0,0,.04);border-radius:6px;line-height:1.6}
+
+    /* Tips */
+    .tip-list{display:flex;flex-direction:column;gap:14px;margin:28px 0}
+    .tip{display:flex;gap:16px;align-items:flex-start}
+    .tip-icon{width:36px;height:36px;border-radius:10px;background:var(--mint-bg);border:1px solid var(--mint-bd);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+    .tip-body strong{display:block;font-size:15px;font-weight:600;color:var(--ink);margin-bottom:4px}
+    .tip-body span{font-size:14px;color:var(--stone);line-height:1.7}
+
+    /* Template box */
+    .template{background:var(--ink);border-radius:14px;padding:24px 28px;margin:32px 0}
+    .template-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mint);margin-bottom:14px}
+    .template-text{font-size:15px;color:#e8e6dc;line-height:1.8;font-style:italic}
+    .template-text span{color:#fff;font-style:normal;font-weight:600}
+
+    .summary{background:var(--ink);color:var(--ivory);border-radius:18px;padding:36px 40px;margin:56px 0 0}
+    .summary-title{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:20px;color:#fff}
+    .summary-list{list-style:none;display:flex;flex-direction:column;gap:12px}
+    .summary-list li{font-size:15px;color:#c8c6be;display:flex;gap:12px;align-items:flex-start;line-height:1.65}
+    .summary-list li::before{content:'◆';font-size:8px;color:var(--mint);flex-shrink:0;margin-top:7px}
+
+    .next-section{max-width:680px;margin:0 auto;padding:0 28px 100px}
+    .next-title{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:20px;color:var(--ink)}
+    .next-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .next-card{background:var(--ivory);border:1px solid var(--border);border-radius:14px;padding:22px 22px 18px;text-decoration:none;display:block;transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s}
+    .next-card:hover{transform:translateY(-5px);box-shadow:0 16px 48px rgba(0,0,0,.08)}
+    .next-card-tag{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px;display:block}
+    .next-card-title{font-family:'DM Serif Display',serif;font-size:17px;color:var(--ink);line-height:1.3;margin-bottom:10px}
+    .next-card-arrow{font-size:12px;color:var(--muted)}
+
+    .footer{border-top:1px solid var(--border);padding:40px 28px;max-width:760px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+    .footer-brand{font-family:'DM Serif Display',serif;font-size:20px;color:var(--ink)}
+    .footer-copy{font-size:11px;color:var(--muted);margin-top:4px}
+    .footer-links{display:flex;gap:24px}
+    .footer-link{font-size:13px;color:var(--stone);text-decoration:none;transition:color .2s}
+    .footer-link:hover{color:var(--ink)}
+
+    @media(min-width:900px){
+      .article-header{max-width:none;padding:0;text-align:left;display:grid;grid-template-columns:1fr 360px;min-height:500px;margin:0}
+      .article-header::before{display:none}
+      .header-left{padding:130px 72px 80px;background:radial-gradient(ellipse at 95% 5%,rgba(126,203,176,.35) 0%,transparent 48%),radial-gradient(ellipse at 0% 95%,rgba(184,232,216,.2) 0%,transparent 42%),var(--bg);display:flex;flex-direction:column;justify-content:center}
+      .header-right{background:var(--mint-tx);position:relative;overflow:hidden;clip-path:polygon(12% 0,100% 0,100% 100%,0 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:48px 52px 52px 72px;gap:12px}
+      .header-right::before{content:'P';position:absolute;top:-30px;right:-10px;font-family:'DM Serif Display',serif;font-size:310px;font-weight:400;color:rgba(255,255,255,.06);line-height:1;pointer-events:none;user-select:none}
+      .hr-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:6px 14px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.95);letter-spacing:.06em;width:fit-content}
+      .hr-no{font-family:'DM Serif Display',serif;font-size:52px;color:rgba(255,255,255,.2);line-height:1;position:absolute;top:40px;left:60px;font-style:italic}
+      .hr-label{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45);position:absolute;top:100px;left:60px}
+      .article-tag{margin-bottom:20px;align-self:flex-start}
+      .article-lead{max-width:520px;margin:0 0 32px}
+      .article-meta{justify-content:flex-start}
+      .divider{max-width:none;padding:0 72px}
+      .page-wrap{display:grid;grid-template-columns:220px 1fr;gap:64px;max-width:1140px;margin:0 auto;padding:72px 72px 0;align-items:start}
+      .sidebar{display:block;position:sticky;top:80px}
+      .toc-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+      .toc-nav{display:flex;flex-direction:column;gap:2px}
+      .toc-link{display:block;font-size:13px;color:var(--stone);text-decoration:none;padding:7px 10px;border-radius:7px;line-height:1.4;transition:background .15s,color .15s;border-left:2px solid transparent}
+      .toc-link:hover,.toc-link.active{background:var(--mint-bg);color:var(--mint-tx);border-left-color:var(--mint-tx)}
+      .sidebar-divider{height:1px;background:var(--border);margin:20px 0}
+      .sidebar-info{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:6px;padding-left:10px}
+      .article-body{max-width:none;margin:0;padding:0 0 100px}
+      .next-section{max-width:1140px;padding:40px 72px 100px}
+      .footer{max-width:none;padding:40px 72px}
+    }
+    @media(max-width:640px){
+      .nav{padding:12px 18px}
+      .article-header{padding:90px 20px 48px}
+      .article-body{padding:48px 20px 80px}
+      .next-cards{grid-template-columns:1fr}
+      .next-section{padding:0 20px 80px}
+      .summary{padding:28px 24px}
+      .footer{padding:32px 20px;flex-direction:column;gap:20px;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="../" class="nav-back"><span class="nav-back-dot"></span>◁ ブログ一覧</a>
+    <span class="nav-label">USUI BLOG — 使い方</span>
+  </nav>
+
+  <header class="article-header">
+    <div class="header-left">
+      <span class="article-tag">使い方</span>
+      <h1 class="article-title">
+        <em>プロンプト</em>って何？<br>
+        話しかけ方で結果が<br>全然変わる
+      </h1>
+      <p class="article-lead">
+        AIへの指示文を「プロンプト」と言います。<br>
+        同じことを聞くにも、ちょっとした工夫で<br>
+        返ってくる答えが激変します。
+      </p>
+      <div class="article-meta">
+        <span>2026年4月</span>
+        <span class="meta-sep">|</span>
+        <span>4 min read</span>
+        <span class="meta-sep">|</span>
+        <span>USUI</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="hr-no">05</div>
+      <div class="hr-label">HOW TO USE</div>
+      <div class="hr-badge">NG / OK の比較あり</div>
+      <div class="hr-badge">今日から使えるコツ</div>
+      <div class="hr-badge">コピペOKテンプレつき</div>
+    </div>
+  </header>
+
+  <div class="divider"></div>
+
+  <div class="page-wrap">
+  <aside class="sidebar">
+    <div class="toc-label">目次</div>
+    <nav class="toc-nav">
+      <a href="#s1" class="toc-link">プロンプトとは</a>
+      <a href="#s2" class="toc-link">なぜ変わるの？</a>
+      <a href="#s3" class="toc-link">NG / OK 比較</a>
+      <a href="#s4" class="toc-link">5つのコツ</a>
+      <a href="#s5" class="toc-link">使えるテンプレ</a>
+    </nav>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-info">
+      <span>2026年4月</span>
+      <span>4 min read</span>
+      <span>著者: USUI</span>
+    </div>
+  </aside>
+
+  <main class="article-body">
+
+    <h2 id="s1">プロンプトとは</h2>
+    <p>
+      AIに送る<strong>「指示・質問・お願いの文章」</strong>のことを「プロンプト」と言います。むずかしい言葉ですが、要するに<strong>AIへの話しかけ方</strong>のことです。
+    </p>
+    <p>
+      「ChatGPTについて教えて」も、「明日の朝食レシピを考えて」も、全部プロンプトです。
+    </p>
+
+    <div class="pull-quote">
+      <p>プロンプトは「AIへの注文の仕方」。レストランで「何かください」と言うか、「鶏肉を使った、辛くない夕食を教えてください」と言うかの違いです。</p>
+    </div>
+
+    <h2 id="s2">なぜ話しかけ方で答えが変わるの？</h2>
+    <p>
+      AIは、あなたの言葉をそのまま手がかりにして回答を作ります。<strong>情報が少なければ当てずっぽうで答え、情報が多ければ的確に答えます。</strong>
+    </p>
+    <p>
+      コンビニで「お弁当ください」と言うより「500円以内で、温かくて、魚が入ってない弁当をください」と言ったほうが欲しいものが手に入るのと同じです。AIへの情報量と具体性が、答えの質に直結します。
+    </p>
+
+    <div class="box box-mint">
+      <div class="box-title">AIが参考にしている情報</div>
+      <p><strong>誰に向けて？</strong>（対象・読者）<br>
+         <strong>何のために？</strong>（目的）<br>
+         <strong>どんな形で？</strong>（形式・文字数・スタイル）<br>
+         <strong>どんな制約がある？</strong>（使えない言葉、NG条件など）</p>
+      <p>これらをプロンプトに入れるほど、答えが的確になります。</p>
+    </div>
+
+    <h2 id="s3">NG / OK 比較</h2>
+    <p>同じ「夕食のレシピを教えて」でも、伝え方でここまで変わります。</p>
+
+    <div class="qa-compare">
+      <div class="qa-bad">
+        <span class="qa-badge qa-badge-bad">NG — 情報が少ない</span>
+        <div class="qa-prompt">「夕食のレシピ教えて」</div>
+        <div class="qa-response">「鶏の唐揚げはいかがでしょうか。材料は……」（無難すぎて使えないことが多い）</div>
+        <div class="qa-why">何も情報がないので、AIは当たり障りのない一般的な答えを出すしかありません。</div>
+      </div>
+      <div class="qa-good">
+        <span class="qa-badge qa-badge-good">OK — 具体的に伝える</span>
+        <div class="qa-prompt">「冷蔵庫に豚バラ・キャベツ・卵があります。料理が苦手な一人暮らしでも作れる、20分以内のレシピを1つ教えてください」</div>
+        <div class="qa-response">「豚バラとキャベツの塩炒め＋目玉焼きをおすすめします。手順は①……」（具体的で実用的）</div>
+        <div class="qa-why">食材・スキルレベル・時間・量を伝えることで、本当に使えるレシピが返ってきます。</div>
+      </div>
+    </div>
+
+    <div class="qa-compare">
+      <div class="qa-bad">
+        <span class="qa-badge qa-badge-bad">NG — 目的が不明</span>
+        <div class="qa-prompt">「自己紹介文を書いて」</div>
+        <div class="qa-response">「私は〇〇と申します。趣味は……」（汎用的すぎて使えない）</div>
+        <div class="qa-why">誰に向けて、何のために書くのかが不明だと、ありきたりな文章になります。</div>
+      </div>
+      <div class="qa-good">
+        <span class="qa-badge qa-badge-good">OK — 目的・対象を明示</span>
+        <div class="qa-prompt">「Twitterのプロフィール用に、AIに興味があるフリーランスデザイナーという設定で、親しみやすくて100文字以内の自己紹介文を書いてください」</div>
+        <div class="qa-response">「デザインとAIの交差点で働くフリーランサー。AIツールを使って、もっと人の心に届くデザインを追いかけています。」</div>
+        <div class="qa-why">プラットフォーム・職業・トーン・文字数を指定することで、そのまま使えるレベルの文が出ます。</div>
+      </div>
+    </div>
+
+    <div class="qa-compare">
+      <div class="qa-bad">
+        <span class="qa-badge qa-badge-bad">NG — 出力形式を指定しない</span>
+        <div class="qa-prompt">「AIの種類を教えて」</div>
+        <div class="qa-response">（ダラダラとした長文が返ってくることが多い）</div>
+        <div class="qa-why">どんな形で欲しいかを伝えないと、AIは自由に形式を選びます。</div>
+      </div>
+      <div class="qa-good">
+        <span class="qa-badge qa-badge-good">OK — 形式を指定する</span>
+        <div class="qa-prompt">「主要なAIサービスを、名前・会社・特徴の3列で、表形式にまとめてください」</div>
+        <div class="qa-response">（見やすい表で整理されて返ってくる）</div>
+        <div class="qa-why">「表で」「箇条書きで」「3行で」など形式を指定すると、すぐ使える答えが返ってきます。</div>
+      </div>
+    </div>
+
+    <h2 id="s4">今日から使える5つのコツ</h2>
+
+    <div class="tip-list">
+      <div class="tip">
+        <div class="tip-icon">🎯</div>
+        <div class="tip-body">
+          <strong>具体的な数字を入れる</strong>
+          <span>「短く」より「100文字以内で」、「いくつか」より「3つ」と数字を入れると答えが絞られます。</span>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">👤</div>
+        <div class="tip-body">
+          <strong>「誰に向けて」を伝える</strong>
+          <span>「小学生にもわかるように」「ITが苦手な50代に向けて」など対象を明示すると、言葉のレベルが合います。</span>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">📋</div>
+        <div class="tip-body">
+          <strong>出力形式を指定する</strong>
+          <span>「箇条書きで」「表で」「会話形式で」「見出しをつけて」など、欲しい形を伝えましょう。</span>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">🎭</div>
+        <div class="tip-body">
+          <strong>役割を与える</strong>
+          <span>「あなたはプロの編集者です」「栄養士として答えてください」など役割を与えると、専門的な視点から答えてくれます。</span>
+        </div>
+      </div>
+      <div class="tip">
+        <div class="tip-icon">🔄</div>
+        <div class="tip-body">
+          <strong>気に入らなければ修正を頼む</strong>
+          <span>一発で完璧にしようとしなくていい。「もっとカジュアルに」「3行に縮めて」と追加で頼むのがコツです。</span>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="s5">コピペして使えるテンプレート</h2>
+    <p>迷ったときはこのテンプレートに当てはめるだけでOKです。</p>
+
+    <div class="template">
+      <div class="template-label">汎用テンプレート</div>
+      <div class="template-text">
+        あなたは<span>［役割］</span>です。<br>
+        <span>［対象・読者］</span>向けに、<br>
+        <span>［目的・内容］</span>を<br>
+        <span>［形式・文字数・スタイル］</span>で作成してください。<br>
+        ただし<span>［制約・NG条件］</span>は避けてください。
+      </div>
+    </div>
+
+    <div class="box box-lav">
+      <div class="box-title">実例で当てはめると</div>
+      <p>「あなたは<strong>プロのライター</strong>です。<strong>AIに興味を持ち始めた30代</strong>向けに、<strong>ChatGPTの便利な使い方5選</strong>を<strong>箇条書きで、各100文字以内</strong>で作成してください。ただし<strong>専門用語は使わない</strong>でください。」</p>
+    </div>
+
+    <div class="box box-coral">
+      <div class="box-title">うまくいかないときは</div>
+      <p>答えが長すぎる → 「3行で要約して」<br>
+         むずかしすぎる → 「中学生にもわかる言葉で」<br>
+         的外れ → 「私が求めているのは〇〇です。もう一度」<br>
+         もっと詳しく → 「特に〇〇の部分をもっと詳しく」</p>
+    </div>
+
+    <div class="summary">
+      <div class="summary-title">この記事のまとめ</div>
+      <ul class="summary-list">
+        <li>プロンプトとはAIへの「指示・質問・お願いの文章」のこと</li>
+        <li>情報が少ないと当たり障りのない答え、具体的なほど的確な答えが返ってくる</li>
+        <li>数字・対象・形式・役割の4つを意識するだけで答えの質が大幅に上がる</li>
+        <li>一発で完璧にしなくていい。「もっと短く」「カジュアルに」と追加で修正を頼める</li>
+        <li>テンプレートに当てはめるだけで、ほとんどの場面はカバーできる</li>
+      </ul>
+    </div>
+
+  </main>
+  </div>
+
+  <section class="next-section">
+    <div class="next-title">次に読む記事</div>
+    <div class="next-cards">
+      <a href="../hallucination/" class="next-card">
+        <span class="next-card-tag" style="color:var(--lav-tx);">疑問</span>
+        <div class="next-card-title">AIは嘘をつく？ハルシネーションと「忖度」の正体</div>
+        <div class="next-card-arrow">→ 8 min read</div>
+      </a>
+      <a href="../chatgpt/" class="next-card">
+        <span class="next-card-tag" style="color:var(--terra);">入門</span>
+        <div class="next-card-title">ChatGPTって何者？5分でわかる基本のキ</div>
+        <div class="next-card-arrow">→ 5 min read</div>
+      </a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>
+      <div class="footer-brand">usui blog</div>
+      <div class="footer-copy">© 2026 USUI LAB</div>
+    </div>
+    <div class="footer-links">
+      <a href="../" class="footer-link">← 記事一覧</a>
+      <a href="https://usuilab.com" class="footer-link">usuilab.com</a>
+    </div>
+  </footer>
+
+  <script>
+    const sections=document.querySelectorAll('h2[id]');
+    const tocLinks=document.querySelectorAll('.toc-link');
+    if(sections.length&&tocLinks.length){
+      const io=new IntersectionObserver(entries=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            tocLinks.forEach(l=>l.classList.remove('active'));
+            const link=document.querySelector(`.toc-link[href="#${e.target.id}"]`);
+            if(link)link.classList.add('active');
+          }
+        });
+      },{rootMargin:'-20% 0px -70% 0px'});
+      sections.forEach(s=>io.observe(s));
+    }
+  </script>
+</body>
+</html>
