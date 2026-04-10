@@ -247,8 +247,11 @@
 
     /* ─── Hero blog title ────────────────────── */
     .hero-blog-title {
-      margin-bottom: 36px;
+      position: absolute;
+      top: 62px;
+      left: 0; right: 0;
       text-align: center;
+      z-index: 2;
       opacity: 0;
       animation: fade-up .55s ease forwards .05s;
     }
@@ -262,7 +265,7 @@
     .hbt-dot  { width: 5px; height: 5px; background: var(--terra); border-radius: 50%; flex-shrink: 0; }
     .hbt-name {
       font-family: 'DM Serif Display', serif;
-      font-size: clamp(22px, 2.6vw, 34px);
+      font-size: clamp(28px, 3.5vw, 46px);
       color: var(--ink);
       margin: 14px 0 6px;
       line-height: 1.1;
@@ -548,19 +551,20 @@
   <!-- ── Hero ── -->
   <section class="hero">
 
-    <div class="hero-content">
-      <div class="hero-blog-title">
-        <div class="hbt-rules">
-          <div class="hbt-rule"></div>
-          <div class="hbt-dot"></div>
-        </div>
-        <div class="hbt-name">うすいの<em>AI</em>備忘録</div>
-        <div class="hbt-sub">AIを学びたい全ての人へ</div>
-        <div class="hbt-rules">
-          <div class="hbt-rule"></div>
-          <div class="hbt-dot"></div>
-        </div>
+    <div class="hero-blog-title">
+      <div class="hbt-rules">
+        <div class="hbt-rule"></div>
+        <div class="hbt-dot"></div>
       </div>
+      <div class="hbt-name">うすいの<em>AI</em>備忘録</div>
+      <div class="hbt-sub">AIを学びたい全ての人へ</div>
+      <div class="hbt-rules">
+        <div class="hbt-rule"></div>
+        <div class="hbt-dot"></div>
+      </div>
+    </div>
+
+    <div class="hero-content">
       <div class="hero-eyebrow">
         <span class="eyebrow-dot"></span>
         AIについて、やさしく書くブログ
