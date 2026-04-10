@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIの仕事を奪うって本当？ 2026年版 — usui blog</title>
+  <meta name="description" content="「AIが仕事を奪う」は本当か？最新データと一緒に、なくなる仕事・残る仕事・これからの備え方を整理します。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#f5f4ed;--ivory:#faf9f5;--ink:#141413;--terra:#c96442;
+      --coral-bg:#fde8de;--coral-bd:#f4c4a8;
+      --mint:#7ecbb0;--mint-bg:#d8f0e8;--mint-bd:#a8dcc8;--mint-tx:#3a9070;
+      --lav-bg:#ece4f4;--lav-bd:#c8aee0;--lav-tx:#8060b0;
+      --gold:#f0c060;--gold-bg:#fdf0cc;--gold-bd:#e0cc88;--gold-tx:#9a7020;
+      --stone:#5e5d59;--muted:#87867f;--border:#e8e6dc;--border-lt:#f0eee6;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;line-height:1.8}
+
+    .nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(245,244,237,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-lt)}
+    .nav-back{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:12px;font-weight:500;color:var(--stone);letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
+    .nav-back:hover{color:var(--gold-tx)}
+    .nav-back-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;animation:blink 1.8s ease-in-out infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+    .nav-label{font-size:11px;color:var(--muted);letter-spacing:.06em}
+    .sidebar{display:none}
+
+    .article-header{padding:120px 28px 64px;max-width:760px;margin:0 auto;text-align:center;position:relative}
+    .article-header::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:120%;height:100%;background:radial-gradient(ellipse at 65% 25%,rgba(240,192,96,.25) 0%,transparent 50%),radial-gradient(ellipse at 20% 80%,rgba(253,240,204,.3) 0%,transparent 45%);pointer-events:none;z-index:-1}
+    @keyframes fade-up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .article-tag{display:inline-block;background:var(--gold-bg);color:var(--gold-tx);border:1px solid var(--gold-bd);padding:5px 16px;border-radius:16px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:28px;opacity:0;animation:fade-up .5s ease forwards .1s}
+    .article-title{font-family:'DM Serif Display',serif;font-size:clamp(30px,5.5vw,54px);line-height:1.12;color:var(--ink);margin-bottom:24px;opacity:0;animation:fade-up .7s cubic-bezier(.16,1,.3,1) forwards .2s}
+    .article-title em{font-style:italic;color:var(--gold-tx)}
+    .article-lead{font-size:17px;color:var(--stone);font-weight:300;line-height:1.8;max-width:540px;margin:0 auto 36px;opacity:0;animation:fade-up .6s ease forwards .35s}
+    .article-meta{display:flex;align-items:center;justify-content:center;gap:20px;font-size:12px;color:var(--muted);letter-spacing:.05em;opacity:0;animation:fade-up .5s ease forwards .5s}
+    .meta-sep{color:var(--border)}
+    .divider{max-width:760px;margin:0 auto;padding:0 28px;height:1px;background:var(--border)}
+
+    .article-body{max-width:680px;margin:0 auto;padding:64px 28px 120px}
+    .article-body h2{font-family:'DM Serif Display',serif;font-size:clamp(22px,3.2vw,30px);color:var(--ink);margin-top:72px;margin-bottom:20px;line-height:1.25;position:relative;padding-bottom:14px}
+    .article-body h2::after{content:'';position:absolute;left:0;bottom:0;width:40px;height:2px;background:var(--gold-tx);border-radius:2px}
+    .article-body h2:first-child{margin-top:0}
+    .article-body p{font-size:16px;line-height:1.88;color:#2e2e2c;margin-bottom:22px}
+    .article-body p strong{color:var(--ink);font-weight:600}
+
+    .pull-quote{border-left:3px solid var(--gold-tx);padding:16px 24px;margin:36px 0;background:var(--ivory);border-radius:0 12px 12px 0}
+    .pull-quote p{font-size:18px;font-style:italic;color:var(--ink);font-weight:300;margin:0;line-height:1.7}
+
+    .box{border-radius:14px;padding:24px 28px;margin:32px 0}
+    .box-title{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+    .box-title::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .box p{font-size:15px;margin-bottom:10px}
+    .box p:last-child{margin-bottom:0}
+    .box-gold{background:var(--gold-bg);border:1px solid var(--gold-bd)}
+    .box-gold .box-title{color:var(--gold-tx)}
+    .box-gold .box-title::before{background:var(--gold)}
+    .box-gold p{color:#6a5010}
+    .box-mint{background:var(--mint-bg);border:1px solid var(--mint-bd)}
+    .box-mint .box-title{color:var(--mint-tx)}
+    .box-mint .box-title::before{background:var(--mint)}
+    .box-mint p{color:#2a6050}
+    .box-coral{background:var(--coral-bg);border:1px solid var(--coral-bd)}
+    .box-coral .box-title{color:var(--terra)}
+    .box-coral .box-title::before{background:var(--terra)}
+    .box-coral p{color:#7a3a28}
+
+    /* Stat cards */
+    .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:32px 0}
+    .stat{background:var(--ivory);border:1px solid var(--border);border-radius:14px;padding:20px 18px;text-align:center}
+    .stat-num{font-family:'DM Serif Display',serif;font-size:clamp(26px,4vw,36px);color:var(--gold-tx);line-height:1;margin-bottom:6px}
+    .stat-label{font-size:12px;color:var(--stone);line-height:1.5}
+    .stat-src{font-size:10px;color:var(--muted);margin-top:6px}
+
+    /* Job list */
+    .job-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:28px 0}
+    .job-col{border-radius:14px;padding:22px 22px;border:1px solid}
+    .job-col-danger{background:#fff8f4;border-color:#f4c4a8}
+    .job-col-safe{background:var(--mint-bg);border-color:var(--mint-bd)}
+    .job-col-title{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:6px}
+    .job-col-danger .job-col-title{color:var(--terra)}
+    .job-col-safe .job-col-title{color:var(--mint-tx)}
+    .job-item{font-size:14px;line-height:1.65;padding:6px 0;border-bottom:1px solid rgba(0,0,0,.06);display:flex;gap:8px;align-items:flex-start}
+    .job-item:last-child{border-bottom:none}
+    .job-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:8px}
+    .job-col-danger .job-dot{background:var(--terra)}
+    .job-col-safe .job-dot{background:var(--mint-tx)}
+
+    /* Data bar */
+    .data-bar-wrap{margin:24px 0}
+    .data-bar-label{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center}
+    .data-bar-label span{font-size:13px;color:var(--stone);font-weight:400}
+    .data-bar-track{height:10px;background:var(--border);border-radius:6px;overflow:hidden}
+    .data-bar-fill{height:100%;border-radius:6px;background:var(--gold);transition:width .8s ease}
+
+    /* Reality check rows */
+    .reality-list{display:flex;flex-direction:column;gap:18px;margin:28px 0}
+    .reality-item{display:flex;gap:18px;align-items:flex-start;padding:18px 20px;background:var(--ivory);border-radius:12px;border:1px solid var(--border)}
+    .reality-icon{font-size:22px;flex-shrink:0;width:40px;text-align:center}
+    .reality-body strong{display:block;font-size:15px;font-weight:600;color:var(--ink);margin-bottom:4px}
+    .reality-body span{font-size:14px;color:var(--stone);line-height:1.65}
+
+    .summary{background:var(--ink);color:var(--ivory);border-radius:18px;padding:36px 40px;margin:56px 0 0}
+    .summary-title{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:20px;color:#fff}
+    .summary-list{list-style:none;display:flex;flex-direction:column;gap:12px}
+    .summary-list li{font-size:15px;color:#c8c6be;display:flex;gap:12px;align-items:flex-start;line-height:1.65}
+    .summary-list li::before{content:'◆';font-size:8px;color:var(--gold);flex-shrink:0;margin-top:7px}
+
+    .source-note{margin-top:48px;padding-top:24px;border-top:1px solid var(--border)}
+    .source-note p{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:4px}
+    .source-note a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+
+    .next-section{max-width:680px;margin:0 auto;padding:0 28px 100px}
+    .next-title{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:20px;color:var(--ink)}
+    .next-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .next-card{background:var(--ivory);border:1px solid var(--border);border-radius:14px;padding:22px 22px 18px;text-decoration:none;display:block;transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s}
+    .next-card:hover{transform:translateY(-5px);box-shadow:0 16px 48px rgba(0,0,0,.08)}
+    .next-card-tag{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px;display:block}
+    .next-card-title{font-family:'DM Serif Display',serif;font-size:17px;color:var(--ink);line-height:1.3;margin-bottom:10px}
+    .next-card-arrow{font-size:12px;color:var(--muted)}
+
+    .footer{border-top:1px solid var(--border);padding:40px 28px;max-width:760px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+    .footer-brand{font-family:'DM Serif Display',serif;font-size:20px;color:var(--ink)}
+    .footer-copy{font-size:11px;color:var(--muted);margin-top:4px}
+    .footer-links{display:flex;gap:24px}
+    .footer-link{font-size:13px;color:var(--stone);text-decoration:none;transition:color .2s}
+    .footer-link:hover{color:var(--ink)}
+
+    @media(min-width:900px){
+      .article-header{max-width:none;padding:0;text-align:left;display:grid;grid-template-columns:1fr 360px;min-height:500px;margin:0}
+      .article-header::before{display:none}
+      .header-left{padding:130px 72px 80px;background:radial-gradient(ellipse at 95% 5%,rgba(240,192,96,.25) 0%,transparent 48%),radial-gradient(ellipse at 0% 95%,rgba(253,240,204,.2) 0%,transparent 42%),var(--bg);display:flex;flex-direction:column;justify-content:center}
+      .header-right{background:var(--gold-tx);position:relative;overflow:hidden;clip-path:polygon(12% 0,100% 0,100% 100%,0 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:48px 52px 52px 72px;gap:12px}
+      .header-right::before{content:'N';position:absolute;top:-30px;right:-10px;font-family:'DM Serif Display',serif;font-size:310px;font-weight:400;color:rgba(255,255,255,.06);line-height:1;pointer-events:none;user-select:none}
+      .hr-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:6px 14px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.95);letter-spacing:.06em;width:fit-content}
+      .hr-no{font-family:'DM Serif Display',serif;font-size:52px;color:rgba(255,255,255,.2);line-height:1;position:absolute;top:40px;left:60px;font-style:italic}
+      .hr-label{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45);position:absolute;top:100px;left:60px}
+      .article-tag{margin-bottom:20px;align-self:flex-start}
+      .article-lead{max-width:520px;margin:0 0 32px}
+      .article-meta{justify-content:flex-start}
+      .divider{max-width:none;padding:0 72px}
+      .page-wrap{display:grid;grid-template-columns:220px 1fr;gap:64px;max-width:1140px;margin:0 auto;padding:72px 72px 0;align-items:start}
+      .sidebar{display:block;position:sticky;top:80px}
+      .toc-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+      .toc-nav{display:flex;flex-direction:column;gap:2px}
+      .toc-link{display:block;font-size:13px;color:var(--stone);text-decoration:none;padding:7px 10px;border-radius:7px;line-height:1.4;transition:background .15s,color .15s;border-left:2px solid transparent}
+      .toc-link:hover,.toc-link.active{background:var(--gold-bg);color:var(--gold-tx);border-left-color:var(--gold-tx)}
+      .sidebar-divider{height:1px;background:var(--border);margin:20px 0}
+      .sidebar-info{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:6px;padding-left:10px}
+      .article-body{max-width:none;margin:0;padding:0 0 100px}
+      .next-section{max-width:1140px;padding:40px 72px 100px}
+      .footer{max-width:none;padding:40px 72px}
+      .stat-row{gap:18px}
+      .job-grid{gap:18px}
+    }
+    @media(max-width:640px){
+      .nav{padding:12px 18px}
+      .article-header{padding:90px 20px 48px}
+      .article-body{padding:48px 20px 80px}
+      .stat-row{grid-template-columns:1fr 1fr;gap:10px}
+      .stat-row .stat:last-child{grid-column:1/-1}
+      .job-grid{grid-template-columns:1fr}
+      .next-cards{grid-template-columns:1fr}
+      .next-section{padding:0 20px 80px}
+      .summary{padding:28px 24px}
+      .footer{padding:32px 20px;flex-direction:column;gap:20px;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="../" class="nav-back"><span class="nav-back-dot"></span>◁ ブログ一覧</a>
+    <span class="nav-label">USUI BLOG — 最新ニュース</span>
+  </nav>
+
+  <header class="article-header">
+    <div class="header-left">
+      <span class="article-tag">最新ニュース</span>
+      <h1 class="article-title">
+        AIの仕事を奪うって<br>
+        <em>本当に</em>？<br>
+        2026年版
+      </h1>
+      <p class="article-lead">
+        毎日ニュースで流れる「AIが仕事を奪う」という話。<br>
+        心配より先に、最新データで正確に知っておこう。
+      </p>
+      <div class="article-meta">
+        <span>2026年4月</span>
+        <span class="meta-sep">|</span>
+        <span>6 min read</span>
+        <span class="meta-sep">|</span>
+        <span>USUI</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="hr-no">06</div>
+      <div class="hr-label">NEWS & ANALYSIS</div>
+      <div class="hr-badge">WEF 2025 最新レポート</div>
+      <div class="hr-badge">なくなる / 残る 仕事リスト</div>
+      <div class="hr-badge">日本特有の事情も解説</div>
+    </div>
+  </header>
+
+  <div class="divider"></div>
+
+  <div class="page-wrap">
+  <aside class="sidebar">
+    <div class="toc-label">目次</div>
+    <nav class="toc-nav">
+      <a href="#s1" class="toc-link">まず「実態」を知ろう</a>
+      <a href="#s2" class="toc-link">「奪われる」仕事</a>
+      <a href="#s3" class="toc-link">「残る」仕事</a>
+      <a href="#s4" class="toc-link">データで見る現在地</a>
+      <a href="#s5" class="toc-link">じゃあ、どう備える？</a>
+    </nav>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-info">
+      <span>2026年4月</span>
+      <span>6 min read</span>
+      <span>著者: USUI</span>
+    </div>
+  </aside>
+
+  <main class="article-body">
+
+    <h2 id="s1">まず「実態」を知ろう</h2>
+    <p>
+      「AIが仕事を奪う」という話は、<strong>半分本当で、半分まちがい</strong>です。正確に言うと——
+    </p>
+
+    <div class="reality-list">
+      <div class="reality-item">
+        <div class="reality-icon">❌</div>
+        <div class="reality-body">
+          <strong>まちがい: 「職業まるごと消える」</strong>
+          <span>多くの場合、「仕事（ジョブ）」がなくなるのではなく、仕事の中の「作業（タスク）」が自動化される。医療事務でも、書類作成はAIが担い、患者対応は人が残る、という形になる。</span>
+        </div>
+      </div>
+      <div class="reality-item">
+        <div class="reality-icon">⚡</div>
+        <div class="reality-body">
+          <strong>本当: 「変化のスピードが速い」</strong>
+          <span>10年かかると言われていた自動化が、ChatGPT以降3〜5年で起きている。影響を受ける仕事の幅は確実に広がっている。</span>
+        </div>
+      </div>
+      <div class="reality-item">
+        <div class="reality-icon">🌏</div>
+        <div class="reality-body">
+          <strong>日本特有: 「人手不足 × AI」という複雑な構図</strong>
+          <span>日本は2030年までに最大640万人規模の労働力不足が予測されている（リクルートワークス研究所）。AIは「仕事を奪う」より先に「穴を埋める」役割を果たす可能性が高い。</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pull-quote">
+      <p>「AIが仕事を奪う」ではなく、「AIを使える人が、使えない人の仕事を奪う」時代が来ている。</p>
+    </div>
+
+    <h2 id="s2">「奪われやすい」と言われる仕事</h2>
+    <p>
+      共通点は、<strong>ルールが明確で、繰り返しが多く、判断の必要が少ない</strong>タスクを多く含む仕事です。
+    </p>
+
+    <div class="job-grid">
+      <div class="job-col job-col-danger">
+        <div class="job-col-title">⚠ 変化が大きい仕事</div>
+        <div class="job-item"><span class="job-dot"></span><span><strong>データ入力・整理</strong>：単純転記はほぼAIが代替</span></div>
+        <div class="job-item"><span class="job-dot"></span><span><strong>一般的な翻訳・文章校正</strong>：定型文書は自動化が進む</span></div>
+        <div class="job-item"><span class="job-dot"></span><span><strong>電話・チャット対応（一次）</strong>：FAQ範囲はボットへ</span></div>
+        <div class="job-item"><span class="job-dot"></span><span><strong>単純な経理・伝票処理</strong>：OCR＋AIで自動入力</span></div>
+        <div class="job-item"><span class="job-dot"></span><span><strong>定型レポート・議事録作成</strong>：録音→要約が自動化</span></div>
+        <div class="job-item"><span class="job-dot"></span><span><strong>基本的なコーディング（補助）</strong>：Copilotが担う</span></div>
+      </div>
+      <div class="job-col job-col-safe">
+        <div class="job-col-title">✓ 変化が小さい仕事</div>
+        <div class="job-item"><span class="job-dot"></span><span><strong>介護・看護</strong>：身体接触と感情的なケアは人が必要</span></div>
+        <div class="job-item"><span class="job-dot"></span><span><strong>保育・教育（現場）</strong>：子どもとの信頼関係は不代替</span></div>
+        <div class="job-item"><span class="job-dot"></span><span><strong>カウンセリング・心理支援</strong>：傾聴と共感が核心</span></div>
+        <div class="job-item"><span class="job-dot"></span><span><strong>建設・配管・電気工事</strong>：物理作業のロボット化は遅い</span></div>
+        <div class="job-item"><span class="job-dot"></span><span><strong>クリエイティブディレクション</strong>：意図・編集眼は人の強み</span></div>
+        <div class="job-item"><span class="job-dot"></span><span><strong>経営判断・対人交渉</strong>：責任を持つ意思決定は人に</span></div>
+      </div>
+    </div>
+
+    <div class="box box-gold">
+      <div class="box-title">大事な視点</div>
+      <p>「なくなりやすい仕事」リストに自分の仕事があっても、<strong>その仕事全体が消えるわけではありません</strong>。「その仕事の中の、ある作業」がAIに移るということです。残った部分でより高い価値を出せれば、むしろ強みになります。</p>
+    </div>
+
+    <h2 id="s3">「残りやすい」仕事の共通点</h2>
+    <p>
+      残りやすい仕事には、明確なパターンがあります。
+    </p>
+
+    <div class="reality-list">
+      <div class="reality-item">
+        <div class="reality-icon">🤝</div>
+        <div class="reality-body">
+          <strong>人と人の「関係性」が価値になる仕事</strong>
+          <span>介護、教育、カウンセリング、営業など。相手に寄り添い、信頼を積み上げることがサービスの核にある仕事はAIが入り込みにくい。</span>
+        </div>
+      </div>
+      <div class="reality-item">
+        <div class="reality-icon">🔧</div>
+        <div class="reality-body">
+          <strong>身体と空間を使う「現場系」の仕事</strong>
+          <span>配管工、大工、農業、料理人など。ロボット工学はソフトウェアより進歩が遅く、物理的な作業の自動化は2030年代以降と見られている。</span>
+        </div>
+      </div>
+      <div class="reality-item">
+        <div class="reality-icon">🎨</div>
+        <div class="reality-body">
+          <strong>「意図・方向性・編集」を担う創造的な仕事</strong>
+          <span>AIは大量の素材を作れるが、「何を作るか」「どれを選ぶか」という判断は人が持つ。編集者、ディレクター、プロデューサーなどは強くなる側。</span>
+        </div>
+      </div>
+      <div class="reality-item">
+        <div class="reality-icon">⚖️</div>
+        <div class="reality-body">
+          <strong>「責任と判断」を伴う仕事</strong>
+          <span>法律判断、医療診断の最終決定、経営判断など。AIは補助できるが、責任を引き受ける主体は人でなければならない。</span>
+        </div>
+      </div>
+    </div>
+
+    <h2 id="s4">データで見る2026年の現在地</h2>
+    <p>
+      主要な国際機関・研究機関のレポートをまとめました。
+    </p>
+
+    <div class="stat-row">
+      <div class="stat">
+        <div class="stat-num">+78M</div>
+        <div class="stat-label">2030年までの<br>雇用の純増（世界）</div>
+        <div class="stat-src">WEF Future of Jobs 2025</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">30%</div>
+        <div class="stat-label">2030年までに自動化<br>可能なタスクの割合</div>
+        <div class="stat-src">McKinsey 2023</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">640万人</div>
+        <div class="stat-label">2030年の日本の<br>労働力不足の予測</div>
+        <div class="stat-src">リクルートワークス研究所</div>
+      </div>
+    </div>
+
+    <p>
+      WEFの2025年レポートでは、<strong>AIで1億7000万の新しい役職が生まれ、9200万が縮小する</strong>と予測しています。差し引きでは雇用はプラスです。ただし「縮小する仕事」と「新しく生まれる仕事」は別の職種であることが多く、<strong>スキルの転換（リスキリング）</strong>が課題になっています。
+    </p>
+
+    <p>
+      日本では特殊な事情があります。少子高齢化で慢性的な人手不足が続いており、介護・物流・農業などの現場では「AIやロボットが人を奪う」より「AIがいないと回らない」状況が先に来ています。
+    </p>
+
+    <div class="data-bar-wrap">
+      <div class="data-bar-label">事務・管理系<span>自動化リスク 高</span></div>
+      <div class="data-bar-track"><div class="data-bar-fill" style="width:72%"></div></div>
+    </div>
+    <div class="data-bar-wrap">
+      <div class="data-bar-label">製造・物流（単純作業）<span>自動化リスク 中〜高</span></div>
+      <div class="data-bar-track"><div class="data-bar-fill" style="width:56%"></div></div>
+    </div>
+    <div class="data-bar-wrap">
+      <div class="data-bar-label">専門・技術職<span>自動化リスク 中</span></div>
+      <div class="data-bar-track"><div class="data-bar-fill" style="width:35%"></div></div>
+    </div>
+    <div class="data-bar-wrap">
+      <div class="data-bar-label">対人サービス・ケア職<span>自動化リスク 低</span></div>
+      <div class="data-bar-track"><div class="data-bar-fill" style="width:18%"></div></div>
+    </div>
+
+    <div class="box box-mint">
+      <div class="box-title">ポイント</div>
+      <p>「自動化リスク」が高い職種でも、<strong>全タスクが消えるわけではない</strong>。事務職でも「AIが作った文書を判断・修正する」「AIで効率化して別の業務を担う」という形で仕事自体は続く場合がほとんどです。</p>
+    </div>
+
+    <h2 id="s5">じゃあ、どう備える？</h2>
+    <p>
+      「AIに仕事を奪われないように」ではなく、<strong>「AIを使って価値を出せる側に回る」</strong>という発想が大切です。具体的にできることを整理します。
+    </p>
+
+    <div class="reality-list">
+      <div class="reality-item">
+        <div class="reality-icon">🚀</div>
+        <div class="reality-body">
+          <strong>まず「使ってみる」を繰り返す</strong>
+          <span>ChatGPT、Gemini、Claudeを実際の仕事や日常で試す。「AIを知っている人」と「使える人」の差が、これからますます開く。</span>
+        </div>
+      </div>
+      <div class="reality-item">
+        <div class="reality-icon">📐</div>
+        <div class="reality-body">
+          <strong>「自分の仕事 × AI」を具体的に考える</strong>
+          <span>自分の仕事のどのタスクをAIで効率化できるか？ 逆に言えば、AIが苦手な部分に自分の時間をかけられるようになる。</span>
+        </div>
+      </div>
+      <div class="reality-item">
+        <div class="reality-icon">🌱</div>
+        <div class="reality-body">
+          <strong>「人間にしかできないこと」を磨く</strong>
+          <span>AIの生産性に乗っかりながら、判断力・関係構築・独自視点・創造性など、AIが補えない能力に時間を使う。</span>
+        </div>
+      </div>
+      <div class="reality-item">
+        <div class="reality-icon">📖</div>
+        <div class="reality-body">
+          <strong>情報を定期的にアップデートする</strong>
+          <span>AIの進化は速い。1年前の「安全な仕事リスト」が今も正しいとは限らない。半年〜1年ごとに状況を確認する習慣を持つ。</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-coral">
+      <div class="box-title">一番大切なこと</div>
+      <p>AIに怯えて動けなくなるのが一番もったいない。まず<strong>今日、1つのAIサービスを使ってみる</strong>。それが最大の備えです。知識は使ってこそ意味を持ちます。</p>
+    </div>
+
+    <div class="summary">
+      <div class="summary-title">まとめ</div>
+      <ul class="summary-list">
+        <li>「仕事まるごと消える」より「タスクが自動化される」が正確な表現</li>
+        <li>WEF 2025：AIで世界の雇用は差し引き+7800万の見通し</li>
+        <li>日本は人手不足×AIで「補完」の側面が大きい</li>
+        <li>変化が大きいのは定型・繰り返し系。残るのは関係・判断・身体作業</li>
+        <li>「使える側に回る」ことが最大の備え。まず今日1つ使ってみる</li>
+      </ul>
+    </div>
+
+    <div class="source-note">
+      <p><strong>参考資料</strong></p>
+      <p>WEF "Future of Jobs Report 2025" — <a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/" target="_blank" rel="noopener">weforum.org</a></p>
+      <p>McKinsey Global Institute "The economic potential of generative AI" (2023) — <a href="https://www.mckinsey.com/capabilities/mckinsey-digital/our-insights/the-economic-potential-of-generative-ai-the-next-productivity-frontier" target="_blank" rel="noopener">mckinsey.com</a></p>
+      <p>リクルートワークス研究所「未来の仕事シリーズ 2030年の労働需給」(2023) — <a href="https://www.works-i.com/" target="_blank" rel="noopener">works-i.com</a></p>
+      <p>Goldman Sachs "The Potentially Large Effects of AI on Economic Growth" (2023)</p>
+    </div>
+
+  </main>
+  </div>
+
+  <section class="next-section">
+    <div class="next-title">次に読む</div>
+    <div class="next-cards">
+      <a href="../hallucination/" class="next-card">
+        <span class="next-card-tag" style="color:var(--lav-tx)">疑問</span>
+        <div class="next-card-title">AIは嘘をつく？ ハルシネーションの正体</div>
+        <div class="next-card-arrow">→</div>
+      </a>
+      <a href="../prompt/" class="next-card">
+        <span class="next-card-tag" style="color:var(--mint-tx)">使い方</span>
+        <div class="next-card-title">プロンプトって何？話しかけ方で結果が全然変わる</div>
+        <div class="next-card-arrow">→</div>
+      </a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>
+      <div class="footer-brand">usui blog</div>
+      <div class="footer-copy">AIって、むずかしくない。</div>
+    </div>
+    <div class="footer-links">
+      <a href="../../" class="footer-link">ホーム</a>
+      <a href="../" class="footer-link">ブログ一覧</a>
+    </div>
+  </footer>
+
+  <script>
+    // TOC active highlight
+    const tocLinks = document.querySelectorAll('.toc-link');
+    const sections = document.querySelectorAll('h2[id]');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          tocLinks.forEach(l => l.classList.remove('active'));
+          const active = document.querySelector(`.toc-link[href="#${e.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    sections.forEach(s => obs.observe(s));
+
+    // Animate data bars on scroll
+    const bars = document.querySelectorAll('.data-bar-fill');
+    const barObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.width = e.target.style.width; // trigger reflow
+          barObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    bars.forEach(b => { const w = b.style.width; b.style.width = '0'; setTimeout(() => { b.style.width = w; }, 100); barObs.observe(b); });
+  </script>
+
+</body>
+</html>
