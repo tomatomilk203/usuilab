@@ -245,6 +245,55 @@
       font-weight: 500;
     }
 
+    /* ─── Blog title section ─────────────────── */
+    .blog-title-section {
+      padding: 72px 72px 80px;
+      text-align: center;
+      position: relative;
+    }
+    .bts-rules {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+    .bts-rule {
+      height: 1px;
+      background: var(--border);
+      width: 0;
+      transition: width 1.1s cubic-bezier(.16,1,.3,1);
+    }
+    .bts-dot {
+      width: 6px; height: 6px;
+      background: var(--terra);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .bts-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(38px, 6.5vw, 88px);
+      line-height: 1.08;
+      color: var(--ink);
+      margin: 36px 0 20px;
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .85s ease .15s, transform .85s cubic-bezier(.16,1,.3,1) .15s;
+    }
+    .bts-title em { font-style: italic; color: var(--terra); }
+    .bts-title.reveal { opacity: 1; transform: translateY(0); }
+    .bts-meta {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity .6s ease .55s;
+    }
+    .bts-meta.reveal { opacity: 1; }
+    @media (max-width: 640px) {
+      .blog-title-section { padding: 56px 24px 64px; }
+    }
+
     /* ─── Articles ───────────────────────────── */
     .articles {
       padding: 72px 72px 120px;
@@ -520,7 +569,7 @@
     <div class="hero-content">
       <div class="hero-eyebrow">
         <span class="eyebrow-dot"></span>
-        AIについて、やさしく書くブログ
+        うすいのAI備忘録
       </div>
 
       <h1 class="hero-title">
@@ -544,6 +593,22 @@
     <div class="scroll-nudge">
       <div class="nudge-line"></div>
       <span class="nudge-text">記事を読む</span>
+    </div>
+  </section>
+
+  <!-- ── Blog Title ── -->
+  <section class="blog-title-section" id="bts">
+    <div class="bts-rules">
+      <div class="bts-rule" id="bts-rl"></div>
+      <div class="bts-dot"></div>
+      <div class="bts-rule" id="bts-rr"></div>
+    </div>
+    <h2 class="bts-title" id="bts-title">うすいの<em>AI</em>備忘録</h2>
+    <div class="bts-meta" id="bts-meta">2026 — 9 articles</div>
+    <div class="bts-rules" style="margin-top:36px;">
+      <div class="bts-rule" id="bts-rl2"></div>
+      <div class="bts-dot"></div>
+      <div class="bts-rule" id="bts-rr2"></div>
     </div>
   </section>
 
@@ -705,6 +770,19 @@
       });
     }, { threshold: .08 });
     cards.forEach(c => io.observe(c));
+
+    /* ── Blog title section reveal ── */
+    const bts = document.getElementById('bts');
+    const btsObs = new IntersectionObserver(entries => {
+      if (!entries[0].isIntersecting) return;
+      ['bts-rl','bts-rr','bts-rl2','bts-rr2'].forEach(id => {
+        document.getElementById(id).style.width = '88px';
+      });
+      setTimeout(() => document.getElementById('bts-title').classList.add('reveal'), 120);
+      setTimeout(() => document.getElementById('bts-meta').classList.add('reveal'), 480);
+      btsObs.disconnect();
+    }, { threshold: 0.35 });
+    if (bts) btsObs.observe(bts);
 
     /* ── Category filter (visual) ── */
     document.querySelectorAll('.cat').forEach(btn => {
