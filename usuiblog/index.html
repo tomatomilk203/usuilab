@@ -596,27 +596,26 @@
     .author-skill.sk3 { background: #f0eaff; color: #7a52b0; border-color: #d0b8ee; }
     .author-bio {
       border-top: 1px solid var(--border-lt);
-      padding-top: 18px;
+      padding-top: 16px;
       display: flex;
       flex-direction: column;
-      gap: 11px;
-    }
-    .author-bio-item {
-      display: flex;
       gap: 12px;
-      font-size: 13px;
-      color: #3a3a38;
-      line-height: 1.55;
     }
-    .author-bio-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .07em;
-      text-transform: uppercase;
+    .author-bio-text {
+      font-size: 12.5px;
+      color: #3a3a38;
+      line-height: 1.7;
+      margin: 0;
+    }
+    .author-site-note {
+      border-top: 1px dashed var(--border-lt);
+      padding-top: 12px;
+    }
+    .author-site-text {
+      font-size: 11.5px;
       color: var(--stone);
-      white-space: nowrap;
-      padding-top: 2px;
-      min-width: 36px;
+      line-height: 1.75;
+      margin: 0;
     }
 
     /* ─── Responsive ─────────────────────────── */
@@ -702,17 +701,9 @@
         <span class="author-skill sk2">SNS 運用</span>
       </div>
       <div class="author-bio">
-        <div class="author-bio-item">
-          <span class="author-bio-label">拠点</span>
-          <span>東京・福岡を行き来しながら活動する 22 歳</span>
-        </div>
-        <div class="author-bio-item">
-          <span class="author-bio-label">最近</span>
-          <span>ポケモンでデオキシスの色違い厳選にどハマり中。沼すぎる</span>
-        </div>
-        <div class="author-bio-item">
-          <span class="author-bio-label">アニメ</span>
-          <span>とあるシリーズがずっと好き。科学も魔術もどっちも好き</span>
+        <p class="author-bio-text">東京と福岡を行き来しながら活動する22歳。最近はポケモンでデオキシスの色違い厳選にどハマり中（本当に沼）。好きなアニメはとあるシリーズで、科学も魔術もどっちも推せる。</p>
+        <div class="author-site-note">
+          <p class="author-site-text">このブログは、AIについて難しい言葉なしで伝えるために作っています。専門家でもなく、実際に触って感じたことをそのまま書くスタイル。同じように「よくわからないけど気になる」という人に届いてほしくて書いています。</p>
         </div>
       </div>
     </div>
