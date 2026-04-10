@@ -51,13 +51,23 @@
     .pull-quote{border-left:3px solid var(--lav-tx);padding:16px 24px;margin:36px 0;background:var(--ivory);border-radius:0 12px 12px 0}
     .pull-quote p{font-size:18px;font-style:italic;color:var(--ink);font-weight:300;margin:0;line-height:1.7}
 
+    /* Warning banner — AI情報屋 */
+    .warning-banner{border-radius:16px;padding:28px 32px;margin:0 0 56px;background:linear-gradient(135deg,#2a1a3a 0%,#1a1228 100%);border:1px solid #5a3880;position:relative;overflow:hidden}
+    .warning-banner::before{content:'⚠';position:absolute;right:16px;top:12px;font-size:80px;opacity:.06;line-height:1;pointer-events:none}
+    .warning-label{font-size:10px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:#f0c0f8;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+    .warning-label::before{content:'';display:inline-block;width:28px;height:2px;background:#f0c0f8;border-radius:2px}
+    .warning-title{font-family:'DM Serif Display',serif;font-size:22px;color:#fff;margin-bottom:14px;line-height:1.3}
+    .warning-body{font-size:15px;color:#d4b8f0;line-height:1.85}
+    .warning-body strong{color:#f0c0f8;font-weight:700}
+    .warning-body em{font-style:italic;color:#e8d0f8}
+
     /* Honest card — author's personal disclosure */
     .honest-card{background:var(--ink);color:var(--ivory);border-radius:18px;padding:32px 36px;margin:40px 0;position:relative;overflow:hidden}
     .honest-card::before{content:'¥';position:absolute;right:-12px;top:-24px;font-family:'DM Serif Display',serif;font-size:200px;color:rgba(255,255,255,.04);line-height:1;pointer-events:none}
     .honest-label{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--lav);margin-bottom:16px;display:flex;align-items:center;gap:8px}
     .honest-label::before{content:'';display:inline-block;width:20px;height:1px;background:var(--lav)}
     .honest-title{font-family:'DM Serif Display',serif;font-size:20px;color:#fff;margin-bottom:14px}
-    .honest-body{font-size:15px;color:#c8c6be;line-height:1.8}
+    .honest-body{font-size:15px;color:#d4c0f4;line-height:1.8}
     .honest-body strong{color:#fff}
 
     /* Stat grid */
@@ -129,7 +139,7 @@
     .summary{background:var(--ink);color:var(--ivory);border-radius:18px;padding:36px 40px;margin:48px 0 0}
     .summary-title{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:20px;color:#fff}
     .summary-list{list-style:none;display:flex;flex-direction:column;gap:12px}
-    .summary-list li{font-size:15px;color:#c8c6be;display:flex;gap:12px;align-items:flex-start;line-height:1.65}
+    .summary-list li{font-size:15px;color:#d4c0f4;display:flex;gap:12px;align-items:flex-start;line-height:1.65}
     .summary-list li::before{content:'◆';font-size:8px;color:var(--lav);flex-shrink:0;margin-top:7px}
 
     .source-note{margin-top:48px;padding-top:24px;border-top:1px solid var(--border)}
@@ -256,6 +266,17 @@
   </aside>
 
   <main class="article-body">
+
+    <div class="warning-banner">
+      <div class="warning-label">最初に断固として言っておく</div>
+      <div class="warning-title">「AI情報屋」を絶対に信じるな</div>
+      <div class="warning-body">
+        <p>この記事を読む前に、ひとつだけ言わせてください。</p>
+        <p>SNS上に溢れる<strong>「AIで月収100万円達成！」「副業で爆益！未経験でも3ヶ月でAIエンジニア！」</strong>という情報の発信者たち——彼らの大半は、<strong>AIで稼いでいるのではなく、「AIで稼ぐ方法を教えること」で稼いでいます。</strong>商品はAIの情報そのもの。実態は情報商材屋です。</p>
+        <p>もっとはっきり言いましょう。<em>捕まってないだけの詐欺師です。</em>……冗談半分ですが、半分は本気です。高額なオンラインサロン、「限定コミュニティ」、謎の教材——再現性の低い成功体験を売りつけ、消えていくパターンを何度も見てきました。</p>
+        <p><strong>彼らを信じて課金しないでください。この記事では、数字をちゃんと出しながら、現実を書きます。</strong></p>
+      </div>
+    </div>
 
     <h2 id="s1">ぶっちゃけどうなの？</h2>
     <p>
