@@ -529,6 +529,103 @@
     }
     .footer-link:hover { color: var(--ink); }
 
+    /* ─── Author card ────────────────────────── */
+    .author-section {
+      max-width: 1100px;
+      margin: -10px auto 80px;
+      padding: 0 40px;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .author-card {
+      position: relative;
+      background: var(--ivory);
+      border: 1.5px solid var(--border);
+      border-radius: 22px;
+      padding: 60px 34px 34px;
+      max-width: 360px;
+      width: 100%;
+      transform: rotate(-0.9deg);
+      box-shadow: 0 8px 40px rgba(0,0,0,.07);
+      margin-top: 52px;
+    }
+    .author-avatar-wrap {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 4px solid var(--ivory);
+      box-shadow: 0 4px 20px rgba(0,0,0,.13);
+    }
+    .author-avatar-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .author-name {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 21px;
+      font-weight: 700;
+      color: var(--ink);
+      text-align: center;
+      margin-bottom: 3px;
+      letter-spacing: .01em;
+    }
+    .author-handle {
+      text-align: center;
+      font-size: 12px;
+      color: var(--stone);
+      margin-bottom: 20px;
+      letter-spacing: .07em;
+    }
+    .author-skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+      margin-bottom: 22px;
+    }
+    .author-skill {
+      padding: 4px 13px;
+      border-radius: 12px;
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: .05em;
+      background: var(--coral-bg);
+      color: var(--terra);
+      border: 1px solid var(--coral-bd);
+    }
+    .author-skill.sk2 { background: var(--mint-bg); color: var(--mint-tx); border-color: var(--mint-bd); }
+    .author-skill.sk3 { background: #f0eaff; color: #7a52b0; border-color: #d0b8ee; }
+    .author-bio {
+      border-top: 1px solid var(--border-lt);
+      padding-top: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 11px;
+    }
+    .author-bio-item {
+      display: flex;
+      gap: 12px;
+      font-size: 13px;
+      color: #3a3a38;
+      line-height: 1.55;
+    }
+    .author-bio-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--stone);
+      white-space: nowrap;
+      padding-top: 2px;
+      min-width: 36px;
+    }
+
     /* ─── Responsive ─────────────────────────── */
     @media (max-width: 900px) {
       .hero {
@@ -550,6 +647,12 @@
         gap: 28px;
         align-items: flex-start;
       }
+      .author-section {
+        padding: 0 28px;
+        justify-content: center;
+        margin-bottom: 60px;
+      }
+      .author-card { transform: rotate(0); }
     }
   </style>
 </head>
@@ -739,6 +842,38 @@
         </div>
       </article>
 
+    </div>
+  </section>
+
+  <!-- ── Author ── -->
+  <section class="author-section">
+    <div class="author-card">
+      <div class="author-avatar-wrap">
+        <img src="../assets/avatar.png" alt="うすいのアイコン">
+      </div>
+      <div class="author-name">うすい</div>
+      <div class="author-handle">@Usui_good</div>
+      <div class="author-skills">
+        <span class="author-skill">Web 開発</span>
+        <span class="author-skill sk2">AI 活用</span>
+        <span class="author-skill sk3">Python</span>
+        <span class="author-skill">Unity</span>
+        <span class="author-skill sk2">SNS 運用</span>
+      </div>
+      <div class="author-bio">
+        <div class="author-bio-item">
+          <span class="author-bio-label">拠点</span>
+          <span>東京・福岡を行き来しながら活動する 22 歳</span>
+        </div>
+        <div class="author-bio-item">
+          <span class="author-bio-label">最近</span>
+          <span>ポケモンでデオキシスの色違い厳選にどハマり中。沼すぎる</span>
+        </div>
+        <div class="author-bio-item">
+          <span class="author-bio-label">アニメ</span>
+          <span>とあるシリーズがずっと好き。科学も魔術もどっちも好き</span>
+        </div>
+      </div>
     </div>
   </section>
 
