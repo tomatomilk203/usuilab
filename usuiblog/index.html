@@ -271,6 +271,27 @@
       padding-bottom: 4px;
     }
 
+    /* Series label */
+    .series-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'DM Serif Display', serif;
+      font-size: 20px;
+      color: var(--ink);
+      margin-bottom: 20px;
+    }
+    .series-badge {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      background: var(--terra);
+      color: #fff;
+      padding: 3px 9px;
+      border-radius: 4px;
+    }
+
     /* Category filter */
     .cats {
       display: flex;
@@ -541,89 +562,90 @@
       <button class="cat cat-news">最新ニュース</button>
     </div>
 
+    <!-- 三大AI ラベル -->
+    <div class="series-label">
+      <span class="series-badge">SERIES</span>
+      三大AI入門
+    </div>
+
     <div class="grid">
 
-      <!-- Card 1 — wide, beginner -->
-      <article class="card c1" onclick="location.href='chatgpt/'" style="cursor:pointer;">
+      <!-- 三大AI row — equal thirds -->
+      <article class="card" onclick="location.href='chatgpt/'" style="cursor:pointer; grid-column: 1 / 5; --rot: -0.4deg; --accent: var(--terra); --wash: #f6c4a8;">
         <div class="card-wash"></div>
-        <span class="card-tag tag-intro">入門</span>
-        <h3 class="card-title">ChatGPTって何者？<br>5分でわかる基本のキ</h3>
-        <p class="card-excerpt">
-          「ChatGPT」という言葉は聞いたことあるけど、実際何ができるの？どんな仕組みなの？
-          むずかしい言葉なしで、ゆっくり説明します。
-        </p>
+        <span class="card-tag tag-intro">入門 #01</span>
+        <h3 class="card-title">ChatGPT<br>って何者？</h3>
+        <p class="card-excerpt">まず最初はここから。世界でいちばん有名なAIを、むずかしい言葉なしで説明します。</p>
         <div class="card-foot">
           <span class="card-time">5 min read</span>
           <div class="card-arrow">→</div>
         </div>
       </article>
 
-      <!-- Card 2 — narrow, Q&A -->
-      <article class="card c2">
+      <article class="card" onclick="location.href='gemini/'" style="cursor:pointer; grid-column: 5 / 9; --rot: 0.3deg; --accent: var(--mint); --wash: #b8e8d8;">
+        <div class="card-wash"></div>
+        <span class="card-tag tag-intro">入門 #02</span>
+        <h3 class="card-title">Gemini<br>って何？</h3>
+        <p class="card-excerpt">GoogleのAI。Gmail・マップと繋がる、実はいちばん身近なAIを解説します。</p>
+        <div class="card-foot">
+          <span class="card-time">5 min read</span>
+          <div class="card-arrow">→</div>
+        </div>
+      </article>
+
+      <article class="card" onclick="location.href='claude/'" style="cursor:pointer; grid-column: 9 / 13; --rot: -0.3deg; --accent: var(--lav); --wash: #dcc8f0;">
+        <div class="card-wash"></div>
+        <span class="card-tag tag-intro">入門 #03</span>
+        <h3 class="card-title">Claude<br>って何？</h3>
+        <p class="card-excerpt">長文読み込みが得意で、答えが丁寧。知る人ぞ知る第3のAIを解説します。</p>
+        <div class="card-foot">
+          <span class="card-time">5 min read</span>
+          <div class="card-arrow">→</div>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- その他の記事 -->
+    <div class="series-label" style="margin-top: 48px;">
+      <span class="series-badge" style="background:var(--lav-tx);">MORE</span>
+      もっと知りたい
+    </div>
+
+    <div class="grid">
+
+      <!-- Q&A wide -->
+      <article class="card" style="grid-column: 1 / 8; --rot: 0.4deg; --accent: var(--lav); --wash: #dcc8f0;">
         <div class="card-wash"></div>
         <span class="card-tag tag-qa">疑問</span>
-        <h3 class="card-title">AIは<br>嘘をつく？</h3>
-        <p class="card-excerpt">
-          「ハルシネーション」という現象があります。なぜAIは存在しない情報を自信満々に話すのか。仕組みと対策を解説。
-        </p>
+        <h3 class="card-title">AIは嘘をつく？<br>ハルシネーションとは</h3>
+        <p class="card-excerpt">「ハルシネーション」という現象があります。なぜAIは存在しない情報を自信満々に話すのか。仕組みと対策を解説。</p>
         <div class="card-foot">
           <span class="card-time">4 min read</span>
           <div class="card-arrow">→</div>
         </div>
       </article>
 
-      <!-- Card 3 — narrow, how-to -->
-      <article class="card c3">
+      <!-- How-to narrow -->
+      <article class="card" style="grid-column: 8 / 13; --rot: -0.5deg; --accent: var(--mint); --wash: #b8e8d8;">
         <div class="card-wash"></div>
         <span class="card-tag tag-howto">使い方</span>
-        <h3 class="card-title">プロンプトって何？</h3>
-        <p class="card-excerpt">
-          AIへの「話しかけ方」で結果が全然変わる。うまく使うためのコツ、教えます。
-        </p>
+        <h3 class="card-title">プロンプト<br>って何？</h3>
+        <p class="card-excerpt">AIへの「話しかけ方」で結果が全然変わる。うまく使うためのコツ、教えます。</p>
         <div class="card-foot">
           <span class="card-time">3 min read</span>
           <div class="card-arrow">→</div>
         </div>
       </article>
 
-      <!-- Card 4 — wide, news -->
-      <article class="card c4">
+      <!-- News full -->
+      <article class="card" style="grid-column: 1 / -1; --rot: 0.2deg; --accent: var(--gold); --wash: #f0e8a0;">
         <div class="card-wash"></div>
         <span class="card-tag tag-news">最新ニュース</span>
-        <h3 class="card-title">AIの仕事を奪うって<br>本当？ 2025年版</h3>
-        <p class="card-excerpt">
-          毎日ニュースで流れる「AIが仕事を奪う」という話。実際のところ、今何が起きているのか。
-          心配より先に、正確に知っておこう。
-        </p>
+        <h3 class="card-title">AIの仕事を奪うって本当？ 2026年版</h3>
+        <p class="card-excerpt">毎日ニュースで流れる「AIが仕事を奪う」という話。実際のところ、今何が起きているのか。心配より先に、正確に知っておこう。</p>
         <div class="card-foot">
           <span class="card-time">7 min read</span>
-          <div class="card-arrow">→</div>
-        </div>
-      </article>
-
-      <!-- Card 5 + 6 — Gemini & Claude (row) -->
-      <article class="card" onclick="location.href='gemini/'" style="cursor:pointer; grid-column: 1 / 7; --rot: 0.2deg; --accent: var(--mint); --wash: #b8e8d8;">
-        <div class="card-wash"></div>
-        <span class="card-tag tag-intro">入門</span>
-        <h3 class="card-title">Geminiって何？<br>Googleが作ったAIを使ってみよう</h3>
-        <p class="card-excerpt">
-          実はあなたのスマホにも入ってるかも。Gmail・Googleマップとも繋がる、いちばん身近なAIを解説します。
-        </p>
-        <div class="card-foot">
-          <span class="card-time">5 min read</span>
-          <div class="card-arrow">→</div>
-        </div>
-      </article>
-
-      <article class="card" onclick="location.href='claude/'" style="cursor:pointer; grid-column: 7 / 13; --rot: -0.3deg; --accent: var(--lav); --wash: #dcc8f0;">
-        <div class="card-wash"></div>
-        <span class="card-tag tag-intro">入門</span>
-        <h3 class="card-title">Claudeって何？<br>「安全なAI」を目指した話し相手</h3>
-        <p class="card-excerpt">
-          ChatGPT・Geminiと並ぶ第3のAI。長文読み込みが得意で、答えが丁寧。知る人ぞ知る実力派を解説します。
-        </p>
-        <div class="card-foot">
-          <span class="card-time">5 min read</span>
           <div class="card-arrow">→</div>
         </div>
       </article>

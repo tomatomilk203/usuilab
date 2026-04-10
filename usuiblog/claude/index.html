@@ -334,6 +334,120 @@
     .footer-link { font-size: 13px; color: var(--stone); text-decoration: none; transition: color .2s; }
     .footer-link:hover { color: var(--ink); }
 
+    /* ─── Mini Game ──────────────────────────── */
+    .game-wrap {
+      margin: 48px 0;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--ivory);
+    }
+    .game-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 22px;
+      background: var(--ink);
+      color: #c8c6be;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: .04em;
+    }
+    .game-label-badge {
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      background: var(--terra);
+      color: #fff;
+      padding: 3px 8px;
+      border-radius: 4px;
+    }
+    .game-desc {
+      font-size: 14px;
+      color: var(--stone);
+      padding: 16px 22px 14px;
+      margin: 0;
+      border-bottom: 1px solid var(--border-lt);
+      line-height: 1.7;
+    }
+    .game-container {
+      position: relative;
+      background: #0f0f0e;
+      display: flex;
+      justify-content: center;
+    }
+    #gameCanvas {
+      display: block;
+      width: 100%;
+      max-width: 480px;
+      height: auto;
+    }
+    .game-ui {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .game-score-wrap {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      text-align: right;
+    }
+    .game-score-label {
+      display: block;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      color: rgba(255,255,255,.35);
+    }
+    .game-score {
+      display: block;
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.1;
+      font-variant-numeric: tabular-nums;
+    }
+    .game-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: rgba(15,15,14,.82);
+      backdrop-filter: blur(2px);
+      pointer-events: all;
+    }
+    .game-overlay.hidden { display: none; }
+    .game-over-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 36px;
+      color: #fff;
+      letter-spacing: .04em;
+    }
+    .game-over-sub {
+      font-size: 13px;
+      color: rgba(255,255,255,.5);
+      letter-spacing: .06em;
+    }
+    .game-start-btn {
+      margin-top: 8px;
+      background: var(--terra);
+      color: #fff;
+      border: none;
+      padding: 11px 32px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: transform .15s, background .15s;
+    }
+    .game-start-btn:hover { background: #b85838; transform: scale(1.04); }
+
     /* ─── Desktop ─────────────────────────────── */
     @media (min-width: 900px) {
       .article-header {
@@ -571,6 +685,29 @@
       </li>
     </ul>
 
+    <!-- ── MINI GAME ── -->
+    <div class="game-wrap">
+      <div class="game-label">
+        <span class="game-label-badge">DEMO</span>
+        実際にClaudeに頼んで作らせてみた
+      </div>
+      <p class="game-desc">「シンプルなミニゲームを作って」——そう頼んだら、こんなゲームを返してきました。矢印キー（またはタップ）で動かして、落ちてくるブロックを避けてください。</p>
+      <div class="game-container">
+        <canvas id="gameCanvas" width="480" height="300"></canvas>
+        <div class="game-ui" id="gameUi">
+          <div class="game-score-wrap">
+            <span class="game-score-label">SCORE</span>
+            <span class="game-score" id="scoreDisplay">0</span>
+          </div>
+          <div class="game-overlay" id="gameOverlay">
+            <div class="game-over-title" id="overlayTitle">BIT DODGE</div>
+            <div class="game-over-sub" id="overlaySub">矢印キー or タップで操作</div>
+            <button class="game-start-btn" id="startBtn">▶ START</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <h2 id="s4">どうやって使うの？</h2>
     <p>Claude.aiにアクセスするだけ。アカウント登録も無料です。</p>
 
@@ -699,6 +836,7 @@
   </footer>
 
   <script>
+    /* ── TOC active highlight ── */
     const sections = document.querySelectorAll('h2[id]');
     const tocLinks = document.querySelectorAll('.toc-link');
     if (sections.length && tocLinks.length) {
@@ -713,6 +851,154 @@
       }, { rootMargin: '-20% 0px -70% 0px' });
       sections.forEach(s => io.observe(s));
     }
+
+    /* ── BIT DODGE mini game ── */
+    (function() {
+      const canvas   = document.getElementById('gameCanvas');
+      const ctx      = canvas.getContext('2d');
+      const overlay  = document.getElementById('gameOverlay');
+      const startBtn = document.getElementById('startBtn');
+      const scoreEl  = document.getElementById('scoreDisplay');
+      const titleEl  = document.getElementById('overlayTitle');
+      const subEl    = document.getElementById('overlaySub');
+
+      const W = 480, H = 300;
+      const COLORS = ['#c96442','#7ecbb0','#c4a8e0','#f0c060','#f4845f'];
+
+      let player, blocks, score, raf, speed, spawnTimer, spawnInterval, running;
+
+      function initGame() {
+        player = { x: W / 2, y: H - 44, w: 28, h: 28, vx: 0, speed: 5 };
+        blocks = [];
+        score  = 0;
+        speed  = 2.4;
+        spawnTimer = 0;
+        spawnInterval = 52;
+        running = true;
+        scoreEl.textContent = '0';
+      }
+
+      function spawnBlock() {
+        const w = 22 + Math.random() * 28;
+        blocks.push({
+          x: Math.random() * (W - w),
+          y: -30,
+          w,
+          h: 18 + Math.random() * 14,
+          color: COLORS[Math.floor(Math.random() * COLORS.length)],
+          vy: speed * (0.85 + Math.random() * 0.3)
+        });
+      }
+
+      function drawRect(x, y, w, h, color, radius = 5) {
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.roundRect(x, y, w, h, radius);
+        ctx.fill();
+      }
+
+      function collides(a, b) {
+        const pad = 4;
+        return a.x + pad < b.x + b.w &&
+               a.x + a.w - pad > b.x &&
+               a.y + pad < b.y + b.h &&
+               a.y + a.h - pad > b.y;
+      }
+
+      function gameLoop() {
+        ctx.clearRect(0, 0, W, H);
+
+        /* background grid */
+        ctx.strokeStyle = 'rgba(255,255,255,.035)';
+        ctx.lineWidth = 1;
+        for (let x = 0; x < W; x += 32) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+        for (let y = 0; y < H; y += 32) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+
+        /* player */
+        player.x = Math.max(0, Math.min(W - player.w, player.x + player.vx));
+        drawRect(player.x, player.y, player.w, player.h, '#c96442', 6);
+        /* player glow */
+        ctx.shadowColor = '#c96442';
+        ctx.shadowBlur  = 12;
+        drawRect(player.x, player.y, player.w, player.h, '#c96442', 6);
+        ctx.shadowBlur  = 0;
+
+        /* blocks */
+        spawnTimer++;
+        if (spawnTimer >= spawnInterval) { spawnBlock(); spawnTimer = 0; }
+
+        for (let i = blocks.length - 1; i >= 0; i--) {
+          const b = blocks[i];
+          b.y += b.vy;
+          drawRect(b.x, b.y, b.w, b.h, b.color, 4);
+          if (collides(player, b)) { endGame(); return; }
+          if (b.y > H + 40) blocks.splice(i, 1);
+        }
+
+        /* score */
+        score++;
+        scoreEl.textContent = Math.floor(score / 6);
+
+        /* ramp up difficulty */
+        if (score % 300 === 0) {
+          speed = Math.min(speed + 0.25, 7);
+          spawnInterval = Math.max(spawnInterval - 3, 22);
+          blocks.forEach(b => b.vy = Math.min(b.vy + 0.15, 8));
+        }
+
+        raf = requestAnimationFrame(gameLoop);
+      }
+
+      function endGame() {
+        running = false;
+        cancelAnimationFrame(raf);
+        const final = Math.floor(score / 6);
+        titleEl.textContent  = 'GAME OVER';
+        subEl.textContent    = `スコア: ${final}`;
+        startBtn.textContent = '▶ もう一度';
+        overlay.classList.remove('hidden');
+      }
+
+      function startGame() {
+        overlay.classList.add('hidden');
+        initGame();
+        raf = requestAnimationFrame(gameLoop);
+      }
+
+      startBtn.addEventListener('click', startGame);
+
+      /* keyboard */
+      const keys = {};
+      document.addEventListener('keydown', e => {
+        keys[e.key] = true;
+        if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && running) e.preventDefault();
+      });
+      document.addEventListener('keyup',  e => { keys[e.key] = false; });
+      setInterval(() => {
+        if (!running) return;
+        player.vx = keys['ArrowLeft']  ? -player.speed :
+                    keys['ArrowRight'] ?  player.speed  : 0;
+      }, 16);
+
+      /* touch / mouse drag */
+      let dragStartX = null, dragPlayerX = null;
+      canvas.addEventListener('touchstart', e => {
+        if (!running) return;
+        dragStartX  = e.touches[0].clientX;
+        dragPlayerX = player.x;
+      }, { passive: true });
+      canvas.addEventListener('touchmove', e => {
+        if (!running || dragStartX === null) return;
+        const rect   = canvas.getBoundingClientRect();
+        const scaleX = W / rect.width;
+        const dx     = (e.touches[0].clientX - dragStartX) * scaleX;
+        player.x = Math.max(0, Math.min(W - player.w, dragPlayerX + dx));
+      }, { passive: true });
+
+      /* draw idle state */
+      ctx.fillStyle = '#0f0f0e';
+      ctx.fillRect(0, 0, W, H);
+    })();
   </script>
 
 </body>
