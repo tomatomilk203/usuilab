@@ -362,6 +362,12 @@
       gap: 18px;
     }
 
+    .grid.filtering {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      grid-template-rows: none;
+    }
+    .grid.filtering .card { grid-column: auto !important; }
+
     /* ─── Cards ──────────────────────────────── */
     .card {
       background: var(--ivory);
@@ -755,12 +761,9 @@
 
     /* ── Category filter ── */
     const allCards = document.querySelectorAll('.card');
+    const allGrids = document.querySelectorAll('.grid');
     const seriesLabels = document.querySelectorAll('.series-label');
     const countEl = document.querySelector('.section-count');
-
-    // 元のgrid-columnを保存
-    allCards.forEach(c => { c.dataset.origCol = c.style.gridColumn || ''; });
-
     const catMap = { 'cat-intro':'intro', 'cat-howto':'howto', 'cat-qa':'qa', 'cat-news':'news' };
 
     document.querySelectorAll('.cat').forEach(btn => {
@@ -772,11 +775,13 @@
         const catKey = [...btn.classList].find(c => c.startsWith('cat-') && c !== 'cat-all');
         const cat = catKey ? catMap[catKey] : null;
 
+        // グリッドにfilteringクラスを付け外し
+        allGrids.forEach(g => g.classList.toggle('filtering', !isAll));
+
         let shown = 0;
         allCards.forEach(card => {
           const match = isAll || card.dataset.cat === cat;
           card.style.display = match ? '' : 'none';
-          card.style.gridColumn = isAll ? card.dataset.origCol : (match ? 'auto' : '');
           if (match) shown++;
         });
 
