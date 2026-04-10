@@ -530,24 +530,19 @@
     .footer-link:hover { color: var(--ink); }
 
     /* ─── Author card ────────────────────────── */
-    .author-section {
-      max-width: 1100px;
-      margin: -10px auto 80px;
-      padding: 0 40px;
-      display: flex;
-      justify-content: flex-end;
-    }
     .author-card {
       position: relative;
       background: var(--ivory);
       border: 1.5px solid var(--border);
       border-radius: 22px;
       padding: 60px 34px 34px;
-      max-width: 360px;
-      width: 100%;
+      width: 300px;
+      flex-shrink: 0;
       transform: rotate(-0.9deg);
       box-shadow: 0 8px 40px rgba(0,0,0,.07);
       margin-top: 52px;
+      align-self: center;
+      z-index: 1;
     }
     .author-avatar-wrap {
       position: absolute;
@@ -633,7 +628,7 @@
         padding: 110px 28px 70px;
         min-height: auto;
       }
-      .pill-stack { display: none; }
+      .author-card { display: none; }
       .scroll-nudge { left: 28px; }
       .articles { padding: 64px 28px 100px; }
       .grid {
@@ -647,12 +642,6 @@
         gap: 28px;
         align-items: flex-start;
       }
-      .author-section {
-        padding: 0 28px;
-        justify-content: center;
-        margin-bottom: 60px;
-      }
-      .author-card { transform: rotate(0); }
     }
   </style>
 </head>
@@ -701,11 +690,33 @@
       </p>
     </div>
 
-    <div class="pill-stack">
-      <div class="pill pill-coral">ChatGPT入門</div>
-      <div class="pill pill-mint">使い方ガイド</div>
-      <div class="pill pill-lav">よくある疑問</div>
-      <div class="pill pill-gold">最新ニュース</div>
+    <div class="author-card">
+      <div class="author-avatar-wrap">
+        <img src="../assets/avatar.png" alt="うすいのアイコン">
+      </div>
+      <div class="author-name">うすい</div>
+      <div class="author-handle">@Usui_good</div>
+      <div class="author-skills">
+        <span class="author-skill">Web 開発</span>
+        <span class="author-skill sk2">AI 活用</span>
+        <span class="author-skill sk3">Python</span>
+        <span class="author-skill">Unity</span>
+        <span class="author-skill sk2">SNS 運用</span>
+      </div>
+      <div class="author-bio">
+        <div class="author-bio-item">
+          <span class="author-bio-label">拠点</span>
+          <span>東京・福岡を行き来しながら活動する 22 歳</span>
+        </div>
+        <div class="author-bio-item">
+          <span class="author-bio-label">最近</span>
+          <span>ポケモンでデオキシスの色違い厳選にどハマり中。沼すぎる</span>
+        </div>
+        <div class="author-bio-item">
+          <span class="author-bio-label">アニメ</span>
+          <span>とあるシリーズがずっと好き。科学も魔術もどっちも好き</span>
+        </div>
+      </div>
     </div>
 
     <div class="scroll-nudge">
@@ -842,38 +853,6 @@
         </div>
       </article>
 
-    </div>
-  </section>
-
-  <!-- ── Author ── -->
-  <section class="author-section">
-    <div class="author-card">
-      <div class="author-avatar-wrap">
-        <img src="../assets/avatar.png" alt="うすいのアイコン">
-      </div>
-      <div class="author-name">うすい</div>
-      <div class="author-handle">@Usui_good</div>
-      <div class="author-skills">
-        <span class="author-skill">Web 開発</span>
-        <span class="author-skill sk2">AI 活用</span>
-        <span class="author-skill sk3">Python</span>
-        <span class="author-skill">Unity</span>
-        <span class="author-skill sk2">SNS 運用</span>
-      </div>
-      <div class="author-bio">
-        <div class="author-bio-item">
-          <span class="author-bio-label">拠点</span>
-          <span>東京・福岡を行き来しながら活動する 22 歳</span>
-        </div>
-        <div class="author-bio-item">
-          <span class="author-bio-label">最近</span>
-          <span>ポケモンでデオキシスの色違い厳選にどハマり中。沼すぎる</span>
-        </div>
-        <div class="author-bio-item">
-          <span class="author-bio-label">アニメ</span>
-          <span>とあるシリーズがずっと好き。科学も魔術もどっちも好き</span>
-        </div>
-      </div>
     </div>
   </section>
 
