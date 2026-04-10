@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIを使えば稼ぎやすい仕事ランキング【後編】— usui blog</title>
+  <meta name="description" content="前編で明かした「ハードル」を踏まえた上で、実際にAIで収益を出しやすい仕事を5位まで解説。必要スキル・月収目安・始め方つき。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f5f4ed;--ivory:#faf9f5;--ink:#141413;--terra:#c96442;
+      --coral-bg:#fde8de;--coral-bd:#f4c4a8;
+      --mint:#7ecbb0;--mint-bg:#d8f0e8;--mint-bd:#a8dcc8;--mint-tx:#3a9070;
+      --lav:#c4a8e0;--lav-bg:#ece4f4;--lav-bd:#c8aee0;--lav-tx:#8060b0;
+      --gold:#f0c060;--gold-bg:#fdf0cc;--gold-bd:#e0cc88;--gold-tx:#9a7020;
+      --stone:#5e5d59;--muted:#87867f;--border:#e8e6dc;--border-lt:#f0eee6;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;line-height:1.8}
+
+    .nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(245,244,237,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-lt)}
+    .nav-back{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:12px;font-weight:500;color:var(--stone);letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
+    .nav-back:hover{color:var(--lav-tx)}
+    .nav-back-dot{width:6px;height:6px;background:var(--lav);border-radius:50%;animation:blink 1.8s ease-in-out infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+    .nav-label{font-size:11px;color:var(--muted);letter-spacing:.06em}
+    .sidebar{display:none}
+
+    .article-header{padding:120px 28px 64px;max-width:760px;margin:0 auto;text-align:center;position:relative}
+    .article-header::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:120%;height:100%;background:radial-gradient(ellipse at 60% 20%,rgba(196,168,224,.3) 0%,transparent 50%),radial-gradient(ellipse at 20% 85%,rgba(236,228,244,.25) 0%,transparent 45%);pointer-events:none;z-index:-1}
+    @keyframes fade-up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .article-tag{display:inline-block;background:var(--lav-bg);color:var(--lav-tx);border:1px solid var(--lav-bd);padding:5px 16px;border-radius:16px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;opacity:0;animation:fade-up .5s ease forwards .1s}
+    .series-badge{display:inline-block;background:var(--ivory);color:var(--stone);border:1px solid var(--border);padding:4px 14px;border-radius:12px;font-size:10px;font-weight:600;letter-spacing:.09em;margin-bottom:22px;opacity:0;animation:fade-up .5s ease forwards .18s}
+    .article-title{font-family:'DM Serif Display',serif;font-size:clamp(26px,4.5vw,48px);line-height:1.12;color:var(--ink);margin-bottom:24px;opacity:0;animation:fade-up .7s cubic-bezier(.16,1,.3,1) forwards .25s}
+    .article-title em{font-style:italic;color:var(--lav-tx)}
+    .article-lead{font-size:17px;color:var(--stone);font-weight:300;line-height:1.8;max-width:540px;margin:0 auto 36px;opacity:0;animation:fade-up .6s ease forwards .4s}
+    .article-meta{display:flex;align-items:center;justify-content:center;gap:20px;font-size:12px;color:var(--muted);letter-spacing:.05em;opacity:0;animation:fade-up .5s ease forwards .55s}
+    .meta-sep{color:var(--border)}
+    .divider{max-width:760px;margin:0 auto;padding:0 28px;height:1px;background:var(--border)}
+
+    .article-body{max-width:680px;margin:0 auto;padding:64px 28px 120px}
+    .article-body h2{font-family:'DM Serif Display',serif;font-size:clamp(22px,3.2vw,30px);color:var(--ink);margin-top:72px;margin-bottom:20px;line-height:1.25;position:relative;padding-bottom:14px}
+    .article-body h2::after{content:'';position:absolute;left:0;bottom:0;width:40px;height:2px;background:var(--lav-tx);border-radius:2px}
+    .article-body h2:first-child{margin-top:0}
+    .article-body p{font-size:16px;line-height:1.88;color:#2e2e2c;margin-bottom:22px}
+    .article-body p strong{color:var(--ink);font-weight:600}
+
+    .pull-quote{border-left:3px solid var(--lav-tx);padding:16px 24px;margin:36px 0;background:var(--ivory);border-radius:0 12px 12px 0}
+    .pull-quote p{font-size:18px;font-style:italic;color:var(--ink);font-weight:300;margin:0;line-height:1.7}
+
+    /* Recap box */
+    .recap{background:var(--lav-bg);border:1px solid var(--lav-bd);border-left:4px solid var(--lav-tx);border-radius:0 12px 12px 0;padding:20px 24px;margin:0 0 48px}
+    .recap-label{font-size:10px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--lav-tx);margin-bottom:10px}
+    .recap p{font-size:14px;color:var(--stone);margin-bottom:8px;line-height:1.7}
+    .recap p:last-child{margin-bottom:0}
+    .recap a{color:var(--lav-tx);font-weight:600;text-decoration:none}
+    .recap a:hover{text-decoration:underline}
+
+    /* Ranking cards */
+    .rank-card{border-radius:18px;border:1px solid var(--border);background:var(--ivory);margin:28px 0;overflow:hidden;transition:box-shadow .25s,transform .25s}
+    .rank-card:hover{box-shadow:0 16px 48px rgba(0,0,0,.07);transform:translateY(-3px)}
+    .rank-header{display:flex;align-items:stretch;gap:0}
+    .rank-num{background:var(--lav-tx);color:#fff;font-family:'DM Serif Display',serif;font-size:42px;font-style:italic;padding:24px 22px;min-width:80px;display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1}
+    .rank-top{padding:24px 24px 20px;flex:1}
+    .rank-title{font-family:'DM Serif Display',serif;font-size:20px;color:var(--ink);margin-bottom:8px;line-height:1.3}
+    .rank-subtitle{font-size:13px;color:var(--stone);line-height:1.55}
+    .rank-body{border-top:1px solid var(--border-lt);padding:20px 24px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .rank-meta-item{}
+    .rank-meta-label{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+    .rank-meta-value{font-size:14px;color:var(--ink);font-weight:600;line-height:1.4}
+    .rank-body-full{border-top:1px solid var(--border-lt);padding:20px 24px}
+    .rank-body-full p{font-size:14.5px;color:var(--stone);line-height:1.75;margin-bottom:10px}
+    .rank-body-full p:last-child{margin-bottom:0}
+    .rank-body-full strong{color:var(--ink)}
+    .rank-source{font-size:11px;color:var(--muted);padding:10px 24px 16px;font-style:italic}
+
+    /* Level badge */
+    .level-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.09em;padding:3px 9px;border-radius:6px;margin-top:4px}
+    .level-easy{background:var(--mint-bg);color:var(--mint-tx)}
+    .level-mid{background:var(--gold-bg);color:var(--gold-tx)}
+    .level-hard{background:var(--coral-bg);color:var(--terra)}
+
+    /* Rank 1 special */
+    .rank-card.rank-1 .rank-num{background:linear-gradient(160deg,#9a7020 0%,#c49030 100%);font-size:48px}
+    .rank-card.rank-1{border-color:var(--gold-bd);box-shadow:0 4px 24px rgba(240,192,96,.2)}
+
+    .box{border-radius:14px;padding:24px 28px;margin:32px 0}
+    .box-title{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+    .box-title::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .box p{font-size:15px;margin-bottom:10px}
+    .box p:last-child{margin-bottom:0}
+    .box-lav{background:var(--lav-bg);border:1px solid var(--lav-bd)}
+    .box-lav .box-title{color:var(--lav-tx)}
+    .box-lav .box-title::before{background:var(--lav)}
+    .box-lav p{color:#5a3880}
+    .box-coral{background:var(--coral-bg);border:1px solid var(--coral-bd)}
+    .box-coral .box-title{color:var(--terra)}
+    .box-coral .box-title::before{background:var(--terra)}
+    .box-coral p{color:#7a3a28}
+    .box-gold{background:var(--gold-bg);border:1px solid var(--gold-bd)}
+    .box-gold .box-title{color:var(--gold-tx)}
+    .box-gold .box-title::before{background:var(--gold)}
+    .box-gold p{color:#6a5010}
+
+    .summary{background:var(--ink);color:var(--ivory);border-radius:18px;padding:36px 40px;margin:56px 0 0}
+    .summary-title{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:20px;color:#fff}
+    .summary-list{list-style:none;display:flex;flex-direction:column;gap:12px}
+    .summary-list li{font-size:15px;color:#d4c0f4;display:flex;gap:12px;align-items:flex-start;line-height:1.65}
+    .summary-list li::before{content:'◆';font-size:8px;color:var(--lav);flex-shrink:0;margin-top:7px}
+
+    .source-note{margin-top:48px;padding-top:24px;border-top:1px solid var(--border)}
+    .source-note p{font-size:12px;color:var(--muted);line-height:1.7;margin-bottom:4px}
+    .source-note a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+
+    .next-section{max-width:680px;margin:0 auto;padding:0 28px 100px}
+    .next-title{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:20px;color:var(--ink)}
+    .next-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .next-card{background:var(--ivory);border:1px solid var(--border);border-radius:14px;padding:22px 22px 18px;text-decoration:none;display:block;transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s}
+    .next-card:hover{transform:translateY(-5px);box-shadow:0 16px 48px rgba(0,0,0,.08)}
+    .next-card-tag{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px;display:block}
+    .next-card-title{font-family:'DM Serif Display',serif;font-size:17px;color:var(--ink);line-height:1.3;margin-bottom:10px}
+    .next-card-arrow{font-size:12px;color:var(--muted)}
+
+    .footer{border-top:1px solid var(--border);padding:40px 28px;max-width:760px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+    .footer-brand{font-family:'DM Serif Display',serif;font-size:20px;color:var(--ink)}
+    .footer-copy{font-size:11px;color:var(--muted);margin-top:4px}
+    .footer-links{display:flex;gap:24px}
+    .footer-link{font-size:13px;color:var(--stone);text-decoration:none;transition:color .2s}
+    .footer-link:hover{color:var(--ink)}
+
+    @media(min-width:900px){
+      .article-header{max-width:none;padding:0;text-align:left;display:grid;grid-template-columns:1fr 360px;min-height:520px;margin:0}
+      .article-header::before{display:none}
+      .header-left{padding:130px 72px 80px;background:radial-gradient(ellipse at 95% 5%,rgba(196,168,224,.3) 0%,transparent 48%),radial-gradient(ellipse at 0% 95%,rgba(236,228,244,.2) 0%,transparent 42%),var(--bg);display:flex;flex-direction:column;justify-content:center}
+      .header-right{background:var(--lav-tx);position:relative;overflow:hidden;clip-path:polygon(12% 0,100% 0,100% 100%,0 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:48px 52px 52px 72px;gap:12px}
+      .header-right::before{content:'¥';position:absolute;top:-40px;right:-20px;font-family:'DM Serif Display',serif;font-size:310px;font-weight:400;color:rgba(255,255,255,.07);line-height:1;pointer-events:none;user-select:none}
+      .hr-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:6px 14px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.95);letter-spacing:.06em;width:fit-content}
+      .hr-no{font-family:'DM Serif Display',serif;font-size:52px;color:rgba(255,255,255,.2);line-height:1;position:absolute;top:40px;left:60px;font-style:italic}
+      .hr-label{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.45);position:absolute;top:100px;left:60px}
+      .article-tag,.series-badge{align-self:flex-start}
+      .article-tag{margin-bottom:10px}
+      .article-lead{max-width:520px;margin:0 0 32px}
+      .article-meta{justify-content:flex-start}
+      .divider{max-width:none;padding:0 72px}
+      .page-wrap{display:grid;grid-template-columns:220px 1fr;gap:64px;max-width:1140px;margin:0 auto;padding:72px 72px 0;align-items:start}
+      .sidebar{display:block;position:sticky;top:80px}
+      .toc-label{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+      .toc-nav{display:flex;flex-direction:column;gap:2px}
+      .toc-link{display:block;font-size:13px;color:var(--stone);text-decoration:none;padding:7px 10px;border-radius:7px;line-height:1.4;transition:background .15s,color .15s;border-left:2px solid transparent}
+      .toc-link:hover,.toc-link.active{background:var(--lav-bg);color:var(--lav-tx);border-left-color:var(--lav-tx)}
+      .sidebar-divider{height:1px;background:var(--border);margin:20px 0}
+      .sidebar-info{font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:6px;padding-left:10px}
+      .article-body{max-width:none;margin:0;padding:0 0 100px}
+      .next-section{max-width:1140px;padding:40px 72px 100px}
+      .footer{max-width:none;padding:40px 72px}
+      .rank-body{grid-template-columns:repeat(4,1fr)}
+    }
+    @media(max-width:640px){
+      .nav{padding:12px 18px}
+      .article-header{padding:90px 20px 48px}
+      .article-body{padding:48px 20px 80px}
+      .rank-body{grid-template-columns:1fr 1fr}
+      .next-cards{grid-template-columns:1fr}
+      .next-section{padding:0 20px 80px}
+      .summary{padding:28px 24px}
+      .footer{padding:32px 20px;flex-direction:column;gap:20px;align-items:flex-start}
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="../" class="nav-back"><span class="nav-back-dot"></span>◁ ブログ一覧</a>
+    <span class="nav-label">USUI BLOG — 疑問</span>
+  </nav>
+
+  <header class="article-header">
+    <div class="header-left">
+      <span class="article-tag">疑問</span>
+      <span class="series-badge">後編 / 2部構成</span>
+      <h1 class="article-title">
+        AIで<em>稼ぎやすい</em><br>
+        仕事ランキング<br>
+        Top 5
+      </h1>
+      <p class="article-lead">
+        前編で語ったハードルを踏まえた上で、<br>
+        「それでも現実的に収益を出しやすい」<br>
+        仕事を順位付きで解説します。
+      </p>
+      <div class="article-meta">
+        <span>2026年4月</span>
+        <span class="meta-sep">|</span>
+        <span>8 min read</span>
+        <span class="meta-sep">|</span>
+        <span>USUI</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="hr-no">08</div>
+      <div class="hr-label">MONEY RANKING</div>
+      <div class="hr-badge">必要スキルレベル表示</div>
+      <div class="hr-badge">月収目安つき</div>
+      <div class="hr-badge">ソース付き実データ</div>
+    </div>
+  </header>
+
+  <div class="divider"></div>
+
+  <div class="page-wrap">
+  <aside class="sidebar">
+    <div class="toc-label">目次</div>
+    <nav class="toc-nav">
+      <a href="#s0" class="toc-link">前編のおさらい</a>
+      <a href="#s1" class="toc-link">ランキングの見方</a>
+      <a href="#s2" class="toc-link">5位〜1位</a>
+      <a href="#s3" class="toc-link">日本市場の現実</a>
+      <a href="#s4" class="toc-link">結論</a>
+    </nav>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-info">
+      <span>2026年4月</span>
+      <span>8 min read</span>
+      <span>著者: USUI</span>
+    </div>
+  </aside>
+
+  <main class="article-body">
+
+    <div class="recap" id="s0">
+      <div class="recap-label">前編のおさらい</div>
+      <p>前編では「AI情報屋を信じるな」「稼げるのは専門性＋AIかB2B特化」「4つのハードル（競合・コスト・信頼・速度）」を整理しました。</p>
+      <p>この後編は、そのハードルを踏まえた上でも「比較的現実的に収益を出しやすい」仕事の話です。<a href="../ai-money/">→ 前編を読む</a></p>
+    </div>
+
+    <h2 id="s1">ランキングの評価軸</h2>
+    <p>
+      4つの軸を総合して順位を付けました。「稼げる額が大きい」だけでなく、<strong>「始めやすさ」「競合の少なさ」「継続収益になりやすいか」</strong>も加点要素にしています。
+    </p>
+
+    <div class="box box-lav">
+      <div class="box-title">評価の4軸</div>
+      <p><strong>① 月収ポテンシャル</strong>：上を狙ったときの現実的な到達点</p>
+      <p><strong>② 参入しやすさ</strong>：スキルゼロからの距離感。低スキルが高評価</p>
+      <p><strong>③ 競合の少なさ</strong>：供給過多になっていないか</p>
+      <p><strong>④ 継続収益率</strong>：一発案件ではなく繰り返し収益になりやすいか</p>
+    </div>
+
+    <h2 id="s2">Top 5 ランキング</h2>
+
+    <!-- 5位 -->
+    <div class="rank-card">
+      <div class="rank-header">
+        <div class="rank-num">5</div>
+        <div class="rank-top">
+          <div class="rank-title">AI画像生成・商用デザイン補助</div>
+          <div class="rank-subtitle">Midjourney・Stable Diffusion・Adobe Fireflyを使った素材制作、バナー・SNS画像の量産</div>
+        </div>
+      </div>
+      <div class="rank-body">
+        <div class="rank-meta-item">
+          <div class="rank-meta-label">月収目安</div>
+          <div class="rank-meta-value">1〜8万円</div>
+        </div>
+        <div class="rank-meta-item">
+          <div class="rank-meta-label">参入スキル</div>
+          <div class="rank-meta-value"><span class="level-badge level-easy">低め</span></div>
+        </div>
+        <div class="rank-meta-item">
+          <div class="rank-meta-label">競合</div>
+          <div class="rank-meta-value">多い</div>
+        </div>
+        <div class="rank-meta-item">
+          <div class="rank-meta-label">継続収益</div>
+          <div class="rank-meta-value">低い</div>
+        </div>
+      </div>
+      <div class="rank-body-full">
+        <p>
+          始めやすさは最高クラス。Midjourneyのプロンプトを覚えれば翌日から案件に応募できます。ただし<strong>供給が完全に過多</strong>で、Fiverr・Coconala上では単価が底を打っている状態。「バナー1枚500円」という相場も珍しくない。
+        </p>
+        <p>
+          差別化できるのは「特定ジャンルの専門家」として動く場合。たとえば不動産業界に特化したAI内観イメージ制作、ECサイト向け商品背景の量産など、<strong>業界知識と掛け合わせることで単価が跳ね上がります</strong>。ジェネラリストとして入ると埋もれます。
+        </p>
+      </div>
+      <div class="rank-source">出典: Fiverr Business Trends 2024 / Coconala月次レポート2025</div>
+    </div>
+
+    <!-- 4位 -->
+    <div class="rank-card">
+      <div class="rank-header">
+        <div class="rank-num">4</div>
+        <div class="rank-top">
+          <div class="rank-title">AI補助ライティング（専門特化型）</div>
+          <div class="rank-subtitle">医療・法律・金融・技術などの専門領域でAIを使い、人間がレビュー・監修するライティング</div>
+        </div>
+      </div>
+      <div class="rank-body">
+        <div class="rank-meta-item">
+          <div class="rank-meta-label">月収目安</div>
+          <div class="rank-meta-value">5〜30万円</div>
+        </div>
+        <div class="rank-meta-item">
+          <div class="rank-meta-label">参入スキル</div>
+          <div class="rank-meta-value"><span class="level-badge level-mid">専門知識必須</span></div>
+        </div>
+        <div class="rank-meta-item">
+          <div class="rank-meta-label">競合</div>
+          <div class="rank-meta-value">専門性で差がつく</div>
+        </div>
+        <div class="rank-meta-item">
+          <div class="rank-meta-label">継続収益</div>
+          <div class="rank-meta-value">中〜高</div>
+        </div>
+      </div>
+      <div class="rank-body-full">
+        <p>
+          「AI記事は読まれない・Googleに嫌われる」は一般コンテンツの話。<strong>医療・法律・金融などのYMYL（Your Money or Your Life）領域では、専門家監修が必須</strong>で、AIだけでは完結しません。ここに専門知識を持つ人間が入れる余地があります。
+        </p>
+        <p>
+          具体的には「看護師がAIで下書きを生成し、医療的正確性を自分でレビューして納品」「弁護士資格保有者がAI文書を法的に確認して仕上げる」といった形。<strong>文字単価3〜10円という相場より大幅に高い単価</strong>が取れます。既存の専門職が副業として最も活かせるパターンです。
+        </p>
+      </div>
+      <div class="rank-source">出典: Upwork Skills Index Q4 2024 / Google「Helpful Content Update」ガイドライン（2024年）</div>
+    </div>
+
+    <!-- 3位 -->
+    <div class="rank-card">
+      <div class="rank-header">
+        <div class="rank-num">3</div>
+        <div class="rank-top">
+          <div class="rank-title">AI活用Web制作・LP制作</div>
+          <div class="rank-subtitle">Claude・GPT-4oでコード生成、Figmaと組み合わせて制作速度を3〜5倍に上げる受託開発</div>
+        </div>
+      </div>
+      <div class="rank-body">
+        <div class="rank-meta-item">
+          <div class="rank-meta-label">月収目安</div>
+          <div class="rank-meta-value">15〜60万円</div>
+        </div>
+        <div class="rank-meta-item">
+          <div class="rank-meta-label">参入スキル</div>
+          <div class="rank-meta-value"><span class="level-badge level-mid">HTML/CSS基礎〜</span></div>
+        </div>
+        <div class="rank-meta-item">
+          <div class="rank-meta-label">競合</div>
+          <div class="rank-meta-value">中程度</div>
+        </div>
+        <div class="rank-meta-item">
+          <div class="rank-meta-label">継続収益</div>
+          <div class="rank-meta-value">保守契約あり</div>
+        </div>
+      </div>
+      <div class="rank-body-full">
+        <p>
+          Web制作自体は競合が多い市場ですが、<strong>AIを使った制作速度の向上で「単価を下げずに案件数を増やす」戦略が取れます</strong>。1サイトあたりの工数が1/3〜1/5になれば、同じ月収を達成するための案件数が減り、品質に集中できます。
+        </p>
+        <p>
+          Stack Overflow Developer Survey 2024によると、AIコーディングツールを使う開発者の<strong>62%が「生産性が上がった」と回答</strong>。GitHub Copilot利用者は平均で作業時間が55%短縮されたというデータもあります（GitHub 2024）。この生産性向上を収益に変換しやすい職種です。
+        </p>
+        <p>
+          ポイントは<strong>保守・更新契約を取ること</strong>。制作一発ではなく、月額1〜3万円の保守契約を5〜10社持てば、それだけで安定した月収になります。
+        </p>
+      </div>
+      <div class="rank-source">出典: Stack Overflow Developer Survey 2024 / GitHub "The Impact of AI on Developer Productivity" (2024)</div>
+    </div>
+
+    <!-- 2位 -->
+    <div class="rank-card">
+      <div class="rank-header">
+        <div class="rank-num">2</div>
+        <div class="rank-top">
+          <div class="rank-title">AI動画・音声コンテンツ制作（法人向け）</div>
+          <div class="rank-subtitle">Runway・HeyGen・ElevenLabsを使った企業向け動画制作、研修動画・商品PR・多言語展開</div>
+        </div>
+      </div>
+      <div class="rank-body">
+        <div class="rank-meta-item">
+          <div class="rank-meta-label">月収目安</div>
+          <div class="rank-meta-value">20〜80万円</div>
+        </div>
+        <div class="rank-meta-item">
+          <div class="rank-meta-label">参入スキル</div>
+          <div class="rank-meta-value"><span class="level-badge level-mid">動画編集の基礎〜</span></div>
+        </div>
+        <div class="rank-meta-item">
+          <div class="rank-meta-label">競合</div>
+          <div class="rank-meta-value">まだ少ない</div>
+        </div>
+        <div class="rank-meta-item">
+          <div class="rank-meta-label">継続収益</div>
+          <div class="rank-meta-value">高い</div>
+        </div>
+      </div>
+      <div class="rank-body-full">
+        <p>
+          <strong>今この瞬間、最も「需要＞供給」のバランスが取れているカテゴリ</strong>です。法人が求める動画コンテンツの量は増え続けていますが、AIツールを使いこなした上でディレクションまでできる人間はまだ少ない。
+        </p>
+        <p>
+          HeyGenのAIアバター機能を使えば、企業の研修動画を<strong>従来の1/10以下のコストと時間で制作</strong>できます。ElevenLabsによる音声生成と組み合わせれば、多言語展開も現実的。Grand View ResearchによるとAI動画生成市場は2025年時点で年率37.8%成長中で、需要は急増しています。
+        </p>
+        <p>
+          個人向けより<strong>法人1社との継続契約が稼ぎやすさの鍵</strong>。月10〜20本の動画制作で月額20〜40万円という契約スタイルが現実的な目標です。
+        </p>
+      </div>
+      <div class="rank-source">出典: Grand View Research "AI Video Generator Market" (2025) / HeyGen公式ユースケース事例</div>
+    </div>
+
+    <!-- 1位 -->
+    <div class="rank-card rank-1">
+      <div class="rank-header">
+        <div class="rank-num">1</div>
+        <div class="rank-top">
+          <div class="rank-title">業務自動化・AI Bot開発（Python）</div>
+          <div class="rank-subtitle">企業の繰り返し業務をPython＋AIで自動化。データ集計・レポート生成・通知Bot・スクレイピングなど</div>
+        </div>
+      </div>
+      <div class="rank-body">
+        <div class="rank-meta-item">
+          <div class="rank-meta-label">月収目安</div>
+          <div class="rank-meta-value">30〜150万円</div>
+        </div>
+        <div class="rank-meta-item">
+          <div class="rank-meta-label">参入スキル</div>
+          <div class="rank-meta-value"><span class="level-badge level-hard">Python必須</span></div>
+        </div>
+        <div class="rank-meta-item">
+          <div class="rank-meta-label">競合</div>
+          <div class="rank-meta-value">少ない（質が問われる）</div>
+        </div>
+        <div class="rank-meta-item">
+          <div class="rank-meta-label">継続収益</div>
+          <div class="rank-meta-value">非常に高い</div>
+        </div>
+      </div>
+      <div class="rank-body-full">
+        <p>
+          総合評価で1位。「参入スキルが高い」というマイナスを差し引いても、<strong>月収ポテンシャル・競合の少なさ・継続収益の3つで他を圧倒します</strong>。
+        </p>
+        <p>
+          Upwork Skills Index（2024 Q4）では、Pythonを使った自動化・データ処理は<strong>最も時給が高いフリーランススキルカテゴリの上位3位以内</strong>に継続してランクイン。日本のフリーランスプラットフォームLancers（2025年1月レポート）でも「業務自動化」案件の平均単価が前年比31%上昇しています。
+        </p>
+        <p>
+          特に「毎月発生する繰り返し業務」の自動化は、<strong>一度作って終わりではなく保守・改修で月額フィーが発生</strong>します。「Excelで手動5時間かかっていたレポートを自動化」「毎日のデータ収集をBot化」など、企業の現場ニーズは尽きません。
+        </p>
+        <p>
+          障壁はPythonスキルの習得。ただし<strong>AIを使いながら学べる時代</strong>です。「Claude/GPT-4oに教わりながら実装する」スタイルで、3〜6ヶ月でフリーランス案件レベルに到達した事例が多く報告されています。
+        </p>
+      </div>
+      <div class="rank-source">出典: Upwork Skills Index Q4 2024 / Lancers「フリーランス実態調査 2025」/ McKinsey "Automation and the workforce" (2024)</div>
+    </div>
+
+    <h2 id="s3">日本市場の現実</h2>
+    <p>
+      海外のデータを日本に当てはめるときは注意が必要です。日本のフリーランス市場は<strong>規模・単価・文化的な慣習</strong>の面で海外と大きく異なります。
+    </p>
+
+    <div class="box box-coral">
+      <div class="box-title">日本特有のハードル</div>
+      <p><strong>初対面の法人案件は難しい</strong>：日本の企業は紹介・実績・信頼関係を重視します。Upworkのように「スキルと評価で即受注」は国内では機能しにくい。</p>
+      <p><strong>単価の相場が低い</strong>：同じ業務でも日本国内の単価は海外の1/2〜1/3になることが多い。国内で戦う場合は案件数か、B2B特化で補う必要があります。</p>
+      <p><strong>英語＋海外プラットフォームで解決できる</strong>：Upwork・Toptalで英語で受注すれば、日本円換算で国内の2〜3倍の単価になります。英語力が弱い場合でも、技術系案件なら意思疎通は意外と成立します。</p>
+    </div>
+
+    <div class="box box-gold">
+      <div class="box-title">現実的な入口の設計</div>
+      <p><strong>個人→小規模法人→中規模法人</strong>という順番で実績を積む。最初から大きな案件を狙わず、友人・知人の仕事を安く受けてポートフォリオを作る。これが最も再現性の高い入口です。</p>
+      <p>「AI使えます」ではなく、<strong>「御社の〇〇という作業を自動化します。最初の1ヶ月は無料でお試し」</strong>という入り方が刺さりやすい。成果を先に見せて、継続課金に移行するモデルが日本市場では機能しやすいです。</p>
+    </div>
+
+    <h2 id="s4">結論：どれを選ぶべきか</h2>
+
+    <div class="pull-quote">
+      <p>「今すぐ稼ぎたい」なら5位から。「3ヶ月後に稼ぎたい」なら1位を目指す。大切なのは、自分の現在地に合った選択をすること。</p>
+    </div>
+
+    <p>
+      最終的には、<strong>どれが「正解」かではなく、自分が既に持っている専門性に最も近いもの</strong>を選ぶのが正解です。医療知識があるなら4位、動画編集スキルがあるなら2位、コードが書けるなら1位。
+    </p>
+    <p>
+      そして前編でも書きましたが、筆者自身はまだ週2バイト相当です。このランキングは「理論上の最適解」であり、「筆者の成功事例」ではありません。<strong>一緒に試行錯誤しながら、現実を更新していきます。</strong>
+    </p>
+
+    <div class="summary">
+      <div class="summary-title">後編のまとめ</div>
+      <ul class="summary-list">
+        <li>5位：AI画像生成。参入は楽だが競合多、専門特化しないと単価が低い</li>
+        <li>4位：専門特化ライティング。既存の専門職が最も活かせる副業形態</li>
+        <li>3位：AI活用Web制作。保守契約を取れれば月収が安定する</li>
+        <li>2位：AI動画制作（法人向け）。需要＞供給の今が参入チャンス</li>
+        <li>1位：業務自動化・Bot開発。Pythonが必要だが継続収益・単価が圧倒的</li>
+        <li>日本市場は単価が低い。海外プラットフォームか、成果先出しモデルで突破</li>
+      </ul>
+    </div>
+
+    <div class="source-note">
+      <p><strong>参考資料</strong></p>
+      <p>Upwork "Skills Index Q4 2024" — <a href="https://www.upwork.com/research/skills-index" target="_blank" rel="noopener">upwork.com</a></p>
+      <p>Lancers「フリーランス実態調査 2025年1月版」— <a href="https://www.lancers.jp/magazine/lancer-report" target="_blank" rel="noopener">lancers.jp</a></p>
+      <p>Fiverr Business "Gig Trends 2024" — <a href="https://www.fiverr.com/business/resources" target="_blank" rel="noopener">fiverr.com</a></p>
+      <p>Stack Overflow Developer Survey 2024 — <a href="https://survey.stackoverflow.co/2024/" target="_blank" rel="noopener">survey.stackoverflow.co</a></p>
+      <p>GitHub "The Impact of AI on Developer Productivity" (2024)</p>
+      <p>Grand View Research "AI Video Generator Market Size Report" (2025)</p>
+      <p>McKinsey Global Institute "Automation and the future of work" (2024)</p>
+    </div>
+
+  </main>
+  </div>
+
+  <section class="next-section">
+    <div class="next-title">あわせて読む</div>
+    <div class="next-cards">
+      <a href="../ai-money/" class="next-card">
+        <span class="next-card-tag" style="color:var(--lav-tx)">疑問 — 前編</span>
+        <div class="next-card-title">AI系開発者ってぶっちゃけ儲かるの？</div>
+        <div class="next-card-arrow">→</div>
+      </a>
+      <a href="../ai-jobs/" class="next-card">
+        <span class="next-card-tag" style="color:var(--gold-tx)">最新ニュース</span>
+        <div class="next-card-title">AIの仕事を奪うって本当？ 2026年版</div>
+        <div class="next-card-arrow">→</div>
+      </a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>
+      <div class="footer-brand">usui blog</div>
+      <div class="footer-copy">AIって、むずかしくない。</div>
+    </div>
+    <div class="footer-links">
+      <a href="../../" class="footer-link">ホーム</a>
+      <a href="../" class="footer-link">ブログ一覧</a>
+    </div>
+  </footer>
+
+  <script>
+    const tocLinks = document.querySelectorAll('.toc-link');
+    const sections = document.querySelectorAll('[id]');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          tocLinks.forEach(l => l.classList.remove('active'));
+          const a = document.querySelector(`.toc-link[href="#${e.target.id}"]`);
+          if (a) a.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+    sections.forEach(s => obs.observe(s));
+  </script>
+
+</body>
+</html>
