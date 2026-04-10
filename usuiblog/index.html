@@ -618,7 +618,7 @@
     <div class="grid">
 
       <!-- 三大AI row — equal thirds -->
-      <article class="card" onclick="location.href='chatgpt/'" style="cursor:pointer; grid-column: 1 / 5; --rot: -0.4deg; --accent: var(--terra); --wash: #f6c4a8;">
+      <article class="card" data-cat="intro" onclick="location.href='chatgpt/'" style="cursor:pointer; grid-column: 1 / 5; --rot: -0.4deg; --accent: var(--terra); --wash: #f6c4a8;">
         <div class="card-wash"></div>
         <span class="card-tag tag-intro">入門 #01</span>
         <h3 class="card-title">ChatGPT<br>って何者？</h3>
@@ -629,7 +629,7 @@
         </div>
       </article>
 
-      <article class="card" onclick="location.href='gemini/'" style="cursor:pointer; grid-column: 5 / 9; --rot: 0.3deg; --accent: var(--mint); --wash: #b8e8d8;">
+      <article class="card" data-cat="intro" onclick="location.href='gemini/'" style="cursor:pointer; grid-column: 5 / 9; --rot: 0.3deg; --accent: var(--mint); --wash: #b8e8d8;">
         <div class="card-wash"></div>
         <span class="card-tag tag-intro">入門 #02</span>
         <h3 class="card-title">Gemini<br>って何？</h3>
@@ -640,7 +640,7 @@
         </div>
       </article>
 
-      <article class="card" onclick="location.href='claude/'" style="cursor:pointer; grid-column: 9 / 13; --rot: -0.3deg; --accent: var(--lav); --wash: #dcc8f0;">
+      <article class="card" data-cat="intro" onclick="location.href='claude/'" style="cursor:pointer; grid-column: 9 / 13; --rot: -0.3deg; --accent: var(--lav); --wash: #dcc8f0;">
         <div class="card-wash"></div>
         <span class="card-tag tag-intro">入門 #03</span>
         <h3 class="card-title">Claude<br>って何？</h3>
@@ -662,7 +662,7 @@
     <div class="grid">
 
       <!-- Q&A wide -->
-      <article class="card" onclick="location.href='hallucination/'" style="cursor:pointer; grid-column: 1 / 8; --rot: 0.4deg; --accent: var(--lav); --wash: #dcc8f0;">
+      <article class="card" data-cat="qa" onclick="location.href='hallucination/'" style="cursor:pointer; grid-column: 1 / 8; --rot: 0.4deg; --accent: var(--lav); --wash: #dcc8f0;">
         <div class="card-wash"></div>
         <span class="card-tag tag-qa">疑問</span>
         <h3 class="card-title">AIは嘘をつく？<br>ハルシネーションと「忖度」の正体</h3>
@@ -674,7 +674,7 @@
       </article>
 
       <!-- How-to narrow -->
-      <article class="card" style="grid-column: 8 / 13; --rot: -0.5deg; --accent: var(--mint); --wash: #b8e8d8; cursor:pointer;" onclick="location.href='prompt/'">
+      <article class="card" data-cat="howto" style="grid-column: 8 / 13; --rot: -0.5deg; --accent: var(--mint); --wash: #b8e8d8; cursor:pointer;" onclick="location.href='prompt/'">
         <div class="card-wash"></div>
         <span class="card-tag tag-howto">使い方</span>
         <h3 class="card-title">プロンプト<br>って何？</h3>
@@ -686,7 +686,7 @@
       </article>
 
       <!-- News full -->
-      <article class="card" style="grid-column: 1 / -1; --rot: 0.2deg; --accent: var(--gold); --wash: #f0e8a0; cursor:pointer;" onclick="location.href='ai-jobs/'">
+      <article class="card" data-cat="news" style="grid-column: 1 / -1; --rot: 0.2deg; --accent: var(--gold); --wash: #f0e8a0; cursor:pointer;" onclick="location.href='ai-jobs/'">
         <div class="card-wash"></div>
         <span class="card-tag tag-news">最新ニュース</span>
         <h3 class="card-title">AIの仕事を奪うって本当？ 2026年版</h3>
@@ -698,7 +698,7 @@
       </article>
 
       <!-- Honest money talk series -->
-      <article class="card" style="grid-column: 1 / 8; --rot: -0.3deg; --accent: var(--lav); --wash: #dcc8f0; cursor:pointer;" onclick="location.href='ai-money/'">
+      <article class="card" data-cat="qa" style="grid-column: 1 / 8; --rot: -0.3deg; --accent: var(--lav); --wash: #dcc8f0; cursor:pointer;" onclick="location.href='ai-money/'">
         <div class="card-wash"></div>
         <span class="card-tag tag-qa">疑問</span>
         <span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;background:var(--ivory);color:var(--stone);border:1px solid var(--border);border-radius:10px;padding:3px 10px;margin-left:6px;">前編</span>
@@ -710,7 +710,7 @@
         </div>
       </article>
 
-      <article class="card" style="grid-column: 8 / 13; --rot: 0.4deg; --accent: var(--lav); --wash: #c8b0e0; cursor:pointer;" onclick="location.href='ai-money-2/'">
+      <article class="card" data-cat="qa" style="grid-column: 8 / 13; --rot: 0.4deg; --accent: var(--lav); --wash: #c8b0e0; cursor:pointer;" onclick="location.href='ai-money-2/'">
         <div class="card-wash"></div>
         <span class="card-tag tag-qa">疑問</span>
         <span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;background:var(--ivory);color:var(--stone);border:1px solid var(--border);border-radius:10px;padding:3px 10px;margin-left:6px;">後編</span>
@@ -753,11 +753,40 @@
     }, { threshold: .08 });
     cards.forEach(c => io.observe(c));
 
-    /* ── Category filter (visual) ── */
+    /* ── Category filter ── */
+    const allCards = document.querySelectorAll('.card');
+    const seriesLabels = document.querySelectorAll('.series-label');
+    const countEl = document.querySelector('.section-count');
+
+    // 元のgrid-columnを保存
+    allCards.forEach(c => { c.dataset.origCol = c.style.gridColumn || ''; });
+
+    const catMap = { 'cat-intro':'intro', 'cat-howto':'howto', 'cat-qa':'qa', 'cat-news':'news' };
+
     document.querySelectorAll('.cat').forEach(btn => {
       btn.addEventListener('click', () => {
         document.querySelectorAll('.cat').forEach(b => b.classList.remove('on'));
         btn.classList.add('on');
+
+        const isAll = btn.classList.contains('cat-all');
+        const catKey = [...btn.classList].find(c => c.startsWith('cat-') && c !== 'cat-all');
+        const cat = catKey ? catMap[catKey] : null;
+
+        let shown = 0;
+        allCards.forEach(card => {
+          const match = isAll || card.dataset.cat === cat;
+          card.style.display = match ? '' : 'none';
+          card.style.gridColumn = isAll ? card.dataset.origCol : (match ? 'auto' : '');
+          if (match) shown++;
+        });
+
+        // series-label の表示切り替え
+        seriesLabels.forEach((el, i) => {
+          if (isAll) { el.style.display = ''; return; }
+          el.style.display = (i === 0 && cat === 'intro') || (i === 1 && cat !== 'intro') ? '' : 'none';
+        });
+
+        if (countEl) countEl.textContent = isAll ? '9 articles' : `${shown} article${shown !== 1 ? 's' : ''}`;
       });
     });
   </script>
