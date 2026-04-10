@@ -381,12 +381,23 @@
       opacity: 0;
       transform: translateY(48px);
       transition:
+        opacity .22s ease,
         transform .35s cubic-bezier(.34,1.56,.64,1),
         box-shadow .35s ease;
     }
     .card.revealed {
       opacity: 1;
       transform: translateY(0) rotate(var(--rot, 0deg));
+    }
+    .card.filter-hide {
+      opacity: 0 !important;
+      transform: scale(0.95) translateY(6px) !important;
+      pointer-events: none;
+    }
+    .card.filter-entering {
+      opacity: 0 !important;
+      transform: scale(0.95) translateY(10px) !important;
+      transition: none !important;
     }
     .card:hover {
       transform: translateY(-8px) rotate(0deg) !important;
@@ -765,9 +776,13 @@
     const seriesLabels = document.querySelectorAll('.series-label');
     const countEl = document.querySelector('.section-count');
     const catMap = { 'cat-intro':'intro', 'cat-howto':'howto', 'cat-qa':'qa', 'cat-news':'news' };
+    let busy = false;
 
     document.querySelectorAll('.cat').forEach(btn => {
       btn.addEventListener('click', () => {
+        if (busy) return;
+        busy = true;
+
         document.querySelectorAll('.cat').forEach(b => b.classList.remove('on'));
         btn.classList.add('on');
 
@@ -775,23 +790,44 @@
         const catKey = [...btn.classList].find(c => c.startsWith('cat-') && c !== 'cat-all');
         const cat = catKey ? catMap[catKey] : null;
 
-        // グリッドにfilteringクラスを付け外し
-        allGrids.forEach(g => g.classList.toggle('filtering', !isAll));
+        // Phase 1: fade out all currently visible cards
+        const currentlyVisible = [...allCards].filter(c => c.style.display !== 'none');
+        currentlyVisible.forEach(c => c.classList.add('filter-hide'));
 
-        let shown = 0;
-        allCards.forEach(card => {
-          const match = isAll || card.dataset.cat === cat;
-          card.style.display = match ? '' : 'none';
-          if (match) shown++;
-        });
+        setTimeout(() => {
+          // Phase 2: update visibility + grid mode
+          let shown = 0;
+          allCards.forEach(card => {
+            const match = isAll || card.dataset.cat === cat;
+            if (match) {
+              card.style.display = '';
+              card.classList.add('filter-entering');
+              card.classList.remove('filter-hide');
+              shown++;
+            } else {
+              card.style.display = 'none';
+              card.classList.remove('filter-hide');
+            }
+          });
 
-        // series-label の表示切り替え
-        seriesLabels.forEach((el, i) => {
-          if (isAll) { el.style.display = ''; return; }
-          el.style.display = (i === 0 && cat === 'intro') || (i === 1 && cat !== 'intro') ? '' : 'none';
-        });
+          allGrids.forEach(g => g.classList.toggle('filtering', !isAll));
 
-        if (countEl) countEl.textContent = isAll ? '9 articles' : `${shown} article${shown !== 1 ? 's' : ''}`;
+          seriesLabels.forEach((el, i) => {
+            if (isAll) { el.style.display = ''; return; }
+            el.style.display = (i === 0 && cat === 'intro') || (i === 1 && cat !== 'intro') ? '' : 'none';
+          });
+
+          if (countEl) countEl.textContent = isAll ? '9 articles' : `${shown} article${shown !== 1 ? 's' : ''}`;
+
+          // Phase 3: stagger fade in
+          const entering = [...allCards].filter(c => c.classList.contains('filter-entering'));
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            entering.forEach((card, i) => {
+              setTimeout(() => card.classList.remove('filter-entering'), i * 55);
+            });
+            setTimeout(() => { busy = false; }, entering.length * 55 + 250);
+          }));
+        }, 240);
       });
     });
   </script>
