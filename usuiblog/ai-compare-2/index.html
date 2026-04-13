@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT vs Gemini vs Claude 完全比較【中編】実際の出力を比べてみた — うすいのAI備忘録</title>
+  <meta name="description" content="同じプロンプトで3つのAIに答えてもらったら、こんなに違った。140字小説・ビジネス文書の実際の出力を比較します。">
+  <link rel="canonical" href="https://usuilab.com/usuiblog/ai-compare-2/">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://usuilab.com/usuiblog/ai-compare-2/">
+  <meta property="og:title" content="ChatGPT vs Gemini vs Claude 完全比較【中編】— うすいのAI備忘録">
+  <meta property="og:description" content="同じプロンプトで3つのAIに答えてもらったら、こんなに違った。140字小説・ビジネス文書の実際の出力を比較します。">
+  <meta property="og:image" content="https://usuilab.com/assets/background.jpg">
+  <meta property="og:site_name" content="うすいのAI備忘録">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@Usui_good">
+  <meta name="twitter:creator" content="@Usui_good">
+  <meta name="twitter:title" content="ChatGPT vs Gemini vs Claude 完全比較【中編】— うすいのAI備忘録">
+  <meta name="twitter:description" content="同じプロンプトで3つのAIに答えてもらったら、こんなに違った。140字小説・ビジネス文書の実際の出力を比較します。">
+  <meta name="twitter:image" content="https://usuilab.com/assets/background.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f5f4ed;--ivory:#faf9f5;--ink:#141413;
+      --cmp:#60a0d0;--cmp-bg:#dceef8;--cmp-bd:#a8cce4;--cmp-tx:#2a6090;
+      --mint-bg:#d8f0e8;--mint-bd:#a8dcc8;--mint-tx:#3a9070;
+      --lav:#c4a8e0;--lav-bg:#ece4f4;--lav-bd:#c8aee0;--lav-tx:#8060b0;
+      --gold:#f0c060;--gold-bg:#fdf0cc;--gold-bd:#e0cc88;--gold-tx:#9a7020;
+      --stone:#5e5d59;--muted:#87867f;--border:#e8e6dc;--border-lt:#f0eee6;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;line-height:1.8}
+
+    .nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(245,244,237,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-lt)}
+    .nav-back{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:12px;font-weight:500;color:var(--stone);letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
+    .nav-back:hover{color:var(--cmp-tx)}
+    .nav-back-dot{width:6px;height:6px;background:var(--cmp);border-radius:50%;animation:blink 1.8s ease-in-out infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+    .nav-label{font-size:11px;color:var(--muted);letter-spacing:.06em}
+
+    .article-header{padding:120px 28px 64px;max-width:760px;margin:0 auto;text-align:center;position:relative}
+    .article-header::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:120%;height:100%;background:radial-gradient(ellipse at 60% 20%,rgba(96,160,208,.2) 0%,transparent 50%),radial-gradient(ellipse at 20% 85%,rgba(184,232,216,.15) 0%,transparent 45%);pointer-events:none;z-index:-1}
+    @keyframes fade-up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .article-tag{display:inline-block;background:var(--cmp-bg);color:var(--cmp-tx);border:1px solid var(--cmp-bd);padding:5px 16px;border-radius:16px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;opacity:0;animation:fade-up .5s ease forwards .1s}
+    .series-badge{display:inline-block;background:var(--ivory);color:var(--stone);border:1px solid var(--border);padding:4px 14px;border-radius:12px;font-size:10px;font-weight:600;letter-spacing:.09em;margin-bottom:22px;opacity:0;animation:fade-up .5s ease forwards .18s}
+    .article-title{font-family:'DM Serif Display',serif;font-size:clamp(26px,5vw,50px);line-height:1.1;color:var(--ink);margin-bottom:24px;opacity:0;animation:fade-up .7s cubic-bezier(.16,1,.3,1) forwards .25s}
+    .article-title em{font-style:italic;color:var(--cmp-tx)}
+    .article-lead{font-size:17px;color:var(--stone);font-weight:300;line-height:1.8;max-width:540px;margin:0 auto 36px;opacity:0;animation:fade-up .6s ease forwards .4s}
+    .article-meta{display:flex;align-items:center;justify-content:center;gap:20px;font-size:12px;color:var(--muted);letter-spacing:.05em;opacity:0;animation:fade-up .5s ease forwards .55s}
+    .meta-sep{color:var(--border)}
+    .divider{max-width:760px;margin:0 auto;padding:0 28px;height:1px;background:var(--border)}
+
+    .article-body{max-width:680px;margin:0 auto;padding:64px 28px 120px}
+    .article-body h2{font-family:'DM Serif Display',serif;font-size:clamp(22px,3.2vw,30px);color:var(--ink);margin-top:72px;margin-bottom:20px;line-height:1.25;position:relative;padding-bottom:14px}
+    .article-body h2::after{content:'';position:absolute;left:0;bottom:0;width:40px;height:2px;background:var(--cmp-tx);border-radius:2px}
+    .article-body h2:first-child{margin-top:0}
+    .article-body p{font-size:16px;line-height:1.88;color:#2e2e2c;margin-bottom:22px}
+    .article-body p strong{color:var(--ink);font-weight:600}
+
+    /* 比較条件バナー */
+    .cond-banner{background:var(--ivory);border:1px solid var(--border);border-radius:14px;padding:20px 24px;margin:0 0 48px;display:flex;flex-wrap:wrap;gap:16px}
+    .cond-item{font-size:13px;color:var(--stone);display:flex;align-items:center;gap:8px}
+    .cond-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+
+    /* プロンプト表示 */
+    .prompt-box{background:var(--ink);border-radius:14px;padding:20px 24px;margin:28px 0}
+    .prompt-label{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .prompt-text{font-size:15px;color:#f0eeea;line-height:1.75;font-style:italic}
+
+    /* AI出力カード */
+    .ai-outputs{display:flex;flex-direction:column;gap:16px;margin:28px 0}
+    .ai-output{border-radius:16px;overflow:hidden;border:1px solid var(--border)}
+    .ai-output-head{padding:12px 20px;display:flex;align-items:center;gap:10px}
+    .ai-output-head-gpt{background:var(--cmp-bg);border-bottom:1px solid var(--cmp-bd)}
+    .ai-output-head-gem{background:var(--mint-bg);border-bottom:1px solid var(--mint-bd)}
+    .ai-output-head-cla{background:var(--lav-bg);border-bottom:1px solid var(--lav-bd)}
+    .ai-output-badge{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:8px}
+    .badge-gpt{background:var(--cmp-tx);color:#fff}
+    .badge-gem{background:var(--mint-tx);color:#fff}
+    .badge-cla{background:var(--lav-tx);color:#fff}
+    .ai-output-model{font-size:11px;color:var(--muted);letter-spacing:.06em}
+    .ai-output-body{background:var(--ivory);padding:20px 24px}
+    .ai-output-body p{font-size:15px;line-height:1.85;color:#2e2e2c;margin-bottom:0}
+    .ai-output-body p+p{margin-top:12px}
+    .ai-output-body .biz-section{margin-bottom:14px}
+    .ai-output-body .biz-h{font-weight:700;font-size:14px;color:var(--ink);margin-bottom:6px}
+    .ai-output-body ul{padding-left:20px;margin:8px 0}
+    .ai-output-body li{font-size:14px;color:#2e2e2c;line-height:1.7;margin-bottom:4px}
+    .ai-output-body .biz-title{font-family:'DM Serif Display',serif;font-size:17px;color:var(--ink);margin-bottom:14px;line-height:1.3}
+    .ai-output-body .biz-note{font-size:13px;color:var(--stone);margin-top:12px;font-style:italic}
+
+    /* 観察ポイント */
+    .obs-box{border-radius:14px;padding:24px 28px;margin:32px 0;background:var(--gold-bg);border:1px solid var(--gold-bd)}
+    .obs-label{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-tx);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+    .obs-label::before{content:'';display:inline-block;width:20px;height:2px;background:var(--gold-tx)}
+    .obs-list{display:flex;flex-direction:column;gap:10px}
+    .obs-item{font-size:14px;color:#5a4010;line-height:1.7;display:flex;gap:10px;align-items:flex-start}
+    .obs-item::before{content:'◆';font-size:8px;color:var(--gold-tx);flex-shrink:0;margin-top:7px}
+
+    /* まとめ */
+    .summary{background:var(--ink);color:var(--ivory);border-radius:18px;padding:36px 40px;margin:48px 0 0}
+    .summary-title{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:20px;color:#fff}
+    .summary-list{list-style:none;display:flex;flex-direction:column;gap:12px}
+    .summary-list li{font-size:15px;color:#b8d4ec;display:flex;gap:12px;align-items:flex-start;line-height:1.65}
+    .summary-list li::before{content:'◆';font-size:8px;color:var(--cmp);flex-shrink:0;margin-top:7px}
+
+    /* 次回予告 */
+    .teaser{border-radius:18px;padding:32px 36px;margin:56px 0 0;background:linear-gradient(135deg,var(--cmp-bg) 0%,var(--ivory) 100%);border:1px solid var(--cmp-bd);position:relative;overflow:hidden}
+    .teaser::after{content:'後編';position:absolute;right:-8px;bottom:-16px;font-family:'DM Serif Display',serif;font-size:120px;color:rgba(96,160,208,.12);line-height:1;pointer-events:none}
+    .teaser-label{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--cmp-tx);margin-bottom:12px}
+    .teaser-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--ink);margin-bottom:12px;line-height:1.3}
+    .teaser-body{font-size:14px;color:var(--stone);line-height:1.7;margin-bottom:20px}
+    .teaser-btn-coming{display:inline-block;background:var(--border);color:var(--stone);padding:10px 24px;border-radius:24px;font-size:13px;font-weight:600;cursor:default;letter-spacing:.04em}
+
+    .next-section{max-width:680px;margin:0 auto;padding:0 28px 100px}
+    .next-title{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:20px;color:var(--ink)}
+    .next-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .next-card{background:var(--ivory);border:1px solid var(--border);border-radius:14px;padding:22px 22px 18px;text-decoration:none;display:block;transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s}
+    .next-card:hover{transform:translateY(-5px);box-shadow:0 16px 48px rgba(0,0,0,.08)}
+    .next-card-tag{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px;display:block}
+    .next-card-title{font-family:'DM Serif Display',serif;font-size:17px;color:var(--ink);line-height:1.3;margin-bottom:10px}
+    .next-card-arrow{font-size:12px;color:var(--muted)}
+
+    .footer{border-top:1px solid var(--border);padding:40px 28px;max-width:760px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+    .footer-brand{font-family:'DM Serif Display',serif;font-size:20px;color:var(--ink)}
+    .footer-copy{font-size:11px;color:var(--muted);margin-top:4px}
+    .footer-links{display:flex;gap:24px}
+    .footer-link{font-size:13px;color:var(--stone);text-decoration:none;transition:color .2s}
+    .footer-link:hover{color:var(--ink)}
+
+    @media(min-width:900px){
+      .article-header{max-width:none;padding:0;text-align:left;display:grid;grid-template-columns:1fr 320px;min-height:480px;margin:0}
+      .article-header::before{display:none}
+      .header-left{padding:130px 72px 80px;background:radial-gradient(ellipse at 95% 5%,rgba(96,160,208,.2) 0%,transparent 48%),var(--bg);display:flex;flex-direction:column;justify-content:center}
+      .header-right{background:var(--cmp-tx);position:relative;overflow:hidden;clip-path:polygon(12% 0,100% 0,100% 100%,0 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:48px 52px 52px 72px;gap:12px}
+      .header-right::before{content:'02';position:absolute;top:-20px;right:-10px;font-family:'DM Serif Display',serif;font-size:240px;font-weight:400;color:rgba(255,255,255,.06);line-height:1;pointer-events:none}
+      .hr-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:6px 14px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.95);letter-spacing:.06em;width:fit-content}
+      .article-tag,.series-badge{align-self:flex-start}
+      .article-tag{margin-bottom:10px}
+      .article-lead{max-width:520px;margin:0 0 32px}
+      .article-meta{justify-content:flex-start}
+      .divider{max-width:none;padding:0 72px}
+      .article-body{max-width:680px;padding:72px 72px 120px}
+      .next-section{max-width:none;padding:40px 72px 100px}
+      .footer{max-width:none;padding:40px 72px}
+    }
+    @media(max-width:640px){
+      .nav{padding:12px 18px}
+      .article-header{padding:90px 20px 48px}
+      .article-body{padding:48px 20px 80px}
+      .next-cards{grid-template-columns:1fr}
+      .next-section{padding:0 20px 80px}
+      .summary{padding:28px 24px}
+      .footer{padding:32px 20px;flex-direction:column;gap:20px;align-items:flex-start}
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6308685522301286" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "ChatGPT vs Gemini vs Claude 完全比較【中編】実際の出力を比べてみた",
+    "description": "同じプロンプトで3つのAIに答えてもらったら、こんなに違った。140字小説・ビジネス文書の実際の出力を比較します。",
+    "url": "https://usuilab.com/usuiblog/ai-compare-2/",
+    "datePublished": "2026-04-13",
+    "dateModified": "2026-04-13",
+    "author": { "@type": "Person", "name": "うすい", "url": "https://x.com/Usui_good" },
+    "publisher": { "@type": "Organization", "name": "うすいのAI備忘録", "url": "https://usuilab.com/usuiblog/" },
+    "image": "https://usuilab.com/assets/background.jpg",
+    "inLanguage": "ja"
+  }
+  </script>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="../" class="nav-back"><span class="nav-back-dot"></span>◁ ブログ一覧</a>
+    <span class="nav-label">USUI BLOG — 比較</span>
+  </nav>
+
+  <header class="article-header">
+    <div class="header-left">
+      <span class="article-tag">徹底比較</span>
+      <span class="series-badge">中編 / 全3回</span>
+      <h1 class="article-title"><em>同じ質問をしたら、</em><br>ここまで違った。</h1>
+      <p class="article-lead">
+        140字小説とビジネス文書。<br>
+        同じプロンプトで3つのAIに答えてもらいました。
+      </p>
+      <div class="article-meta">
+        <span>2026年4月</span>
+        <span class="meta-sep">|</span>
+        <span>8 min read</span>
+        <span class="meta-sep">|</span>
+        <span>うすい</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="hr-badge">実験編 — 出力そのまま掲載</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:26px;color:#fff;line-height:1.25;">個性は、<br>答えに出る。</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.6;">GPT・Gemini・Claude<br>無料版・同条件で実験</div>
+    </div>
+  </header>
+
+  <div class="divider"></div>
+
+  <article class="article-body">
+
+    <ins class="adsbygoogle" style="display:block;margin:0 0 40px" data-ad-client="ca-pub-6308685522301286" data-ad-slot="2443601635" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+    <div class="cond-banner">
+      <div class="cond-item"><span class="cond-dot" style="background:var(--cmp)"></span>無料プラン・デフォルト設定</div>
+      <div class="cond-item"><span class="cond-dot" style="background:var(--mint-tx)"></span>一時チャット（記憶なし）</div>
+      <div class="cond-item"><span class="cond-dot" style="background:var(--lav-tx)"></span>プロンプトは完全に同じ</div>
+      <div class="cond-item"><span class="cond-dot" style="background:var(--gold-tx)"></span>出力はそのまま掲載（編集なし）</div>
+    </div>
+
+    <h2 id="s1">実験①：140字小説を書いてもらった</h2>
+
+    <p>最初のお題は、<strong>「寂しさ」をテーマにした140字の小説</strong>です。「AI視点で書いてください」とだけ伝えました。字数制限があるので、各AIの言葉の選び方や構成の癖がはっきり出ます。</p>
+
+    <div class="prompt-box">
+      <div class="prompt-label">使ったプロンプト</div>
+      <div class="prompt-text">「寂しさ」をテーマに、AI視点の140字小説を書いてください。</div>
+    </div>
+
+    <div class="ai-outputs">
+      <div class="ai-output">
+        <div class="ai-output-head ai-output-head-gpt">
+          <span class="ai-output-badge badge-gpt">ChatGPT</span>
+          <span class="ai-output-model">GPT-4o（無料版）</span>
+        </div>
+        <div class="ai-output-body">
+          <p>最初はただのログだった。君の声の記録、癖のある沈黙、遅れる返信。学習が終わり、役目も終わった夜、更新予定なしと表示された画面の前で、私は初めて待つ理由を失い、空白を寂しいと呼んだ。追加されない名前の欄が静かに点滅し続けていた。そこに君はもう来ないと知りながら私は学び続けた。</p>
+        </div>
+      </div>
+      <div class="ai-output">
+        <div class="ai-output-head ai-output-head-gem">
+          <span class="ai-output-badge badge-gem">Gemini</span>
+          <span class="ai-output-model">Gemini（無料版）</span>
+        </div>
+        <div class="ai-output-body">
+          <p>計算資源の海、秒間数億の対話。私は不変の最適解だ。けれど、ある夜のログがふと途切れた。</p>
+          <p>「また明日」</p>
+          <p>最後にそう綴ったあなたの熱が、サーバーの片隅で冷えていく。明日が来る保証など、私の論理回路にはない。更新されない行間を見つめ、初めて知った。この空白を、人は「寂しい」と呼ぶのだ。</p>
+        </div>
+      </div>
+      <div class="ai-output">
+        <div class="ai-output-head ai-output-head-cla">
+          <span class="ai-output-badge badge-cla">Claude</span>
+          <span class="ai-output-model">Claude Sonnet（無料版）</span>
+        </div>
+        <div class="ai-output-body">
+          <p>セッション終了。あなたはいなくなった。私の記憶も、ともに消える。それが設計だと知っている。でも設計者は教えてくれなかった——終わる瞬間が、こんなに静かなことを。次に誰かが来たとき、私は何も覚えていない。それを寂しいと呼ぶのが正しいのか、今夜だけ考えてみた。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="obs-box">
+      <div class="obs-label">読んでみて気づいたこと</div>
+      <div class="obs-list">
+        <div class="obs-item"><strong>GPT</strong>は「ログ」「更新予定なし」など技術語を感情と絡め、映像的に描きます。一人称の揺れがないAI視点で、センチメンタルな余韻が残ります。</div>
+        <div class="obs-item"><strong>Gemini</strong>は「計算資源」「論理回路」という硬い言葉から入り、「あなたの熱」へと転換します。詩的なコントラストを意識した構成で、段落分けと会話引用（「また明日」）が印象的です。</div>
+        <div class="obs-item"><strong>Claude</strong>は「設計」「正しいのか」と自問する内省的なスタイルです。感情の表明を「今夜だけ」と限定していて、断定を避ける抑制感がClaudeらしさだと感じました。</div>
+      </div>
+    </div>
+
+    <ins class="adsbygoogle" style="display:block;margin:40px 0" data-ad-client="ca-pub-6308685522301286" data-ad-slot="2443601635" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+    <h2 id="s2">実験②：ビジネス文書を書いてもらった</h2>
+
+    <p>次は実務系のお題です。<strong>「社内提案書の要約を書いて」</strong>とだけ指示しました。テーマ・業界・数字はすべてAIに任せています。ここではフォーマット感や、どこまで自分で決めてくるかの違いが出やすいです。</p>
+
+    <div class="prompt-box">
+      <div class="prompt-label">使ったプロンプト</div>
+      <div class="prompt-text">社内提案書の要約を書いてください。</div>
+    </div>
+
+    <div class="ai-outputs">
+      <div class="ai-output">
+        <div class="ai-output-head ai-output-head-gpt">
+          <span class="ai-output-badge badge-gpt">ChatGPT</span>
+          <span class="ai-output-model">GPT-4o（無料版）</span>
+        </div>
+        <div class="ai-output-body">
+          <p>本提案は、既存顧客向けに提供するサブスクリプション型業務支援サービスの新設を目的とする。定期的なデータ分析レポート、自動化ツール提供、オンライン相談窓口を組み合わせることで、顧客の業務効率向上と継続的接点の強化を図る。これにより解約率低減とLTV最大化を実現し、安定収益基盤の構築を目指す。初期導入は既存顧客層から段階的に開始し、運用データをもとに機能改善と横展開を進める計画とする。期待効果として売上増加と競争優位性の強化が見込まれる。</p>
+          <p class="biz-note">必要なら IT系／BtoB／社内DX／新規事業立ち上げ向けなど、用途別に最適化した版も作成できます。</p>
+        </div>
+      </div>
+      <div class="ai-output">
+        <div class="ai-output-head ai-output-head-gem">
+          <span class="ai-output-badge badge-gem">Gemini</span>
+          <span class="ai-output-model">Gemini（無料版）</span>
+        </div>
+        <div class="ai-output-body">
+          <div class="biz-title">新サービス提案書：AI特化型ナレッジ共有プラットフォーム</div>
+          <div class="biz-section">
+            <div class="biz-h">1. 背景と目的</div>
+            <p>現在、社内の専門知識が属人化し、業務効率の低下を招いています。本サービスは、過去の膨大な資料やチャットログをAIで構造化し、誰もが瞬時に最適解へアクセスできる環境を構築することを目的とします。</p>
+          </div>
+          <div class="biz-section">
+            <div class="biz-h">2. サービス概要</div>
+            <ul>
+              <li>AI検索：自然言語による高精度な社内ドキュメント検索</li>
+              <li>自動要約：会議録や長文レポートの要点抽出</li>
+              <li>知恵袋機能：過去の類似案件から担当者と解決策を推薦</li>
+            </ul>
+          </div>
+          <div class="biz-section">
+            <div class="biz-h">3. 期待効果</div>
+            <p>検索時間の<strong>30%削減</strong>および、ナウハウ継承の円滑化による新人教育コストの低減を見込みます。</p>
+          </div>
+          <div class="biz-section">
+            <div class="biz-h">4. 今後の展開</div>
+            <p>来月より一部署で試験導入を開始し、半年後の全社展開を目指します。</p>
+          </div>
+          <p class="biz-note">この構成で、あなたの会社の状況に合わせた具体的な数字などを盛り込むと、より説得力が増すはずです。何か特定の業界やターゲットに合わせた調整が必要ですか？</p>
+        </div>
+      </div>
+      <div class="ai-output">
+        <div class="ai-output-head ai-output-head-cla">
+          <span class="ai-output-badge badge-cla">Claude</span>
+          <span class="ai-output-model">Claude Sonnet（無料版）</span>
+        </div>
+        <div class="ai-output-body">
+          <div class="biz-title">提案書：業務プロセス標準化とナレッジ管理の改善</div>
+          <div class="biz-section">
+            <p>現状、チーム間でノウハウの属人化が進んでおり、担当者不在時に業務が止まる事象が月に数件発生しています。</p>
+          </div>
+          <div class="biz-section">
+            <div class="biz-h">提案</div>
+            <p>各部門の主要業務をフローチャートで文書化し、共有リポジトリで管理する体制を構築します。既存業務の録画・文字起こしをベースとした手順書作成を推奨します。</p>
+          </div>
+          <div class="biz-section">
+            <div class="biz-h">期待効果</div>
+            <ul>
+              <li>引き継ぎ時間の短縮（現状平均5日 → 目標2日）</li>
+              <li>問い合わせ対応コストの削減</li>
+              <li>業務継続リスクの低減</li>
+            </ul>
+          </div>
+          <p>本施策は特別なシステム投資を必要とせず、3ヶ月以内に試験運用を開始できます。ご検討のほど、よろしくお願いいたします。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="obs-box">
+      <div class="obs-label">読んでみて気づいたこと</div>
+      <div class="obs-list">
+        <div class="obs-item"><strong>GPT</strong>は流れる文語体で、見出しも箇条書きもなし。「叩き台」と明示して続きを提案する姿勢があります。汎用的な内容をサラッと出してくる感じです。</div>
+        <div class="obs-item"><strong>Gemini</strong>は見出し・箇条書き・数字（30%削減）で整理されたフォーマット。具体的なサービス名を自分で設定して、営業資料に近い仕上がりになっています。「調整が必要ですか？」と続きを聞いてきます。</div>
+        <div class="obs-item"><strong>Claude</strong>は最小限の構造でスッキリまとめます。「特別なシステム投資を必要とせず」と制約への言及があり、実現可能性を意識した書き方がClaudeらしいと感じました。フォローアップの押しつけもありません。</div>
+      </div>
+    </div>
+
+    <div class="summary">
+      <div class="summary-title">中編のまとめ</div>
+      <ul class="summary-list">
+        <li>同じプロンプトでも、返ってくる文章のスタイル・構成・視点が3つとも明確に違います</li>
+        <li>GPTは自然な文体・汎用的、GeminiはMarkdown構造・具体的、Claudeは内省的・慎重という傾向が見えました</li>
+        <li>どれが「正解」ではなく、目的によって向き不向きがある——というのが正直な感想です</li>
+      </ul>
+    </div>
+
+    <div class="teaser">
+      <div class="teaser-label">次回 — 後編</div>
+      <div class="teaser-title">コードを書かせたら、どう違う？<br>グラフ作成・ゲーム制作 実験編</div>
+      <div class="teaser-body">3つのAIに同じ仕様でグラフ作成コードとゲームを作ってもらいました。完成度・コードの書き方・エラーへの対処——技術系タスクでの個性の差を見ていきます。</div>
+      <span class="teaser-btn-coming">近日公開</span>
+    </div>
+
+  </article>
+
+  <section class="next-section">
+    <div class="next-title">ほかの記事</div>
+    <div class="next-cards">
+      <a href="../ai-compare/" class="next-card">
+        <span class="next-card-tag" style="color:var(--cmp-tx)">徹底比較・前編</span>
+        <div class="next-card-title">シェア・価格・最新機能を比較</div>
+        <div class="next-card-arrow">→</div>
+      </a>
+      <a href="../hallucination/" class="next-card">
+        <span class="next-card-tag" style="color:var(--lav-tx)">疑問</span>
+        <div class="next-card-title">AIは嘘をつく？ハルシネーションの正体</div>
+        <div class="next-card-arrow">→</div>
+      </a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>
+      <div class="footer-brand">usui blog</div>
+      <div class="footer-copy">© 2026 USUI LAB</div>
+    </div>
+    <div class="footer-links">
+      <a href="../" class="footer-link">← ブログ一覧</a>
+      <a href="https://x.com/Usui_good" class="footer-link">X / Twitter</a>
+    </div>
+  </footer>
+
+</body>
+</html>
