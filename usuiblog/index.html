@@ -862,6 +862,23 @@
         </div>
       </article>
 
+      <!-- AI Compare series -->
+      <article class="card" data-cat="news" style="grid-column: 1 / -1; --rot: -0.2deg; --accent: #60a0d0; --wash: #c8e4f4; cursor:pointer;" onclick="location.href='ai-compare/'">
+        <div class="card-wash"></div>
+        <span class="card-tag tag-news">徹底比較</span>
+        <span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;background:var(--ivory);color:var(--stone);border:1px solid var(--border);border-radius:10px;padding:3px 10px;margin-left:6px;">全3回 · 前編</span>
+        <h3 class="card-title">ChatGPT vs Gemini vs Claude<br>どれが最強？本音で比べる。</h3>
+        <p class="card-excerpt">シェア・価格・最新機能から、同じプロンプトへの実際の回答まで。3大AIを同じ条件で徹底比較。</p>
+        <div class="card-foot">
+          <span class="card-time">8 min read</span>
+          <div class="card-arrow">→</div>
+        </div>
+      </article>
+
+    </div>
+
+    <div id="load-more-wrap" style="display:none;text-align:center;margin-top:28px;">
+      <button id="load-more" style="background:var(--ink);color:var(--ivory);border:none;border-radius:24px;padding:12px 32px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:.04em;">もっと見る</button>
     </div>
   </section>
 
@@ -892,6 +909,38 @@
       });
     }, { threshold: .08 });
     cards.forEach(c => io.observe(c));
+
+    /* ── Mobile 3-card limit ── */
+    const MOBILE_LIMIT = 3;
+    const loadMoreWrap = document.getElementById('load-more-wrap');
+    const loadMoreBtn = document.getElementById('load-more');
+    let mobileExpanded = false;
+
+    function isMobile() { return window.innerWidth <= 900; }
+
+    function applyMobileLimit(visibleCards) {
+      if (!isMobile() || mobileExpanded) { loadMoreWrap.style.display='none'; return; }
+      if (visibleCards.length <= MOBILE_LIMIT) { loadMoreWrap.style.display='none'; return; }
+      visibleCards.forEach((c, i) => { if (i >= MOBILE_LIMIT) c.style.display='none'; });
+      loadMoreWrap.style.display='block';
+    }
+
+    function initMobileLimit() {
+      if (!isMobile() || mobileExpanded) return;
+      const visible = [...allCards].filter(c => c.style.display !== 'none');
+      applyMobileLimit(visible);
+    }
+
+    loadMoreBtn && loadMoreBtn.addEventListener('click', () => {
+      mobileExpanded = true;
+      allCards.forEach(c => { if (c.style.display === 'none' && c.dataset.cat !== undefined) c.style.display=''; });
+      // only show cards that match current filter
+      const activeBtn = document.querySelector('.cat.on');
+      const catKey = activeBtn ? [...activeBtn.classList].find(c => c.startsWith('cat-')) : null;
+      const cat = catKey ? catMap[catKey] : null;
+      if (cat) { allCards.forEach(c => { if (c.dataset.cat !== cat) c.style.display='none'; }); }
+      loadMoreWrap.style.display='none';
+    });
 
     /* ── Category filter ── */
     const allCards = document.querySelectorAll('.card');
@@ -940,19 +989,30 @@
             el.style.display = (i === 0 && cat === 'intro') || (i === 1 && cat !== 'intro') ? '' : 'none';
           });
 
-          if (countEl) countEl.textContent = isAll ? '9 articles' : `${shown} article${shown !== 1 ? 's' : ''}`;
+          if (countEl) countEl.textContent = isAll ? '10 articles' : `${shown} article${shown !== 1 ? 's' : ''}`;
 
-          // Phase 3: stagger fade in
+          // Phase 3: stagger fade in — apply mobile 3-card limit
+          mobileExpanded = false;
           const entering = [...allCards].filter(c => c.classList.contains('filter-entering'));
+          if (isMobile() && entering.length > MOBILE_LIMIT) {
+            entering.forEach((c, i) => { if (i >= MOBILE_LIMIT) { c.style.display='none'; c.classList.remove('filter-entering'); } });
+            loadMoreWrap.style.display = 'block';
+          } else {
+            loadMoreWrap.style.display = 'none';
+          }
+          const toAnimate = [...allCards].filter(c => c.classList.contains('filter-entering'));
           requestAnimationFrame(() => requestAnimationFrame(() => {
-            entering.forEach((card, i) => {
+            toAnimate.forEach((card, i) => {
               setTimeout(() => card.classList.remove('filter-entering'), i * 55);
             });
-            setTimeout(() => { busy = false; }, entering.length * 55 + 250);
+            setTimeout(() => { busy = false; }, toAnimate.length * 55 + 250);
           }));
         }, 240);
       });
     });
+
+    // init mobile limit on first load
+    initMobileLimit();
   </script>
 </body>
 </html>
