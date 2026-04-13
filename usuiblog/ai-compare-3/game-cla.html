@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Space Defender</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0a0a0f; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; }
+    canvas { border: 1px solid #222; }
+    #info { color: #555; font-family: monospace; font-size: 11px; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <canvas id="c" width="480" height="600"></canvas>
+  <div id="info">矢印キーで移動 / スペースで射撃</div>
+<script>
+const c = document.getElementById('c');
+const ctx = c.getContext('2d');
+
+const state = { score: 0, lives: 3, over: false };
+const player = { x: 210, y: 560, w: 40, h: 24, speed: 5, cooldown: 0 };
+const bullets = [], enemies = [];
+
+// 星背景
+const stars = Array.from({ length: 70 }, () => ({
+  x: Math.random() * c.width,
+  y: Math.random() * c.height,
+  speed: 0.3 + Math.random() * 0.8,
+  r: Math.random() < 0.2 ? 1.5 : 0.8
+}));
+
+const keys = {};
+window.addEventListener('keydown', e => { keys[e.key] = true; e.preventDefault(); });
+window.addEventListener('keyup', e => { keys[e.key] = false; });
+
+setInterval(() => {
+  if (!state.over) enemies.push({
+    x: Math.random() * (c.width - 32),
+    y: -28,
+    w: 28, h: 20,
+    speed: 1.6 + state.score * 0.03
+  });
+}, 900);
+
+function restart() {
+  state.score = 0; state.lives = 3; state.over = false;
+  player.x = 210; player.cooldown = 0;
+  bullets.length = 0; enemies.length = 0;
+}
+
+function update() {
+  if (state.over) { if (keys[' '] || keys['Enter']) restart(); return; }
+
+  // 移動（境界チェック付き）
+  if (keys['ArrowLeft'])  player.x = Math.max(0, player.x - player.speed);
+  if (keys['ArrowRight']) player.x = Math.min(c.width - player.w, player.x + player.speed);
+
+  // 射撃（クールダウンあり）
+  player.cooldown = Math.max(0, player.cooldown - 1);
+  if (keys[' '] && player.cooldown === 0) {
+    bullets.push({ x: player.x + player.w / 2 - 2, y: player.y, speed: 9 });
+    player.cooldown = 10;
+  }
+
+  // 弾の更新
+  for (let i = bullets.length - 1; i >= 0; i--) {
+    bullets[i].y -= bullets[i].speed;
+    if (bullets[i].y < -12) bullets.splice(i, 1);
+  }
+
+  // 敵の更新
+  for (let i = enemies.length - 1; i >= 0; i--) {
+    const e = enemies[i];
+    e.y += e.speed;
+    // 弾との当たり判定
+    let hit = false;
+    for (let j = bullets.length - 1; j >= 0; j--) {
+      const b = bullets[j];
+      if (b.x > e.x && b.x < e.x + e.w && b.y > e.y && b.y < e.y + e.h) {
+        bullets.splice(j, 1); hit = true; state.score++; break;
+      }
+    }
+    if (hit || e.y > c.height) {
+      enemies.splice(i, 1);
+      if (!hit) { state.lives--; if (state.lives <= 0) state.over = true; }
+    }
+  }
+
+  // 星のスクロール
+  stars.forEach(s => { s.y += s.speed; if (s.y > c.height) { s.y = -2; s.x = Math.random() * c.width; } });
+}
+
+function draw() {
+  ctx.fillStyle = '#0a0a0f';
+  ctx.fillRect(0, 0, c.width, c.height);
+
+  // 星
+  stars.forEach(s => {
+    ctx.globalAlpha = 0.3 + 0.7 * (s.r / 1.5);
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fill();
+  });
+  ctx.globalAlpha = 1;
+
+  if (state.over) {
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 30px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('GAME OVER', c.width / 2, c.height / 2 - 20);
+    ctx.font = '16px monospace';
+    ctx.fillStyle = '#aaa';
+    ctx.fillText('SCORE: ' + state.score, c.width / 2, c.height / 2 + 14);
+    ctx.fillText('スペース / Enter でリスタート', c.width / 2, c.height / 2 + 44);
+    ctx.textAlign = 'left';
+    return;
+  }
+
+  // プレイヤー（三角形）
+  ctx.fillStyle = '#60c0ff';
+  ctx.beginPath();
+  ctx.moveTo(player.x + player.w / 2, player.y);
+  ctx.lineTo(player.x, player.y + player.h);
+  ctx.lineTo(player.x + player.w, player.y + player.h);
+  ctx.closePath();
+  ctx.fill();
+
+  // 弾
+  ctx.fillStyle = '#ffe060';
+  bullets.forEach(b => ctx.fillRect(b.x, b.y, 4, 12));
+
+  // 敵（ひし形）
+  ctx.fillStyle = '#ff5050';
+  enemies.forEach(e => {
+    ctx.beginPath();
+    ctx.moveTo(e.x + e.w / 2, e.y);
+    ctx.lineTo(e.x + e.w, e.y + e.h / 2);
+    ctx.lineTo(e.x + e.w / 2, e.y + e.h);
+    ctx.lineTo(e.x, e.y + e.h / 2);
+    ctx.closePath();
+    ctx.fill();
+  });
+
+  // HUD
+  ctx.fillStyle = 'rgba(0,0,0,0.5)';
+  ctx.fillRect(0, 0, c.width, 34);
+  ctx.fillStyle = '#fff';
+  ctx.font = '13px monospace';
+  ctx.fillText('SCORE: ' + state.score, 12, 22);
+  const heartsX = c.width - 12 - state.lives * 18;
+  for (let i = 0; i < state.lives; i++) {
+    ctx.fillStyle = '#ff6080';
+    ctx.font = '16px monospace';
+    ctx.fillText('♥', heartsX + i * 18, 22);
+  }
+}
+
+(function loop() { update(); draw(); requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

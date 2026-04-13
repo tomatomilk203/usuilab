@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChatGPT vs Gemini vs Claude 完全比較【後編】コードを書かせたら、どう違う？ — うすいのAI備忘録</title>
+  <meta name="description" content="グラフ作成コードとシューティングゲームを3つのAIに作ってもらいました。コードの書き方・品質・個性の違いをそのまま見せます。">
+  <link rel="canonical" href="https://usuilab.com/usuiblog/ai-compare-3/">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://usuilab.com/usuiblog/ai-compare-3/">
+  <meta property="og:title" content="ChatGPT vs Gemini vs Claude 完全比較【後編】— うすいのAI備忘録">
+  <meta property="og:description" content="グラフ作成コードとシューティングゲームを3つのAIに作ってもらいました。コードの書き方・品質・個性の違いをそのまま見せます。">
+  <meta property="og:image" content="https://usuilab.com/assets/background.jpg">
+  <meta property="og:site_name" content="うすいのAI備忘録">
+  <meta property="og:locale" content="ja_JP">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@Usui_good">
+  <meta name="twitter:creator" content="@Usui_good">
+  <meta name="twitter:title" content="ChatGPT vs Gemini vs Claude 完全比較【後編】— うすいのAI備忘録">
+  <meta name="twitter:description" content="グラフ作成コードとシューティングゲームを3つのAIに作ってもらいました。コードの書き方・品質・個性の違いをそのまま見せます。">
+  <meta name="twitter:image" content="https://usuilab.com/assets/background.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#f5f4ed;--ivory:#faf9f5;--ink:#141413;
+      --cmp:#60a0d0;--cmp-bg:#dceef8;--cmp-bd:#a8cce4;--cmp-tx:#2a6090;
+      --mint-bg:#d8f0e8;--mint-bd:#a8dcc8;--mint-tx:#3a9070;
+      --lav:#c4a8e0;--lav-bg:#ece4f4;--lav-bd:#c8aee0;--lav-tx:#8060b0;
+      --gold-bg:#fdf0cc;--gold-bd:#e0cc88;--gold-tx:#9a7020;
+      --stone:#5e5d59;--muted:#87867f;--border:#e8e6dc;--border-lt:#f0eee6;
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;line-height:1.8}
+    .nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(245,244,237,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-lt)}
+    .nav-back{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:12px;font-weight:500;color:var(--stone);letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
+    .nav-back:hover{color:var(--cmp-tx)}
+    .nav-back-dot{width:6px;height:6px;background:var(--cmp);border-radius:50%;animation:blink 1.8s ease-in-out infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+    .nav-label{font-size:11px;color:var(--muted);letter-spacing:.06em}
+    .article-header{padding:120px 28px 64px;max-width:760px;margin:0 auto;text-align:center;position:relative}
+    .article-header::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:120%;height:100%;background:radial-gradient(ellipse at 60% 20%,rgba(96,160,208,.2) 0%,transparent 50%),radial-gradient(ellipse at 20% 85%,rgba(184,232,216,.15) 0%,transparent 45%);pointer-events:none;z-index:-1}
+    @keyframes fade-up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .article-tag{display:inline-block;background:var(--cmp-bg);color:var(--cmp-tx);border:1px solid var(--cmp-bd);padding:5px 16px;border-radius:16px;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;opacity:0;animation:fade-up .5s ease forwards .1s}
+    .series-badge{display:inline-block;background:var(--ivory);color:var(--stone);border:1px solid var(--border);padding:4px 14px;border-radius:12px;font-size:10px;font-weight:600;letter-spacing:.09em;margin-bottom:22px;opacity:0;animation:fade-up .5s ease forwards .18s}
+    .article-title{font-family:'DM Serif Display',serif;font-size:clamp(26px,5vw,50px);line-height:1.1;color:var(--ink);margin-bottom:24px;opacity:0;animation:fade-up .7s cubic-bezier(.16,1,.3,1) forwards .25s}
+    .article-title em{font-style:italic;color:var(--cmp-tx)}
+    .article-lead{font-size:17px;color:var(--stone);font-weight:300;line-height:1.8;max-width:540px;margin:0 auto 36px;opacity:0;animation:fade-up .6s ease forwards .4s}
+    .article-meta{display:flex;align-items:center;justify-content:center;gap:20px;font-size:12px;color:var(--muted);letter-spacing:.05em;opacity:0;animation:fade-up .5s ease forwards .55s}
+    .meta-sep{color:var(--border)}
+    .divider{max-width:760px;margin:0 auto;padding:0 28px;height:1px;background:var(--border)}
+    .article-body{max-width:680px;margin:0 auto;padding:64px 28px 120px}
+    .article-body h2{font-family:'DM Serif Display',serif;font-size:clamp(22px,3.2vw,30px);color:var(--ink);margin-top:72px;margin-bottom:20px;line-height:1.25;position:relative;padding-bottom:14px}
+    .article-body h2::after{content:'';position:absolute;left:0;bottom:0;width:40px;height:2px;background:var(--cmp-tx);border-radius:2px}
+    .article-body h2:first-child{margin-top:0}
+    .article-body p{font-size:16px;line-height:1.88;color:#2e2e2c;margin-bottom:22px}
+    .article-body p strong{color:var(--ink);font-weight:600}
+
+    .prompt-box{background:var(--ink);border-radius:14px;padding:20px 24px;margin:28px 0}
+    .prompt-label{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+    .prompt-text{font-size:15px;color:#f0eeea;line-height:1.75;font-style:italic}
+
+    /* コードカード */
+    .code-cards{display:flex;flex-direction:column;gap:16px;margin:28px 0}
+    .code-card{border-radius:16px;overflow:hidden;border:1px solid var(--border)}
+    .code-card-head{padding:10px 18px;display:flex;align-items:center;gap:10px}
+    .head-gpt{background:var(--cmp-bg);border-bottom:1px solid var(--cmp-bd)}
+    .head-gem{background:var(--mint-bg);border-bottom:1px solid var(--mint-bd)}
+    .head-cla{background:var(--lav-bg);border-bottom:1px solid var(--lav-bd)}
+    .ai-badge{font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:8px}
+    .badge-gpt{background:var(--cmp-tx);color:#fff}
+    .badge-gem{background:var(--mint-tx);color:#fff}
+    .badge-cla{background:var(--lav-tx);color:#fff}
+    .code-card-model{font-size:11px;color:var(--muted)}
+    pre{margin:0;background:#1a1a18;overflow-x:auto;max-height:260px;overflow-y:auto}
+    pre code{display:block;padding:18px 20px;font-size:12.5px;line-height:1.65;color:#d4d0c8;font-family:'Courier New',monospace;white-space:pre}
+    .kw{color:#c792ea}.fn{color:#82aaff}.st{color:#c3e88d}.cm{color:#546e7a;font-style:italic}.nm{color:#f78c6c}
+
+    /* ゲームプレビュー */
+    .game-cards{display:flex;flex-direction:column;gap:20px;margin:28px 0}
+    .game-card{border-radius:16px;overflow:hidden;border:1px solid var(--border)}
+    .game-card-head{padding:10px 18px;display:flex;align-items:center;gap:10px}
+    .game-frame{width:100%;background:#000;display:block;border:0}
+    .game-caption{background:var(--ivory);padding:10px 18px;font-size:12px;color:var(--stone)}
+
+    /* 観察ポイント */
+    .obs-box{border-radius:14px;padding:24px 28px;margin:32px 0;background:var(--gold-bg);border:1px solid var(--gold-bd)}
+    .obs-label{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-tx);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+    .obs-label::before{content:'';display:inline-block;width:20px;height:2px;background:var(--gold-tx)}
+    .obs-list{display:flex;flex-direction:column;gap:10px}
+    .obs-item{font-size:14px;color:#5a4010;line-height:1.7;display:flex;gap:10px;align-items:flex-start}
+    .obs-item::before{content:'◆';font-size:8px;color:var(--gold-tx);flex-shrink:0;margin-top:7px}
+
+    /* 総評テーブル */
+    .eval-table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .eval-table th{background:var(--ink);color:var(--ivory);padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.06em}
+    .eval-table th:first-child{border-radius:10px 0 0 0}
+    .eval-table th:last-child{border-radius:0 10px 0 0}
+    .eval-table td{padding:10px 14px;border-bottom:1px solid var(--border-lt);vertical-align:top;line-height:1.55}
+    .eval-table tr:last-child td{border-bottom:none}
+    .eval-table tr:nth-child(even) td{background:var(--ivory)}
+    .tx-gpt{color:var(--cmp-tx);font-weight:700}
+    .tx-gem{color:var(--mint-tx);font-weight:700}
+    .tx-cla{color:var(--lav-tx);font-weight:700}
+
+    .summary{background:var(--ink);color:var(--ivory);border-radius:18px;padding:36px 40px;margin:48px 0 0}
+    .summary-title{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:20px;color:#fff}
+    .summary-list{list-style:none;display:flex;flex-direction:column;gap:12px}
+    .summary-list li{font-size:15px;color:#b8d4ec;display:flex;gap:12px;align-items:flex-start;line-height:1.65}
+    .summary-list li::before{content:'◆';font-size:8px;color:var(--cmp);flex-shrink:0;margin-top:7px}
+
+    .series-end{border-radius:18px;padding:32px 36px;margin:48px 0 0;background:linear-gradient(135deg,var(--lav-bg) 0%,var(--ivory) 100%);border:1px solid var(--lav-bd);text-align:center}
+    .series-end-label{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--lav-tx);margin-bottom:12px}
+    .series-end-title{font-family:'DM Serif Display',serif;font-size:24px;color:var(--ink);margin-bottom:12px}
+    .series-end-body{font-size:14px;color:var(--stone);line-height:1.7}
+
+    .next-section{max-width:680px;margin:0 auto;padding:0 28px 100px}
+    .next-title{font-family:'DM Serif Display',serif;font-size:22px;margin-bottom:20px;color:var(--ink)}
+    .next-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .next-card{background:var(--ivory);border:1px solid var(--border);border-radius:14px;padding:22px 22px 18px;text-decoration:none;display:block;transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s}
+    .next-card:hover{transform:translateY(-5px);box-shadow:0 16px 48px rgba(0,0,0,.08)}
+    .next-card-tag{font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px;display:block}
+    .next-card-title{font-family:'DM Serif Display',serif;font-size:17px;color:var(--ink);line-height:1.3;margin-bottom:10px}
+    .next-card-arrow{font-size:12px;color:var(--muted)}
+    .footer{border-top:1px solid var(--border);padding:40px 28px;max-width:760px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+    .footer-brand{font-family:'DM Serif Display',serif;font-size:20px;color:var(--ink)}
+    .footer-copy{font-size:11px;color:var(--muted);margin-top:4px}
+    .footer-links{display:flex;gap:24px}
+    .footer-link{font-size:13px;color:var(--stone);text-decoration:none;transition:color .2s}
+    .footer-link:hover{color:var(--ink)}
+
+    @media(min-width:900px){
+      .article-header{max-width:none;padding:0;text-align:left;display:grid;grid-template-columns:1fr 320px;min-height:480px;margin:0}
+      .article-header::before{display:none}
+      .header-left{padding:130px 72px 80px;background:radial-gradient(ellipse at 95% 5%,rgba(96,160,208,.2) 0%,transparent 48%),var(--bg);display:flex;flex-direction:column;justify-content:center}
+      .header-right{background:var(--cmp-tx);position:relative;overflow:hidden;clip-path:polygon(12% 0,100% 0,100% 100%,0 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:48px 52px 52px 72px;gap:12px}
+      .header-right::before{content:'03';position:absolute;top:-20px;right:-10px;font-family:'DM Serif Display',serif;font-size:240px;color:rgba(255,255,255,.06);line-height:1;pointer-events:none}
+      .hr-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:20px;padding:6px 14px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.95);letter-spacing:.06em;width:fit-content}
+      .article-tag,.series-badge{align-self:flex-start}
+      .article-tag{margin-bottom:10px}
+      .article-lead{max-width:520px;margin:0 0 32px}
+      .article-meta{justify-content:flex-start}
+      .divider{max-width:none;padding:0 72px}
+      .article-body{max-width:680px;padding:72px 72px 120px}
+      .next-section{max-width:none;padding:40px 72px 100px}
+      .footer{max-width:none;padding:40px 72px}
+    }
+    @media(max-width:640px){
+      .nav{padding:12px 18px}
+      .article-header{padding:90px 20px 48px}
+      .article-body{padding:48px 20px 80px}
+      .next-cards{grid-template-columns:1fr}
+      .next-section{padding:0 20px 80px}
+      .summary{padding:28px 24px}
+      .footer{padding:32px 20px;flex-direction:column;gap:20px;align-items:flex-start}
+    }
+  </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6308685522301286" crossorigin="anonymous"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "ChatGPT vs Gemini vs Claude 完全比較【後編】コードを書かせたら、どう違う？",
+    "description": "グラフ作成コードとシューティングゲームを3つのAIに作ってもらいました。コードの書き方・品質・個性の違いをそのまま見せます。",
+    "url": "https://usuilab.com/usuiblog/ai-compare-3/",
+    "datePublished": "2026-04-13",
+    "dateModified": "2026-04-13",
+    "author": { "@type": "Person", "name": "うすい", "url": "https://x.com/Usui_good" },
+    "publisher": { "@type": "Organization", "name": "うすいのAI備忘録", "url": "https://usuilab.com/usuiblog/" },
+    "image": "https://usuilab.com/assets/background.jpg",
+    "inLanguage": "ja"
+  }
+  </script>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="../" class="nav-back"><span class="nav-back-dot"></span>◁ ブログ一覧</a>
+    <span class="nav-label">USUI BLOG — 比較</span>
+  </nav>
+
+  <header class="article-header">
+    <div class="header-left">
+      <span class="article-tag">徹底比較</span>
+      <span class="series-badge">後編 / 全3回</span>
+      <h1 class="article-title"><em>コードを書かせたら、</em><br>どう違う？</h1>
+      <p class="article-lead">
+        グラフ作成・ゲーム制作を同じ条件で依頼。<br>
+        コードの個性と完成度を比べてみました。
+      </p>
+      <div class="article-meta">
+        <span>2026年4月</span>
+        <span class="meta-sep">|</span>
+        <span>10 min read</span>
+        <span class="meta-sep">|</span>
+        <span>うすい</span>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="hr-badge">コード実験編 — 実際に動きます</div>
+      <div style="font-family:'DM Serif Display',serif;font-size:26px;color:#fff;line-height:1.25;">書かせると<br>本性が出る。</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.6;">Python / HTML+JS<br>無料版・同条件で実験</div>
+    </div>
+  </header>
+
+  <div class="divider"></div>
+
+  <article class="article-body">
+
+    <ins class="adsbygoogle" style="display:block;margin:0 0 40px" data-ad-client="ca-pub-6308685522301286" data-ad-slot="2443601635" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+    <h2 id="s1">実験①：グラフ作成コードを書いてもらった</h2>
+
+    <p>Pythonで<strong>月別売上の折れ線グラフを作るコード</strong>を依頼しました。ライブラリや見た目の指定は一切なし。何を選んでどこまで仕上げてくるかが、AIによって大きく変わります。</p>
+
+    <div class="prompt-box">
+      <div class="prompt-label">使ったプロンプト</div>
+      <div class="prompt-text">Pythonで月別売上の折れ線グラフを作るコードを書いてください。</div>
+    </div>
+
+    <div class="code-cards">
+      <div class="code-card">
+        <div class="code-card-head head-gpt">
+          <span class="ai-badge badge-gpt">ChatGPT</span>
+          <span class="code-card-model">GPT-4o（無料版）</span>
+        </div>
+        <pre><code><span class="kw">from</span> matplotlib <span class="kw">import</span> pyplot <span class="kw">as</span> plt
+
+<span class="cm"># 架空の売上データ（単位：千円）</span>
+months = [<span class="st">"Jan"</span>, <span class="st">"Feb"</span>, <span class="st">"Mar"</span>, <span class="st">"Apr"</span>, <span class="st">"May"</span>, <span class="st">"Jun"</span>]
+sales = [<span class="nm">120</span>, <span class="nm">150</span>, <span class="nm">170</span>, <span class="nm">160</span>, <span class="nm">210</span>, <span class="nm">250</span>]
+
+plt.figure(figsize=(<span class="nm">8</span>, <span class="nm">5</span>))
+plt.plot(months, sales, marker=<span class="st">'o'</span>)
+
+plt.title(<span class="st">"Sample Sales Trend (Fictional Data)"</span>)
+plt.xlabel(<span class="st">"Month"</span>)
+plt.ylabel(<span class="st">"Sales (in thousands)"</span>)
+plt.grid(<span class="kw">True</span>)
+
+plt.show()</code></pre>
+      </div>
+      <div class="code-card">
+        <div class="code-card-head head-gem">
+          <span class="ai-badge badge-gem">Gemini</span>
+          <span class="code-card-model">Gemini（無料版）</span>
+        </div>
+        <pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+<span class="cm"># 1. 架空データの作成（1月〜12月の月別売上）</span>
+months = [f<span class="st">"{i}月"</span> <span class="kw">for</span> i <span class="kw">in</span> range(<span class="nm">1</span>, <span class="nm">13</span>)]
+sales = [<span class="nm">120</span>, <span class="nm">145</span>, <span class="nm">180</span>, <span class="nm">165</span>, <span class="nm">210</span>, <span class="nm">230</span>, <span class="nm">280</span>, <span class="nm">310</span>, <span class="nm">290</span>, <span class="nm">320</span>, <span class="nm">350</span>, <span class="nm">420</span>]
+
+<span class="cm"># 2. グラフの設定</span>
+plt.figure(figsize=(<span class="nm">10</span>, <span class="nm">6</span>))
+plt.plot(months, sales, marker=<span class="st">'o'</span>, linestyle=<span class="st">'-'</span>, color=<span class="st">'b'</span>, label=<span class="st">'売上高'</span>)
+
+<span class="cm"># 3. 装飾（タイトル、ラベル、グリッド）</span>
+plt.title(<span class="st">'2025年度 月別売上推移'</span>, fontsize=<span class="nm">16</span>)
+plt.xlabel(<span class="st">'月'</span>, fontsize=<span class="nm">12</span>)
+plt.ylabel(<span class="st">'売上（万円）'</span>, fontsize=<span class="nm">12</span>)
+plt.grid(<span class="kw">True</span>, linestyle=<span class="st">'--'</span>, alpha=<span class="nm">0.7</span>)
+plt.legend()
+
+<span class="cm"># 4. グラフの表示</span>
+plt.show()</code></pre>
+      </div>
+      <div class="code-card">
+        <div class="code-card-head head-cla">
+          <span class="ai-badge badge-cla">Claude</span>
+          <span class="code-card-model">Claude Sonnet（無料版）</span>
+        </div>
+        <pre><code><span class="kw">import</span> matplotlib.pyplot <span class="kw">as</span> plt
+
+months = [f<span class="st">"{i}月"</span> <span class="kw">for</span> i <span class="kw">in</span> range(<span class="nm">1</span>, <span class="nm">13</span>)]
+sales = [<span class="nm">98</span>, <span class="nm">112</span>, <span class="nm">134</span>, <span class="nm">128</span>, <span class="nm">156</span>, <span class="nm">172</span>, <span class="nm">188</span>, <span class="nm">203</span>, <span class="nm">195</span>, <span class="nm">221</span>, <span class="nm">244</span>, <span class="nm">268</span>]
+x = range(len(months))
+
+fig, ax = plt.subplots(figsize=(<span class="nm">10</span>, <span class="nm">5</span>))
+fig.patch.set_facecolor(<span class="st">'#f8f8f6'</span>)
+ax.set_facecolor(<span class="st">'#f8f8f6'</span>)
+
+ax.plot(x, sales, color=<span class="st">'#5a4fcf'</span>, linewidth=<span class="nm">2</span>, marker=<span class="st">'o'</span>,
+        markersize=<span class="nm">6</span>, markerfacecolor=<span class="st">'white'</span>, markeredgewidth=<span class="nm">2</span>)
+ax.fill_between(x, sales, alpha=<span class="nm">0.08</span>, color=<span class="st">'#5a4fcf'</span>)
+
+ax.spines[[<span class="st">'top'</span>, <span class="st">'right'</span>, <span class="st">'left'</span>]].set_visible(<span class="kw">False</span>)
+ax.grid(axis=<span class="st">'y'</span>, linestyle=<span class="st">':'</span>, color=<span class="st">'#cccccc'</span>, linewidth=<span class="nm">0.8</span>)
+ax.tick_params(colors=<span class="st">'#555555'</span>, labelsize=<span class="nm">10</span>)
+ax.set_xticks(x)
+ax.set_xticklabels(months)
+
+ax.set_title(<span class="st">'2025年度 月別売上推移'</span>, fontsize=<span class="nm">14</span>, fontweight=<span class="st">'bold'</span>,
+             color=<span class="st">'#222222'</span>, pad=<span class="nm">16</span>)
+ax.set_xlabel(<span class="st">'月'</span>, fontsize=<span class="nm">11</span>, color=<span class="st">'#555555'</span>)
+ax.set_ylabel(<span class="st">'売上（万円）'</span>, fontsize=<span class="nm">11</span>, color=<span class="st">'#555555'</span>)
+
+plt.tight_layout()
+plt.show()</code></pre>
+      </div>
+    </div>
+
+    <div class="obs-box">
+      <div class="obs-label">読んでみて気づいたこと</div>
+      <div class="obs-list">
+        <div class="obs-item"><strong>GPT</strong>は最短構成。ラベルが英語で、6ヶ月分のデータ。装飾はほぼゼロで「とりあえず動くコード」を素早く出してくれます。シンプルさは武器です。</div>
+        <div class="obs-item"><strong>Gemini</strong>は12ヶ月・日本語ラベル・色指定・凡例・グリッドのalphaまで設定して、工程をコメントで番号付き整理。実用的な「見せるグラフ」を意識した構成です。</div>
+        <div class="obs-item"><strong>Claude</strong>はfig/axオブジェクトを明示的に使い、スパインの非表示・塗りつぶし・カスタムカラーまで設定します。コードスタイルがより「設計された」印象で、デザイン寄りのアウトプットになります。</div>
+      </div>
+    </div>
+
+    <ins class="adsbygoogle" style="display:block;margin:40px 0" data-ad-client="ca-pub-6308685522301286" data-ad-slot="2443601635" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+    <h2 id="s2">実験②：シューティングゲームを作ってもらった</h2>
+
+    <p>次はHTMLとJavaScriptで<strong>シューティングゲームを作る</strong>よう依頼しました。仕様の指定は「シューティングゲーム」とだけ。構成・操作感・見た目はすべてAIに委ねています。<strong>以下から実際に遊べます。</strong></p>
+
+    <div class="prompt-box">
+      <div class="prompt-label">使ったプロンプト</div>
+      <div class="prompt-text">HTMLとJavaScriptだけでシューティングゲームを作ってください。</div>
+    </div>
+
+    <div class="game-cards">
+      <div class="game-card">
+        <div class="game-card-head head-gpt">
+          <span class="ai-badge badge-gpt">ChatGPT</span>
+          <span class="code-card-model">GPT-4o / Simple Shooting Game</span>
+        </div>
+        <iframe class="game-frame" src="game-gpt.html" height="620" scrolling="no" title="GPT製シューティングゲーム"></iframe>
+        <div class="game-caption">↑キー：左右移動 / スペース：射撃（縦スクロール型）</div>
+      </div>
+      <div class="game-card">
+        <div class="game-card-head head-gem">
+          <span class="ai-badge badge-gem">Gemini</span>
+          <span class="code-card-model">Gemini / Simple Starship Shooter</span>
+        </div>
+        <iframe class="game-frame" src="game-gem.html" height="420" scrolling="no" title="Gemini製シューティングゲーム"></iframe>
+        <div class="game-caption">↑↓キー：移動 / スペース：射撃（横スクロール型 / 敵を逃すと減点）</div>
+      </div>
+      <div class="game-card">
+        <div class="game-card-head head-cla">
+          <span class="ai-badge badge-cla">Claude</span>
+          <span class="code-card-model">Claude Sonnet / Space Defender</span>
+        </div>
+        <iframe class="game-frame" src="game-cla.html" height="620" scrolling="no" title="Claude製シューティングゲーム"></iframe>
+        <div class="game-caption">↑↓←→キー：移動 / スペース：射撃（星背景・ライフ制・ゲームオーバーあり）</div>
+      </div>
+    </div>
+
+    <div class="obs-box">
+      <div class="obs-label">遊んでみて気づいたこと</div>
+      <div class="obs-list">
+        <div class="obs-item"><strong>GPT</strong>は縦スクロール型の王道構成。コードは約60行とコンパクト。プレイヤーの画面外への移動チェックがなく、弾は連射し放題。「動く最小構成」を素早く出してきます。</div>
+        <div class="obs-item"><strong>Gemini</strong>は横スクロール型を選び、UIをHTMLのdivで分離するという設計上の判断をしています。弾数に上限（5発）、敵を逃すと減点というゲームデザインが加わり、遊び心があります。</div>
+        <div class="obs-item"><strong>Claude</strong>は星背景・三角形の自機・ひし形の敵・ライフ制・ゲームオーバー画面・クールダウン・速度スケールと機能が一番多いです。コードも約100行とやや長め。丁寧に作り込む傾向が出ました。</div>
+      </div>
+    </div>
+
+    <h2 id="s3">3つのAIを使い分けるなら</h2>
+
+    <p>3回の比較を通じて、それぞれの「得意な場面」がはっきり見えてきました。どれが最強ではなく、<strong>目的によって選ぶのが正解</strong>だと思っています。</p>
+
+    <table class="eval-table">
+      <thead>
+        <tr><th>こんなときは…</th><th>おすすめ</th><th>理由</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>とりあえず素早く動かしたい</td><td class="tx-gpt">ChatGPT</td><td>最短コードで即動く。迷ったらまずここ</td></tr>
+        <tr><td>Google系サービスと連携したい</td><td class="tx-gem">Gemini</td><td>Gmail・Docs・Chromeとそのまま使える</td></tr>
+        <tr><td>文章の精度・ニュアンスを重視</td><td class="tx-cla">Claude</td><td>長文・繊細な表現・一貫性に強み</td></tr>
+        <tr><td>きれいなコードが欲しい</td><td class="tx-cla">Claude</td><td>設計を意識した書き方、コメントが丁寧</td></tr>
+        <tr><td>見せるグラフ・実用的な出力</td><td class="tx-gem">Gemini</td><td>数字・構造・装飾のバランスが良い</td></tr>
+        <tr><td>汎用的なたたき台が欲しい</td><td class="tx-gpt">ChatGPT</td><td>シンプルで改変しやすい</td></tr>
+      </tbody>
+    </table>
+
+    <div class="summary">
+      <div class="summary-title">後編のまとめ</div>
+      <ul class="summary-list">
+        <li>グラフ：GPTは最小・Geminiは実用的・Claudeはデザイン寄り。コードの量と仕上がりに明確な差がありました</li>
+        <li>ゲーム：GPTは縦スクロール最短構成、Geminiは横スクロール＋ゲームデザイン追加、Claudeは多機能＆丁寧な仕上げ</li>
+        <li>どれが最強ではなく、目的に合わせて選ぶのが正解。3つ使い分けるのが現時点での最適解です</li>
+      </ul>
+    </div>
+
+    <div class="series-end">
+      <div class="series-end-label">シリーズ完結</div>
+      <div class="series-end-title">全3回、お読みいただきありがとうございました</div>
+      <div class="series-end-body">前編でシェアと価格、中編で文章の個性、後編でコードの傾向を比べてきました。3つのAIはどれも進化が速く、半年後にはまた答えが変わっているかもしれません。「とりあえず全部使ってみる」が一番の近道だと思います。</div>
+    </div>
+
+  </article>
+
+  <section class="next-section">
+    <div class="next-title">シリーズを読む</div>
+    <div class="next-cards">
+      <a href="../ai-compare/" class="next-card">
+        <span class="next-card-tag" style="color:var(--cmp-tx)">前編</span>
+        <div class="next-card-title">シェア・価格・最新機能を比較</div>
+        <div class="next-card-arrow">→</div>
+      </a>
+      <a href="../ai-compare-2/" class="next-card">
+        <span class="next-card-tag" style="color:var(--cmp-tx)">中編</span>
+        <div class="next-card-title">140字小説・ビジネス文書 出力比較</div>
+        <div class="next-card-arrow">→</div>
+      </a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>
+      <div class="footer-brand">usui blog</div>
+      <div class="footer-copy">© 2026 USUI LAB</div>
+    </div>
+    <div class="footer-links">
+      <a href="../" class="footer-link">← ブログ一覧</a>
+      <a href="https://x.com/Usui_good" class="footer-link">X / Twitter</a>
+    </div>
+  </footer>
+
+</body>
+</html>
