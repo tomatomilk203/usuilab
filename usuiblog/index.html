@@ -373,6 +373,7 @@
     .cat-howto   { background: var(--mint-bg);  color: var(--mint-tx);  border: 1px solid var(--mint-bd);  }
     .cat-qa      { background: var(--lav-bg);   color: var(--lav-tx);   border: 1px solid var(--lav-bd);   }
     .cat-news    { background: var(--gold-bg);  color: var(--gold-tx);  border: 1px solid var(--gold-bd);  }
+    .cat-compare { background: #dceef8;         color: #2a6090;         border: 1px solid #a8cce4;         }
 
     /* Asymmetric grid */
     .grid {
@@ -466,10 +467,11 @@
       text-transform: uppercase;
       margin-bottom: 22px;
     }
-    .tag-intro { background: var(--coral-bg); color: var(--terra);   }
-    .tag-howto { background: var(--mint-bg);  color: var(--mint-tx); }
-    .tag-qa    { background: var(--lav-bg);   color: var(--lav-tx);  }
-    .tag-news  { background: var(--gold-bg);  color: var(--gold-tx); }
+    .tag-intro   { background: var(--coral-bg); color: var(--terra);   }
+    .tag-howto   { background: var(--mint-bg);  color: var(--mint-tx); }
+    .tag-qa      { background: var(--lav-bg);   color: var(--lav-tx);  }
+    .tag-news    { background: var(--gold-bg);  color: var(--gold-tx); }
+    .tag-compare { background: #dceef8;          color: #2a6090;        }
 
     .card-title {
       font-family: 'DM Serif Display', serif;
@@ -739,6 +741,7 @@
       <button class="cat cat-howto">使い方</button>
       <button class="cat cat-qa">疑問</button>
       <button class="cat cat-news">最新ニュース</button>
+      <button class="cat cat-compare">徹底比較</button>
     </div>
 
     <ins class="adsbygoogle"
@@ -850,9 +853,9 @@
         </div>
       </article>
 
-      <article class="card" data-cat="qa" style="grid-column: 8 / 13; --rot: 0.4deg; --accent: var(--lav); --wash: #c8b0e0; cursor:pointer;" onclick="location.href='ai-money-2/'">
+      <article class="card" data-cat="howto" style="grid-column: 8 / 13; --rot: 0.4deg; --accent: var(--mint); --wash: #b8e8d8; cursor:pointer;" onclick="location.href='ai-money-2/'">
         <div class="card-wash"></div>
-        <span class="card-tag tag-qa">疑問</span>
+        <span class="card-tag tag-howto">使い方</span>
         <span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;background:var(--ivory);color:var(--stone);border:1px solid var(--border);border-radius:10px;padding:3px 10px;margin-left:6px;">後編</span>
         <h3 class="card-title">稼ぎやすい仕事<br>ランキングTop5</h3>
         <p class="card-excerpt">業務自動化・AI動画・Web制作まで。必要スキルと月収目安つきで解説。</p>
@@ -863,9 +866,9 @@
       </article>
 
       <!-- AI Compare series -->
-      <article class="card" data-cat="news" style="grid-column: 1 / -1; --rot: -0.2deg; --accent: #60a0d0; --wash: #c8e4f4; cursor:pointer;" onclick="location.href='ai-compare/'">
+      <article class="card" data-cat="compare" style="grid-column: 1 / -1; --rot: -0.2deg; --accent: #60a0d0; --wash: #c8e4f4; cursor:pointer;" onclick="location.href='ai-compare/'">
         <div class="card-wash"></div>
-        <span class="card-tag tag-news">徹底比較</span>
+        <span class="card-tag tag-compare">徹底比較</span>
         <span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;background:var(--ivory);color:var(--stone);border:1px solid var(--border);border-radius:10px;padding:3px 10px;margin-left:6px;">全3回 · 前編</span>
         <h3 class="card-title">ChatGPT vs Gemini vs Claude<br>どれが最強？本音で比べる。</h3>
         <p class="card-excerpt">シェア・価格・最新機能から、同じプロンプトへの実際の回答まで。3大AIを同じ条件で徹底比較。</p>
@@ -875,9 +878,9 @@
         </div>
       </article>
 
-      <article class="card" data-cat="news" style="grid-column: 1 / 7; --rot: 0.3deg; --accent: #60a0d0; --wash: #c8e4f4; cursor:pointer;" onclick="location.href='ai-compare-2/'">
+      <article class="card" data-cat="compare" style="grid-column: 1 / 7; --rot: 0.3deg; --accent: #60a0d0; --wash: #c8e4f4; cursor:pointer;" onclick="location.href='ai-compare-2/'">
         <div class="card-wash"></div>
-        <span class="card-tag tag-news">徹底比較</span>
+        <span class="card-tag tag-compare">徹底比較</span>
         <span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;background:var(--ivory);color:var(--stone);border:1px solid var(--border);border-radius:10px;padding:3px 10px;margin-left:6px;">全3回 · 中編</span>
         <h3 class="card-title">同じ質問をしたら、<br>ここまで違った。</h3>
         <p class="card-excerpt">140字小説・ビジネス文書を同じプロンプトで依頼。回答のスタイル・深さ・クセの違いをそのまま見せます。</p>
@@ -887,9 +890,9 @@
         </div>
       </article>
 
-      <article class="card" data-cat="news" style="grid-column: 7 / -1; --rot: -0.4deg; --accent: #60a0d0; --wash: #b8d8f0; cursor:pointer;" onclick="location.href='ai-compare-3/'">
+      <article class="card" data-cat="compare" style="grid-column: 7 / -1; --rot: -0.4deg; --accent: #60a0d0; --wash: #b8d8f0; cursor:pointer;" onclick="location.href='ai-compare-3/'">
         <div class="card-wash"></div>
-        <span class="card-tag tag-news">徹底比較</span>
+        <span class="card-tag tag-compare">徹底比較</span>
         <span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;background:var(--ivory);color:var(--stone);border:1px solid var(--border);border-radius:10px;padding:3px 10px;margin-left:6px;">全3回 · 後編</span>
         <h3 class="card-title">コードを書かせたら、<br>どう違う？</h3>
         <p class="card-excerpt">グラフ作成・ゲーム制作を依頼。実際に遊べるゲームつきで、コードの個性と完成度を比べます。</p>
@@ -937,7 +940,7 @@
     const allGrids = document.querySelectorAll('.grid');
     const seriesLabels = document.querySelectorAll('.series-label');
     const countEl = document.querySelector('.section-count');
-    const catMap = { 'cat-intro':'intro', 'cat-howto':'howto', 'cat-qa':'qa', 'cat-news':'news' };
+    const catMap = { 'cat-intro':'intro', 'cat-howto':'howto', 'cat-qa':'qa', 'cat-news':'news', 'cat-compare':'compare' };
     let busy = false;
 
     document.querySelectorAll('.cat').forEach(btn => {
