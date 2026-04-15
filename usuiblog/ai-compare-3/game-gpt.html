@@ -6,10 +6,17 @@
 <style>
 body { margin:0; background:black; overflow:hidden; }
 canvas { display:block; margin:auto; background:#111; }
+#touch-ui { position:fixed; bottom:16px; left:0; right:0; display:flex; justify-content:space-between; padding:0 24px; z-index:10; pointer-events:none; }
+.t-btn { pointer-events:auto; background:rgba(255,255,255,.2); border:2px solid rgba(255,255,255,.4); border-radius:50%; width:64px; height:64px; font-size:22px; color:#fff; display:flex; align-items:center; justify-content:center; user-select:none; -webkit-user-select:none; cursor:pointer; }
 </style>
 </head>
 <body>
 <canvas id="gameCanvas" width="400" height="600"></canvas>
+<div id="touch-ui">
+  <div class="t-btn" id="tl">◀</div>
+  <div class="t-btn" id="tf">●</div>
+  <div class="t-btn" id="tr">▶</div>
+</div>
 <script>
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
@@ -61,6 +68,13 @@ function draw(){
 }
 function loop(){ update(); draw(); requestAnimationFrame(loop); }
 loop();
+
+// Touch controls
+const tl = document.getElementById('tl'), tr = document.getElementById('tr'), tf = document.getElementById('tf');
+[[tl,'ArrowLeft'],[tr,'ArrowRight'],[tf,' ']].forEach(([btn, key]) => {
+  btn.addEventListener('touchstart', e => { e.preventDefault(); keys[key]=true; }, {passive:false});
+  btn.addEventListener('touchend',   e => { e.preventDefault(); keys[key]=false; }, {passive:false});
+});
 </script>
 </body>
 </html>

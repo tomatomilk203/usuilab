@@ -730,7 +730,7 @@
   <section class="articles">
     <div class="section-head">
       <h2 class="section-title">記事一覧</h2>
-      <span class="section-count">7 articles</span>
+      <span class="section-count">12 articles</span>
     </div>
 
     <div class="cats">
@@ -901,9 +901,6 @@
 
     </div>
 
-    <div id="load-more-wrap" style="display:none;text-align:center;margin-top:28px;">
-      <button id="load-more" style="background:var(--ink);color:var(--ivory);border:none;border-radius:24px;padding:12px 32px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:.04em;">もっと見る</button>
-    </div>
   </section>
 
   <!-- ── Footer ── -->
@@ -934,37 +931,6 @@
     }, { threshold: .08 });
     cards.forEach(c => io.observe(c));
 
-    /* ── Mobile 3-card limit ── */
-    const MOBILE_LIMIT = 3;
-    const loadMoreWrap = document.getElementById('load-more-wrap');
-    const loadMoreBtn = document.getElementById('load-more');
-    let mobileExpanded = false;
-
-    function isMobile() { return window.innerWidth <= 900; }
-
-    function applyMobileLimit(visibleCards) {
-      if (!isMobile() || mobileExpanded) { loadMoreWrap.style.display='none'; return; }
-      if (visibleCards.length <= MOBILE_LIMIT) { loadMoreWrap.style.display='none'; return; }
-      visibleCards.forEach((c, i) => { if (i >= MOBILE_LIMIT) c.style.display='none'; });
-      loadMoreWrap.style.display='block';
-    }
-
-    function initMobileLimit() {
-      if (!isMobile() || mobileExpanded) return;
-      const visible = [...allCards].filter(c => c.style.display !== 'none');
-      applyMobileLimit(visible);
-    }
-
-    loadMoreBtn && loadMoreBtn.addEventListener('click', () => {
-      mobileExpanded = true;
-      allCards.forEach(c => { if (c.style.display === 'none' && c.dataset.cat !== undefined) c.style.display=''; });
-      // only show cards that match current filter
-      const activeBtn = document.querySelector('.cat.on');
-      const catKey = activeBtn ? [...activeBtn.classList].find(c => c.startsWith('cat-')) : null;
-      const cat = catKey ? catMap[catKey] : null;
-      if (cat) { allCards.forEach(c => { if (c.dataset.cat !== cat) c.style.display='none'; }); }
-      loadMoreWrap.style.display='none';
-    });
 
     /* ── Category filter ── */
     const allCards = document.querySelectorAll('.card');
@@ -1013,17 +979,10 @@
             el.style.display = (i === 0 && cat === 'intro') || (i === 1 && cat !== 'intro') ? '' : 'none';
           });
 
-          if (countEl) countEl.textContent = isAll ? '10 articles' : `${shown} article${shown !== 1 ? 's' : ''}`;
+          if (countEl) countEl.textContent = isAll ? '12 articles' : `${shown} article${shown !== 1 ? 's' : ''}`;
 
-          // Phase 3: stagger fade in — apply mobile 3-card limit
-          mobileExpanded = false;
+          // Phase 3: stagger fade in
           const entering = [...allCards].filter(c => c.classList.contains('filter-entering'));
-          if (isMobile() && entering.length > MOBILE_LIMIT) {
-            entering.forEach((c, i) => { if (i >= MOBILE_LIMIT) { c.style.display='none'; c.classList.remove('filter-entering'); } });
-            loadMoreWrap.style.display = 'block';
-          } else {
-            loadMoreWrap.style.display = 'none';
-          }
           const toAnimate = [...allCards].filter(c => c.classList.contains('filter-entering'));
           requestAnimationFrame(() => requestAnimationFrame(() => {
             toAnimate.forEach((card, i) => {

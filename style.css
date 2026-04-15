@@ -5931,3 +5931,9 @@ body.tv-off .keyboard-hints span:first-child {
     }
 }
 
+
+
+/* ── Mobile: blog float cards limit to left col (3 cards) ── */
+@media(max-width: 700px) {
+    .blog-float-col.right { display: none; }
+}
