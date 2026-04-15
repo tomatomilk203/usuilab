@@ -332,9 +332,9 @@ plt.show()</code></pre>
     <div class="obs-box">
       <div class="obs-label">読んでみて気づいたこと</div>
       <div class="obs-list">
-        <div class="obs-item"><strong>GPT</strong>は最短構成。ラベルが英語で、6ヶ月分のデータ。装飾はほぼゼロで「とりあえず動くコード」を素早く出してくれます。シンプルさは武器です。</div>
-        <div class="obs-item"><strong>Gemini</strong>は12ヶ月・日本語ラベル・色指定・凡例・グリッドのalphaまで設定して、工程をコメントで番号付き整理。実用的な「見せるグラフ」を意識した構成です。</div>
-        <div class="obs-item"><strong>Claude</strong>はfig/axオブジェクトを明示的に使い、スパインの非表示・塗りつぶし・カスタムカラーまで設定します。コードスタイルがより「設計された」印象で、デザイン寄りのアウトプットになります。</div>
+        <div class="obs-item"><strong>GPT</strong>はMatplotlibのデフォルト設定をほぼそのまま使い、データは6ヶ月分、ラベルは英語。コメントなし。「動作確認してから拡張する」目的には十分で、これをたたき台にするのは合理的です。ただし「このコードで本当に良いですか？」とは聞いてきません。</div>
+        <div class="obs-item"><strong>Gemini</strong>は12ヶ月・日本語ラベル・色指定・凡例・グリッドのalphaまで設定し、コメントを番号付きで整理しています。「見せるグラフ」を最初から意識した構成で、コメントが日本語・番号付きなのはチーム共有を想定しているようにも読めます。実務で使えるレベルに一番近いです。</div>
+        <div class="obs-item"><strong>Claude</strong>はfig/axオブジェクトを明示的に使い、スパインの非表示・面塗り・カスタムカラーまで設定しています。「デフォルトを使わない」という選択自体がmatplotlib上級者の書き方で、出力グラフは3つの中で最もデザインが洗練されています。ただしコードの複雑さも上がっているため、コードをそのまま読み解くのは初学者には難しいかもしれません。</div>
       </div>
     </div>
 
@@ -378,13 +378,15 @@ plt.show()</code></pre>
     </div>
 
     <div class="obs-box">
-      <div class="obs-label">遊んでみて気づいたこと</div>
+      <div class="obs-label">遊んでみて気づいたこと——そしてコードを読んで気づいたこと</div>
       <div class="obs-list">
-        <div class="obs-item"><strong>GPT</strong>は縦スクロール型の王道構成。コードは約60行とコンパクト。プレイヤーの画面外への移動チェックがなく、弾は連射し放題。「動く最小構成」を素早く出してきます。</div>
-        <div class="obs-item"><strong>Gemini</strong>は横スクロール型を選び、UIをHTMLのdivで分離するという設計上の判断をしています。弾数に上限（5発）、敵を逃すと減点というゲームデザインが加わり、遊び心があります。</div>
-        <div class="obs-item"><strong>Claude</strong>は星背景・三角形の自機・ひし形の敵・ライフ制・ゲームオーバー画面・クールダウン・速度スケールと機能が一番多いです。コードも約100行とやや長め。丁寧に作り込む傾向が出ました。</div>
+        <div class="obs-item"><strong>GPTのゲームには実際のバグがあります。</strong>縦スクロール型で素早く動く最小構成を出してくるのは確かですが、プレイヤーの左右移動に境界チェックがなく、画面の外に出続けることができます。射撃制限もありません。「動く最小構成」ではなく「最低限の動作しか確認していない構成」と言う方が正確です。プロトタイプとして渡すのは問題ありませんが、そのまま公開するには手を入れる必要があります。</div>
+        <div class="obs-item"><strong>Geminiの設計思想は、3つの中で最も「ゲームらしい」です。</strong>横スクロール型という独自路線を選び、弾数上限（5発）・敵を逃すと減点というゲームデザインが加わっています。コードにも上下移動の境界チェックが実装されており、単なる動作確認を超えています。ただしスコア表示をHTMLのdivで実装するなど「見栄え」に寄った構成が、コードの見通しを下げています。</div>
+        <div class="obs-item"><strong>Claudeは最初から「壊れないこと」を考えて書いています。</strong>プレイヤー移動に<code>Math.max</code>・<code>Math.min</code>の境界クランプ、射撃クールダウン（連打防止）、ライフ制、ゲームオーバー後のリスタート——これらはすべて「ユーザーが何をしても壊れない」ための設計です。機能が多いのではなく、起こりうる状態を最初から潰しているということです。複雑な構造・長期メンテを要するプロジェクトでClaudeのコード品質が高く評価されている理由が、この80行に凝縮されています。</div>
       </div>
     </div>
+
+    <p>「素早く動くプロトタイプを出したい」ならGPT、「最初から品質を意識したコードが欲しい」ならClaude——今回の実験で、うすいはこの使い分けをはっきり確信しました。</p>
 
     <h2 id="s3">3つのAIを使い分けるなら</h2>
 
@@ -407,16 +409,20 @@ plt.show()</code></pre>
     <div class="summary">
       <div class="summary-title">後編のまとめ</div>
       <ul class="summary-list">
-        <li>グラフ：GPTは最小・Geminiは実用的・Claudeはデザイン寄り。コードの量と仕上がりに明確な差がありました</li>
-        <li>ゲーム：GPTは縦スクロール最短構成、Geminiは横スクロール＋ゲームデザイン追加、Claudeは多機能＆丁寧な仕上げ</li>
-        <li>どれが最強ではなく、目的に合わせて選ぶのが正解。3つ使い分けるのが現時点での最適解です</li>
+        <li>グラフコード：GPTは最短、Geminiは実用的な構造、Claudeはデザイン設計寄り。コードの「意図」が3つとも違います</li>
+        <li>ゲームコード：GPTは動くが境界バグあり、Geminiはゲームデザインに個性あり、Claudeは防御的で品質が最も高い</li>
+        <li>うすいの結論——「素早いプロトタイプならGPT、本番に近いコードを書くならClaude」。これは今後も変わらないと思います</li>
       </ul>
     </div>
 
     <div class="series-end">
       <div class="series-end-label">シリーズ完結</div>
-      <div class="series-end-title">全3回、お読みいただきありがとうございました</div>
-      <div class="series-end-body">前編でシェアと価格、中編で文章の個性、後編でコードの傾向を比べてきました。3つのAIはどれも進化が速く、半年後にはまた答えが変わっているかもしれません。「とりあえず全部使ってみる」が一番の近道だと思います。</div>
+      <div class="series-end-title">3回読んで、あなたの答えは出ましたか？</div>
+      <div class="series-end-body">前編でシェアと価格、中編で文章の個性、後編でコードの品質を比べてきました。「どれが最強」という問いの答えは、正直まだ存在しないと思っています。でも「どれを信頼するか」という問いには、うすいなりの答えが出ました。コードや長文はClaude。情報収集やリアルタイム調査はGemini。最初の一手やラフなアイデア出しはChatGPT。3つを使い分けるのではなく、用途ごとに「メイン」を決めてしまうのが、今のうすいには一番しっくりきています。</div>
+    </div>
+
+    <div class="source-note" style="margin-top:32px">
+      <p>出典：Playcode「ChatGPT vs Claude vs Gemini for Coding 2026」/ type.ai「Who Wrote it Better? Claude vs ChatGPT vs Gemini」/ AllAboutAI「AI Hallucination Report 2026」/ OpenAI「Sycophancy in GPT-4o」(2025年4月) / IntuitionLabs「Claude vs ChatGPT vs Copilot vs Gemini: 2026 Enterprise Guide」</p>
     </div>
 
   </article>
