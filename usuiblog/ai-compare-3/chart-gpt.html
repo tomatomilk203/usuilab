@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>* { margin:0; padding:0; } body { background:#fff; overflow:hidden; }</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const data = [120, 150, 170, 160, 210, 250];
+const labels = ["Jan","Feb","Mar","Apr","May","Jun"];
+
+function draw() {
+  const W = canvas.width = window.innerWidth;
+  const H = canvas.height = 250;
+  canvas.style.height = H + 'px';
+  const pad = {t:34, r:20, b:46, l:62};
+  const cw = W - pad.l - pad.r;
+  const ch = H - pad.t - pad.b;
+  const maxV = 300, minV = 0;
+  const xp = i => pad.l + (i / (data.length-1)) * cw;
+  const yp = v => pad.t + ch - ((v - minV) / (maxV - minV)) * ch;
+
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, W, H);
+
+  // Y grid (solid, light gray)
+  [0,60,120,180,240,300].forEach(v => {
+    const y = yp(v);
+    ctx.strokeStyle = '#e5e5e5'; ctx.lineWidth = 1; ctx.setLineDash([]);
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l+cw, y); ctx.stroke();
+    ctx.fillStyle = '#555'; ctx.font = '10px sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText(v, pad.l-6, y+4);
+  });
+
+  // X grid (light)
+  ctx.strokeStyle = '#eeeeee'; ctx.lineWidth = 1;
+  data.forEach((_, i) => {
+    const x = xp(i);
+    ctx.beginPath(); ctx.moveTo(x, pad.t); ctx.lineTo(x, pad.t+ch); ctx.stroke();
+  });
+
+  // Axes
+  ctx.strokeStyle = '#333'; ctx.lineWidth = 1.2; ctx.setLineDash([]);
+  ctx.beginPath(); ctx.moveTo(pad.l, pad.t); ctx.lineTo(pad.l, pad.t+ch); ctx.lineTo(pad.l+cw, pad.t+ch); ctx.stroke();
+
+  // X labels
+  ctx.fillStyle = '#555'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
+  data.forEach((_, i) => ctx.fillText(labels[i], xp(i), pad.t+ch+18));
+
+  // Line
+  ctx.strokeStyle = '#1f77b4'; ctx.lineWidth = 2; ctx.setLineDash([]);
+  ctx.beginPath();
+  data.forEach((v,i) => i===0 ? ctx.moveTo(xp(i),yp(v)) : ctx.lineTo(xp(i),yp(v)));
+  ctx.stroke();
+
+  // Markers
+  data.forEach((v,i) => {
+    ctx.beginPath(); ctx.arc(xp(i), yp(v), 5, 0, Math.PI*2);
+    ctx.fillStyle = '#1f77b4'; ctx.fill();
+  });
+
+  // Title
+  ctx.fillStyle = '#222'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('Sample Sales Trend (Fictional Data)', W/2, 18);
+
+  // X label
+  ctx.fillStyle = '#555'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('Month', pad.l+cw/2, H-6);
+
+  // Y label
+  ctx.save(); ctx.translate(12, pad.t+ch/2); ctx.rotate(-Math.PI/2);
+  ctx.textAlign = 'center'; ctx.font = '11px sans-serif'; ctx.fillStyle = '#555';
+  ctx.fillText('Sales (in thousands)', 0, 0); ctx.restore();
+}
+window.addEventListener('resize', draw);
+draw();
+</script>
+</body>
+</html>

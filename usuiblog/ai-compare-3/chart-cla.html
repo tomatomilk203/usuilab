@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>* { margin:0; padding:0; } body { background:#f8f8f6; overflow:hidden; }</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const data = [98, 112, 134, 128, 156, 172, 188, 203, 195, 221, 244, 268];
+const labels = ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"];
+const lineColor = '#5a4fcf';
+
+function draw() {
+  const W = canvas.width = window.innerWidth;
+  const H = canvas.height = 250;
+  const pad = {t:42, r:20, b:46, l:62};
+  const cw = W - pad.l - pad.r;
+  const ch = H - pad.t - pad.b;
+  const maxV = 300, minV = 0;
+  const xp = i => pad.l + (i / (data.length-1)) * cw;
+  const yp = v => pad.t + ch - ((v - minV) / (maxV - minV)) * ch;
+
+  ctx.fillStyle = '#f8f8f6';
+  ctx.fillRect(0, 0, W, H);
+
+  // Dotted Y grid only (axis='y')
+  ctx.strokeStyle = '#cccccc'; ctx.lineWidth = 0.8;
+  [60,120,180,240,300].forEach(v => {
+    const y = yp(v);
+    ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l+cw, y); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#555555'; ctx.font = '10px sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText(v, pad.l-6, y+4);
+  });
+  ctx.setLineDash([]);
+
+  // Only bottom spine
+  ctx.strokeStyle = '#444'; ctx.lineWidth = 1.2;
+  ctx.beginPath(); ctx.moveTo(pad.l, pad.t+ch); ctx.lineTo(pad.l+cw, pad.t+ch); ctx.stroke();
+
+  // X labels
+  ctx.fillStyle = '#555555'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
+  data.forEach((_, i) => ctx.fillText(labels[i], xp(i), pad.t+ch+18));
+
+  // Fill below line (alpha 0.08)
+  ctx.beginPath();
+  data.forEach((v,i) => i===0 ? ctx.moveTo(xp(i),yp(v)) : ctx.lineTo(xp(i),yp(v)));
+  ctx.lineTo(xp(data.length-1), pad.t+ch);
+  ctx.lineTo(xp(0), pad.t+ch);
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(90,79,207,0.08)';
+  ctx.fill();
+
+  // Line
+  ctx.strokeStyle = lineColor; ctx.lineWidth = 2; ctx.setLineDash([]);
+  ctx.beginPath();
+  data.forEach((v,i) => i===0 ? ctx.moveTo(xp(i),yp(v)) : ctx.lineTo(xp(i),yp(v)));
+  ctx.stroke();
+
+  // Markers (white fill, purple edge — markerfacecolor='white', markeredgewidth=2)
+  data.forEach((v,i) => {
+    ctx.beginPath(); ctx.arc(xp(i), yp(v), 5, 0, Math.PI*2);
+    ctx.fillStyle = 'white'; ctx.fill();
+    ctx.strokeStyle = lineColor; ctx.lineWidth = 2; ctx.stroke();
+  });
+
+  // Title (bold, #222222, fontsize 14)
+  ctx.fillStyle = '#222222'; ctx.font = 'bold 13px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('2025年度 月別売上推移', W/2, 24);
+
+  // X label
+  ctx.fillStyle = '#555555'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('月', pad.l+cw/2, H-6);
+
+  // Y label
+  ctx.save(); ctx.translate(12, pad.t+ch/2); ctx.rotate(-Math.PI/2);
+  ctx.textAlign = 'center'; ctx.font = '11px sans-serif'; ctx.fillStyle = '#555555';
+  ctx.fillText('売上（万円）', 0, 0); ctx.restore();
+}
+window.addEventListener('resize', draw);
+draw();
+</script>
+</body>
+</html>

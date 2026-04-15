@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>* { margin:0; padding:0; } body { background:#fff; overflow:hidden; }</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const data = [120, 145, 180, 165, 210, 230, 280, 310, 290, 320, 350, 420];
+const labels = ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"];
+
+function draw() {
+  const W = canvas.width = window.innerWidth;
+  const H = canvas.height = 250;
+  const pad = {t:38, r:20, b:46, l:62};
+  const cw = W - pad.l - pad.r;
+  const ch = H - pad.t - pad.b;
+  const maxV = 450, minV = 0;
+  const xp = i => pad.l + (i / (data.length-1)) * cw;
+  const yp = v => pad.t + ch - ((v - minV) / (maxV - minV)) * ch;
+
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, W, H);
+
+  // Dashed grid (alpha 0.7)
+  [0,90,180,270,360,450].forEach(v => {
+    const y = yp(v);
+    ctx.strokeStyle = 'rgba(0,0,0,0.25)'; ctx.lineWidth = 1; ctx.setLineDash([5,5]);
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l+cw, y); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#555'; ctx.font = '10px sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText(v, pad.l-6, y+4);
+  });
+  ctx.setLineDash([]);
+
+  // Axes
+  ctx.strokeStyle = '#333'; ctx.lineWidth = 1.2;
+  ctx.beginPath(); ctx.moveTo(pad.l, pad.t); ctx.lineTo(pad.l, pad.t+ch); ctx.lineTo(pad.l+cw, pad.t+ch); ctx.stroke();
+
+  // X labels
+  ctx.fillStyle = '#555'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
+  data.forEach((_, i) => ctx.fillText(labels[i], xp(i), pad.t+ch+18));
+
+  // Line
+  ctx.strokeStyle = '#1f77b4'; ctx.lineWidth = 2; ctx.setLineDash([]);
+  ctx.beginPath();
+  data.forEach((v,i) => i===0 ? ctx.moveTo(xp(i),yp(v)) : ctx.lineTo(xp(i),yp(v)));
+  ctx.stroke();
+
+  // Markers
+  data.forEach((v,i) => {
+    ctx.beginPath(); ctx.arc(xp(i), yp(v), 5, 0, Math.PI*2);
+    ctx.fillStyle = '#1f77b4'; ctx.fill();
+  });
+
+  // Title (fontsize 16 相当)
+  ctx.fillStyle = '#222'; ctx.font = '13px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('2025年度 月別売上推移', W/2, 20);
+
+  // X label
+  ctx.fillStyle = '#555'; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('月', pad.l+cw/2, H-6);
+
+  // Y label
+  ctx.save(); ctx.translate(12, pad.t+ch/2); ctx.rotate(-Math.PI/2);
+  ctx.textAlign = 'center'; ctx.font = '11px sans-serif'; ctx.fillStyle = '#555';
+  ctx.fillText('売上（万円）', 0, 0); ctx.restore();
+
+  // Legend box
+  const lx = pad.l + cw - 78, ly = pad.t + 8;
+  ctx.fillStyle = '#fff'; ctx.strokeStyle = '#bbb'; ctx.lineWidth = 1;
+  ctx.fillRect(lx, ly, 70, 22); ctx.strokeRect(lx, ly, 70, 22);
+  ctx.strokeStyle = '#1f77b4'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(lx+6, ly+11); ctx.lineTo(lx+20, ly+11); ctx.stroke();
+  ctx.beginPath(); ctx.arc(lx+13, ly+11, 4, 0, Math.PI*2);
+  ctx.fillStyle = '#1f77b4'; ctx.fill();
+  ctx.fillStyle = '#333'; ctx.font = '10px sans-serif'; ctx.textAlign = 'left';
+  ctx.fillText('売上高', lx+24, ly+15);
+}
+window.addEventListener('resize', draw);
+draw();
+</script>
+</body>
+</html>
