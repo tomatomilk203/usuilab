@@ -351,7 +351,7 @@
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
-      margin-bottom: 48px;
+      margin-bottom: 20px;
     }
     .cat {
       padding: 8px 20px;
@@ -621,6 +621,18 @@
       margin: 0;
     }
 
+    /* ─── Ad: in-feed card ───────────────────── */
+    .ad-card { cursor: default !important; pointer-events: none; display: none; }
+    .ad-card .card-wash { display: none; }
+    .ad-badge { font-size: 9px; font-weight: 600; letter-spacing: .1em; color: var(--muted); background: var(--border-lt); border: 1px solid var(--border); border-radius: 8px; padding: 2px 8px; display: inline-block; margin-bottom: 6px; }
+    .ad-card ins { min-height: 0 !important; }
+
+    /* ─── Ad: anchor (mobile bottom) ─────────── */
+    .ad-anchor { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 200; background: var(--ivory); border-top: 1px solid var(--border); padding: 6px 48px 12px 16px; box-shadow: 0 -4px 16px rgba(0,0,0,.08); }
+    .ad-anchor ins { min-height: 0 !important; }
+    .ad-anchor-close { position: absolute; top: 6px; right: 12px; background: none; border: none; font-size: 18px; color: var(--muted); cursor: pointer; line-height: 1; font-family: inherit; }
+    @media(min-width: 900px) { .ad-anchor { display: none !important; } }
+
     /* ─── Responsive ─────────────────────────── */
     @media (max-width: 900px) {
       .hero {
@@ -744,14 +756,6 @@
       <button class="cat cat-compare">徹底比較</button>
     </div>
 
-    <ins class="adsbygoogle"
-         style="display:block; margin: 32px 0;"
-         data-ad-client="ca-pub-6308685522301286"
-         data-ad-slot="2443601635"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-
     <!-- 三大AI ラベル -->
     <div class="series-label">
       <span class="series-badge">SERIES</span>
@@ -840,6 +844,18 @@
         </div>
       </article>
 
+      <!-- Ad: in-feed (hidden until filled) -->
+      <article class="card ad-card" data-cat="ad" style="grid-column: 4 / 10; --rot: 0deg;">
+        <span class="ad-badge">PR</span>
+        <ins class="adsbygoogle"
+             style="display:block;"
+             data-ad-client="ca-pub-6308685522301286"
+             data-ad-slot="2443601635"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </article>
+
       <!-- Honest money talk series -->
       <article class="card" data-cat="qa" style="grid-column: 1 / 8; --rot: -0.3deg; --accent: var(--lav); --wash: #dcc8f0; cursor:pointer;" onclick="location.href='ai-money/'">
         <div class="card-wash"></div>
@@ -905,6 +921,18 @@
     </div>
 
   </section>
+
+  <!-- ── Ad: anchor (mobile only, hidden until filled) ── -->
+  <div class="ad-anchor" id="adAnchor">
+    <button class="ad-anchor-close" onclick="document.getElementById('adAnchor').style.display='none'" aria-label="閉じる">×</button>
+    <ins class="adsbygoogle"
+         style="display:block;"
+         data-ad-client="ca-pub-6308685522301286"
+         data-ad-slot="2443601635"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
 
   <!-- ── Footer ── -->
   <footer class="footer">
@@ -999,6 +1027,29 @@
 
     // init mobile limit on first load
     initMobileLimit();
+
+    /* ── Ad: show only when filled ── */
+    const adCard = document.querySelector('.ad-card');
+    if (adCard) {
+      const adIns = adCard.querySelector('ins');
+      new MutationObserver((_, obs) => {
+        if (adIns.dataset.adStatus === 'filled') {
+          adCard.style.display = '';
+          obs.disconnect();
+        }
+      }).observe(adIns, { attributes: true, attributeFilter: ['data-ad-status'] });
+    }
+
+    const anchorEl = document.getElementById('adAnchor');
+    if (anchorEl && window.innerWidth < 900) {
+      const anchorIns = anchorEl.querySelector('ins');
+      new MutationObserver((_, obs) => {
+        if (anchorIns.dataset.adStatus === 'filled') {
+          anchorEl.style.display = 'block';
+          obs.disconnect();
+        }
+      }).observe(anchorIns, { attributes: true, attributeFilter: ['data-ad-status'] });
+    }
   </script>
 </body>
 </html>

@@ -33,6 +33,7 @@
     }
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
     html{scroll-behavior:smooth}
+    html{overflow-x:hidden}
     body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;line-height:1.8}
     .nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(245,244,237,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-lt)}
     .nav-back{display:inline-flex;align-items:center;gap:8px;text-decoration:none;font-size:12px;font-weight:500;color:var(--stone);letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
@@ -90,11 +91,13 @@
     .obs-label{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-tx);margin-bottom:14px;display:flex;align-items:center;gap:8px}
     .obs-label::before{content:'';display:inline-block;width:20px;height:2px;background:var(--gold-tx)}
     .obs-list{display:flex;flex-direction:column;gap:10px}
-    .obs-item{font-size:14px;color:#5a4010;line-height:1.7;display:flex;gap:10px;align-items:flex-start}
-    .obs-item::before{content:'◆';font-size:8px;color:var(--gold-tx);flex-shrink:0;margin-top:7px}
+    .obs-item{font-size:14px;color:#5a4010;line-height:1.7;position:relative;padding-left:18px}
+    .obs-item::before{content:'◆';font-size:8px;color:var(--gold-tx);position:absolute;left:0;top:8px}
+    .obs-item code{font-family:'Courier New',monospace;font-size:.88em;white-space:normal;word-break:break-word;background:rgba(90,64,16,.08);padding:1px 5px;border-radius:3px;color:#5a4010;display:inline}
 
     /* 総評テーブル */
-    .eval-table{width:100%;border-collapse:collapse;margin:24px 0;font-size:14px}
+    .eval-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:24px 0}
+    .eval-table{width:100%;border-collapse:collapse;font-size:14px}
     .eval-table th{background:var(--ink);color:var(--ivory);padding:10px 14px;text-align:left;font-size:11px;font-weight:600;letter-spacing:.06em}
     .eval-table th:first-child{border-radius:10px 0 0 0}
     .eval-table th:last-child{border-radius:0 10px 0 0}
@@ -156,6 +159,9 @@
       .next-section{padding:0 20px 80px}
       .summary{padding:28px 24px}
       .footer{padding:32px 20px;flex-direction:column;gap:20px;align-items:flex-start}
+      .obs-box{padding:16px 14px}
+      .obs-label{font-size:9px;letter-spacing:.1em}
+      .obs-item{font-size:13px}
     }
   </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6308685522301286" crossorigin="anonymous"></script>
@@ -392,7 +398,7 @@ plt.show()</code></pre>
 
     <p>3回の比較を通じて、それぞれの「得意な場面」がはっきり見えてきました。どれが最強ではなく、<strong>目的によって選ぶのが正解</strong>だと思っています。</p>
 
-    <table class="eval-table">
+    <div class="eval-table-wrap"><table class="eval-table">
       <thead>
         <tr><th>こんなときは…</th><th>おすすめ</th><th>理由</th></tr>
       </thead>
@@ -404,7 +410,7 @@ plt.show()</code></pre>
         <tr><td>見せるグラフ・実用的な出力</td><td class="tx-gem">Gemini</td><td>数字・構造・装飾のバランスが良い</td></tr>
         <tr><td>汎用的なたたき台が欲しい</td><td class="tx-gpt">ChatGPT</td><td>シンプルで改変しやすい</td></tr>
       </tbody>
-    </table>
+    </table></div>
 
     <div class="summary">
       <div class="summary-title">後編のまとめ</div>

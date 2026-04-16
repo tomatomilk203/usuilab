@@ -40,6 +40,7 @@
     }
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
     html{scroll-behavior:smooth}
+    html{overflow-x:hidden}
     body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;line-height:1.8}
 
     .nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(245,244,237,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-lt)}
@@ -117,7 +118,8 @@
     .hurdle{display:flex;gap:0;border-bottom:1px solid var(--border)}
     .hurdle:last-child{border-bottom:none}
     .hurdle-num{background:var(--lav-bg);color:var(--lav-tx);font-family:'DM Serif Display',serif;font-size:28px;padding:22px 20px;min-width:64px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border-right:1px solid var(--lav-bd)}
-    .hurdle-body{background:var(--ivory);padding:20px 22px}
+    .hurdle-html{overflow-x:hidden}
+    body{background:var(--ivory);padding:20px 22px}
     .hurdle-body strong{display:block;font-size:15px;font-weight:700;color:var(--ink);margin-bottom:6px}
     .hurdle-body p{font-size:14px;color:var(--stone);line-height:1.7;margin:0}
     .hurdle-body .hurdle-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;background:var(--lav-bg);color:var(--lav-tx);border-radius:4px;padding:2px 8px;margin-bottom:8px}
