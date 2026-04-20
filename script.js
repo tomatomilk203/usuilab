@@ -1327,16 +1327,18 @@ let jidoriInterval = null;
 function startJidoriDemo() {
     if (jidoriInterval) clearInterval(jidoriInterval);
     const dayEl = document.getElementById('jidori-day');
-    const dots = document.querySelectorAll('.jidori-dot');
-    if (!dayEl || !dots.length) return;
+    const cards = document.querySelectorAll('.jidori-card');
+    if (!dayEl || !cards.length) return;
 
     const milestones = [1, 30, 90, 365];
     let idx = 0;
+    cards[0].classList.add('jc-active');
 
     function tick() {
+        cards[idx].classList.remove('jc-active');
         idx = (idx + 1) % milestones.length;
+        cards[idx].classList.add('jc-active');
         dayEl.textContent = milestones[idx];
-        dots.forEach((d, i) => d.classList.toggle('active', i <= idx));
     }
 
     jidoriInterval = setInterval(tick, 2000);
