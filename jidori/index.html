@@ -10,22 +10,24 @@
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #f6f4ef;
       --bg-card: #faf9f6;
       --bg-warm: #f0ede6;
+      --bg-deep: #ebe7df;
       --text: #2c2520;
       --text-sub: #6b5e54;
       --text-muted: #9a8e83;
       --accent: #a8846e;
       --accent-soft: #c4a08a;
       --accent-glow: rgba(168, 132, 110, 0.12);
+      --accent-vivid: #c47a4e;
       --border: #e4ded5;
       --white: #ffffff;
-      --radius: 20px;
-      --radius-sm: 12px;
+      --radius: 24px;
+      --radius-sm: 14px;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,78 +42,146 @@
       -webkit-font-smoothing: antialiased;
     }
 
+    /* ═══ HERO ═══ */
     .hero {
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      padding: 60px 24px;
       position: relative;
+      overflow: hidden;
+      padding: 40px 24px;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
       overflow: hidden;
     }
 
-    .hero::before {
-      content: '';
+    .hero-orb {
       position: absolute;
-      top: -30%;
-      right: -20%;
-      width: 500px;
-      height: 500px;
       border-radius: 50%;
-      background: var(--accent-glow);
       filter: blur(80px);
+      animation: orbFloat 12s ease-in-out infinite alternate;
+    }
+    .hero-orb--1 {
+      width: 600px; height: 600px;
+      top: -15%; right: -10%;
+      background: radial-gradient(circle, rgba(168,132,110,0.18), transparent 70%);
+    }
+    .hero-orb--2 {
+      width: 500px; height: 500px;
+      bottom: -20%; left: -10%;
+      background: radial-gradient(circle, rgba(196,160,138,0.12), transparent 70%);
+      animation-delay: -4s;
+    }
+    .hero-orb--3 {
+      width: 300px; height: 300px;
+      top: 40%; left: 50%;
+      background: radial-gradient(circle, rgba(168,132,110,0.08), transparent 70%);
+      animation-delay: -8s;
+    }
+
+    @keyframes orbFloat {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(30px, -20px) scale(1.08); }
+    }
+
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 80px 80px;
+      opacity: 0.3;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black, transparent);
+      -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black, transparent);
       pointer-events: none;
     }
 
-    .hero::after {
-      content: '';
-      position: absolute;
-      bottom: -20%;
-      left: -15%;
-      width: 400px;
-      height: 400px;
-      border-radius: 50%;
-      background: rgba(168, 132, 110, 0.06);
-      filter: blur(60px);
-      pointer-events: none;
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 80px;
+      max-width: 1200px;
+      width: 100%;
+    }
+
+    .hero-text {
+      text-align: left;
+      max-width: 560px;
     }
 
     .hero-badge {
       display: inline-block;
       background: var(--accent-glow);
       color: var(--accent);
-      font-weight: 700;
-      font-size: 13px;
-      padding: 6px 16px;
+      font-weight: 800;
+      font-size: 12px;
+      padding: 6px 18px;
       border-radius: 20px;
-      letter-spacing: 1px;
-      margin-bottom: 24px;
-      position: relative;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      border: 1px solid rgba(168,132,110,0.15);
     }
 
     .hero-title {
-      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(3.5rem, 7vw, 6.5rem);
       font-weight: 900;
       color: var(--text);
-      letter-spacing: -2px;
-      line-height: 1.1;
-      margin-bottom: 8px;
-      position: relative;
+      letter-spacing: -3px;
+      line-height: 1.0;
+      margin-bottom: 6px;
     }
 
     .hero-title span {
       color: var(--accent);
+      position: relative;
+    }
+
+    .hero-title span::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: var(--accent-glow);
+      border-radius: 3px;
+    }
+
+    .hero-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      color: var(--accent-soft);
+      font-weight: 700;
+      margin-bottom: 24px;
+      letter-spacing: 1px;
     }
 
     .hero-catch {
-      font-size: clamp(1rem, 3vw, 1.35rem);
+      font-size: clamp(1rem, 2.2vw, 1.2rem);
       color: var(--text-sub);
       font-weight: 600;
       margin-bottom: 40px;
-      max-width: 480px;
-      position: relative;
+      max-width: 420px;
+      line-height: 1.9;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
     }
 
     .hero-cta {
@@ -123,119 +193,441 @@
       font-family: 'Nunito', sans-serif;
       font-size: 16px;
       font-weight: 800;
-      padding: 16px 36px;
-      border-radius: 50px;
+      padding: 18px 40px;
+      border-radius: 60px;
       text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 20px rgba(44, 37, 32, 0.15);
-      position: relative;
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s;
+      box-shadow: 0 6px 24px rgba(44, 37, 32, 0.15);
     }
 
     .hero-cta:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(44, 37, 32, 0.2);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 40px rgba(44, 37, 32, 0.2);
     }
 
-    .hero-cta svg {
-      width: 20px;
-      height: 20px;
-    }
+    .hero-cta svg { width: 20px; height: 20px; }
 
-    .hero-sub {
-      margin-top: 16px;
-      font-size: 13px;
+    .hero-free {
+      font-size: 14px;
       color: var(--text-muted);
-      font-weight: 600;
+      font-weight: 700;
+    }
+
+    .hero-visual {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .phone-frame {
+      width: 280px;
+      height: 560px;
+      background: var(--white);
+      border-radius: 40px;
+      border: 3px solid var(--border);
+      box-shadow:
+        0 20px 60px rgba(44, 37, 32, 0.1),
+        0 2px 8px rgba(44, 37, 32, 0.05),
+        inset 0 0 0 2px rgba(255,255,255,0.8);
+      overflow: hidden;
       position: relative;
     }
 
+    .phone-screen {
+      position: absolute;
+      inset: 8px;
+      background: var(--bg);
+      border-radius: 34px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .phone-app-title {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--text);
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    .phone-app-title em {
+      color: var(--accent);
+      font-style: normal;
+    }
+
+    .phone-photo {
+      width: 180px;
+      height: 240px;
+      background: linear-gradient(135deg, var(--bg-warm) 0%, var(--border) 100%);
+      border-radius: 20px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .phone-photo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 60%, rgba(44,37,32,0.08));
+    }
+
+    .phone-date {
+      background: var(--white);
+      border-radius: 10px;
+      padding: 8px 16px;
+      text-align: center;
+    }
+
+    .phone-date-day {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1.1;
+    }
+
+    .phone-date-month {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 1px;
+    }
+
+    .hero-float-card {
+      position: absolute;
+      background: var(--white);
+      border-radius: 16px;
+      padding: 14px 20px;
+      box-shadow: 0 8px 30px rgba(44, 37, 32, 0.08);
+      border: 1px solid var(--border);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-sub);
+      white-space: nowrap;
+      animation: floatCard 6s ease-in-out infinite alternate;
+    }
+
+    .hero-float-card--1 {
+      top: 40px; right: -60px;
+      animation-delay: 0s;
+    }
+    .hero-float-card--2 {
+      bottom: 80px; left: -50px;
+      animation-delay: -2s;
+    }
+    .hero-float-card--3 {
+      top: 180px; left: -70px;
+      animation-delay: -4s;
+    }
+
+    .float-accent {
+      color: var(--accent);
+      font-weight: 800;
+    }
+
+    @keyframes floatCard {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-12px); }
+    }
+
+    /* ═══ MARQUEE ═══ */
+    .marquee-section {
+      padding: 40px 0;
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-card);
+    }
+
+    .marquee-track {
+      display: flex;
+      width: max-content;
+      animation: marquee 30s linear infinite;
+    }
+
+    .marquee-item {
+      padding: 0 40px;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-weight: 800;
+      color: var(--text-muted);
+      white-space: nowrap;
+      opacity: 0.6;
+    }
+
+    .marquee-item .dot {
+      color: var(--accent);
+      margin: 0 8px;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ═══ FEATURES ═══ */
     .features {
-      padding: 80px 24px;
-      max-width: 960px;
+      padding: 120px 24px;
+      max-width: 1200px;
       margin: 0 auto;
     }
 
-    .features-title {
+    .features-header {
       text-align: center;
-      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      margin-bottom: 72px;
+    }
+
+    .features-label {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .features-title {
+      font-size: clamp(2rem, 4vw, 3rem);
       font-weight: 900;
       color: var(--text);
-      margin-bottom: 48px;
-      letter-spacing: -1px;
+      letter-spacing: -1.5px;
+      line-height: 1.2;
     }
 
     .features-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 20px;
-    }
-
-    @media (min-width: 640px) {
-      .features-grid {
-        grid-template-columns: 1fr 1fr;
-      }
+      gap: 24px;
     }
 
     .feature-card {
       background: var(--bg-card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 32px 28px;
-      transition: transform 0.2s;
+      padding: 40px 36px;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+      opacity: 0;
+      transition: opacity 0.3s;
     }
 
     .feature-card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(44, 37, 32, 0.08);
     }
 
-    .feature-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      background: var(--accent-glow);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 16px;
-      font-size: 22px;
-      color: var(--accent);
+    .feature-card:hover::before {
+      opacity: 1;
+    }
+
+    .feature-num {
+      font-size: 48px;
       font-weight: 900;
+      color: var(--accent-glow);
+      line-height: 1;
+      margin-bottom: 16px;
+      font-family: 'Playfair Display', serif;
     }
 
     .feature-name {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 800;
       color: var(--text);
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
 
     .feature-desc {
-      font-size: 14px;
+      font-size: 15px;
       color: var(--text-sub);
       font-weight: 600;
-      line-height: 1.7;
+      line-height: 1.8;
     }
 
-    .quote-section {
-      padding: 60px 24px;
+    /* ═══ HOW IT WORKS ═══ */
+    .how {
+      padding: 120px 24px;
+      background: var(--bg-card);
+      position: relative;
+    }
+
+    .how::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: radial-gradient(circle at 2px 2px, var(--border) 1px, transparent 0);
+      background-size: 40px 40px;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .how-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .how-header {
       text-align: center;
+      margin-bottom: 80px;
     }
 
-    .quote {
-      font-size: clamp(1.3rem, 4vw, 2rem);
+    .how-label {
+      font-size: 13px;
       font-weight: 800;
       color: var(--accent);
-      max-width: 600px;
-      margin: 0 auto;
-      line-height: 1.6;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
     }
 
+    .how-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 900;
+      color: var(--text);
+      letter-spacing: -1.5px;
+    }
+
+    .how-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    .how-step {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+
+    .how-step-num {
+      flex-shrink: 0;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--accent);
+      box-shadow: 0 4px 16px rgba(44, 37, 32, 0.06);
+    }
+
+    .how-step-text h3 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .how-step-text p {
+      font-size: 15px;
+      color: var(--text-sub);
+      font-weight: 600;
+    }
+
+    /* ═══ QUOTE ═══ */
+    .quote-section {
+      padding: 140px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quote-deco {
+      position: absolute;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(10rem, 25vw, 20rem);
+      font-weight: 700;
+      color: var(--accent-glow);
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .quote-deco--l { top: -20px; left: -20px; }
+    .quote-deco--r { bottom: -40px; right: -20px; transform: rotate(180deg); }
+
+    .quote {
+      font-size: clamp(1.6rem, 4.5vw, 3rem);
+      font-weight: 900;
+      color: var(--text);
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.5;
+      position: relative;
+      z-index: 1;
+    }
+
+    .quote em {
+      color: var(--accent);
+      font-style: normal;
+      position: relative;
+    }
+
+    .quote em::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: -2px;
+      right: -2px;
+      height: 8px;
+      background: var(--accent-glow);
+      border-radius: 4px;
+      z-index: -1;
+    }
+
+    /* ═══ CTA BOTTOM ═══ */
+    .cta-bottom {
+      padding: 100px 24px;
+      text-align: center;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border);
+    }
+
+    .cta-bottom-title {
+      font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+      font-weight: 900;
+      color: var(--text);
+      margin-bottom: 16px;
+      letter-spacing: -1px;
+    }
+
+    .cta-bottom-sub {
+      font-size: 16px;
+      color: var(--text-sub);
+      font-weight: 600;
+      margin-bottom: 40px;
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-bottom .hero-cta {
+      font-size: 18px;
+      padding: 20px 48px;
+    }
+
+    /* ═══ FOOTER ═══ */
     .legal-links {
-      padding: 40px 24px 80px;
+      padding: 48px 24px 24px;
       text-align: center;
       display: flex;
       flex-wrap: wrap;
-      gap: 12px 32px;
+      gap: 12px 40px;
       justify-content: center;
     }
 
@@ -247,14 +639,11 @@
       transition: color 0.2s;
     }
 
-    .legal-links a:hover {
-      color: var(--accent);
-    }
+    .legal-links a:hover { color: var(--accent); }
 
     footer {
       text-align: center;
-      padding: 32px 24px 48px;
-      border-top: 1px solid var(--border);
+      padding: 24px 24px 48px;
     }
 
     footer p {
@@ -263,73 +652,244 @@
       font-weight: 600;
     }
 
-    footer a {
-      color: var(--accent);
-      text-decoration: none;
+    footer a { color: var(--accent); text-decoration: none; }
+
+    /* ═══ SCROLL ANIMATIONS ═══ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ═══ HERO LOAD ANIMATION ═══ */
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(32px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .hero-badge,
-    .hero-title,
-    .hero-catch,
-    .hero-cta,
-    .hero-sub {
-      animation: fadeUp 0.7s ease-out both;
+    @keyframes heroSlideIn {
+      from { opacity: 0; transform: translateX(60px) rotate(3deg); }
+      to { opacity: 1; transform: translateX(0) rotate(0deg); }
     }
-    .hero-badge { animation-delay: 0.1s; }
-    .hero-title { animation-delay: 0.2s; }
-    .hero-catch { animation-delay: 0.35s; }
-    .hero-cta { animation-delay: 0.5s; }
-    .hero-sub { animation-delay: 0.6s; }
+
+    .hero-text > * {
+      animation: heroFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .hero-text > *:nth-child(1) { animation-delay: 0.15s; }
+    .hero-text > *:nth-child(2) { animation-delay: 0.25s; }
+    .hero-text > *:nth-child(3) { animation-delay: 0.35s; }
+    .hero-text > *:nth-child(4) { animation-delay: 0.45s; }
+    .hero-text > *:nth-child(5) { animation-delay: 0.55s; }
+
+    .hero-visual {
+      animation: heroSlideIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+    }
+
+    /* ═══ RESPONSIVE ═══ */
+    @media (min-width: 900px) {
+      .features-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .how-steps {
+        flex-direction: row;
+        gap: 32px;
+      }
+
+      .how-step {
+        flex-direction: column;
+        text-align: center;
+        flex: 1;
+      }
+    }
+
+    @media (min-width: 1100px) {
+      .features-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 899px) {
+      .hero-inner {
+        flex-direction: column;
+        text-align: center;
+        gap: 48px;
+      }
+
+      .hero-text {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .hero-actions {
+        justify-content: center;
+      }
+
+      .hero-visual {
+        display: none;
+      }
+
+      .hero-float-card {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body>
 
+  <!-- ═══ HERO ═══ -->
   <section class="hero">
-    <div class="hero-badge">iOS App</div>
-    <h1 class="hero-title">ji<span>dori</span></h1>
-    <p class="hero-catch">毎日1枚の顔写真で、<br>自分の成長を記録する。</p>
-    <a href="#" class="hero-cta">
-      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83"/><path d="M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11"/></svg>
-      App Storeで入手
-    </a>
-    <p class="hero-sub">無料 / iOS 16+</p>
+    <div class="hero-bg">
+      <div class="hero-orb hero-orb--1"></div>
+      <div class="hero-orb hero-orb--2"></div>
+      <div class="hero-orb hero-orb--3"></div>
+      <div class="hero-grid"></div>
+    </div>
+
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="hero-badge">iOS App</div>
+        <h1 class="hero-title">ji<span>dori</span></h1>
+        <p class="hero-subtitle">your daily face journal</p>
+        <p class="hero-catch">毎日1枚の顔写真で、自分の成長を記録する。<br>日々では気づかない変化を、タイムラプスで実感。</p>
+        <div class="hero-actions">
+          <a href="#" class="hero-cta">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83"/><path d="M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11"/></svg>
+            App Storeで入手
+          </a>
+          <span class="hero-free">無料 / iOS 16+</span>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <p class="phone-app-title">ji<em>dori</em></p>
+            <div class="phone-photo"></div>
+            <div class="phone-date">
+              <div class="phone-date-day">20</div>
+              <div class="phone-date-month">4月 2026</div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-float-card hero-float-card--1">
+          <span class="float-accent">365日</span> 継続中
+        </div>
+        <div class="hero-float-card hero-float-card--2">
+          今日もかわいい
+        </div>
+        <div class="hero-float-card hero-float-card--3">
+          #<span class="float-accent">ダイエット</span> 記録
+        </div>
+      </div>
+    </div>
   </section>
 
+  <!-- ═══ MARQUEE ═══ -->
+  <div class="marquee-section">
+    <div class="marquee-track">
+      <span class="marquee-item">1日1枚 <span class="dot">/</span> ランダム振り返り <span class="dot">/</span> タイムラプス <span class="dot">/</span> タグ整理 <span class="dot">/</span> 成長を実感 <span class="dot">/</span> シンプル設計 <span class="dot">/</span> 完全無料で撮影 <span class="dot">/</span> プレミアムで全機能 <span class="dot">/</span></span>
+      <span class="marquee-item">1日1枚 <span class="dot">/</span> ランダム振り返り <span class="dot">/</span> タイムラプス <span class="dot">/</span> タグ整理 <span class="dot">/</span> 成長を実感 <span class="dot">/</span> シンプル設計 <span class="dot">/</span> 完全無料で撮影 <span class="dot">/</span> プレミアムで全機能 <span class="dot">/</span></span>
+    </div>
+  </div>
+
+  <!-- ═══ FEATURES ═══ -->
   <section class="features">
-    <h2 class="features-title">毎日続く、シンプルな記録</h2>
+    <div class="features-header reveal">
+      <p class="features-label">Features</p>
+      <h2 class="features-title">毎日続く、シンプルな記録</h2>
+    </div>
     <div class="features-grid">
-      <div class="feature-card">
-        <div class="feature-icon">1</div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-num">01</div>
         <h3 class="feature-name">1日1枚、それだけ</h3>
         <p class="feature-desc">毎日たった1枚の顔写真を撮るだけ。余計な機能はなし。続けることだけに集中できる設計。</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">?</div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-num">02</div>
         <h3 class="feature-name">ランダムで振り返り</h3>
         <p class="feature-desc">起動するたびにランダムで過去の写真が登場。「これいつの？」のワクワクが習慣を後押し。</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">&raquo;</div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-num">03</div>
         <h3 class="feature-name">タイムラプスで実感</h3>
         <p class="feature-desc">撮りためた写真をパラパラ動画に。日々では気づかない変化が、タイムラプスで一目瞭然。</p>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">#</div>
+      <div class="feature-card reveal reveal-delay-4">
+        <div class="feature-num">04</div>
         <h3 class="feature-name">タグで整理</h3>
         <p class="feature-desc">ダイエット・メイク・ヘアカラーなど、タグで写真を分類。目的別に振り返れる。</p>
       </div>
     </div>
   </section>
 
-  <section class="quote-section">
-    <p class="quote">「変わりたい」を<br>「変わってきた」に。</p>
+  <!-- ═══ HOW IT WORKS ═══ -->
+  <section class="how">
+    <div class="how-inner">
+      <div class="how-header reveal">
+        <p class="how-label">How it works</p>
+        <h2 class="how-title">3ステップで始まる</h2>
+      </div>
+      <div class="how-steps">
+        <div class="how-step reveal reveal-delay-1">
+          <div class="how-step-num">1</div>
+          <div class="how-step-text">
+            <h3>撮る</h3>
+            <p>毎日1枚、自撮りを撮るだけ。数秒で完了。</p>
+          </div>
+        </div>
+        <div class="how-step reveal reveal-delay-2">
+          <div class="how-step-num">2</div>
+          <div class="how-step-text">
+            <h3>記録する</h3>
+            <p>ひとこと・タグを添えて、その日の自分を残す。</p>
+          </div>
+        </div>
+        <div class="how-step reveal reveal-delay-3">
+          <div class="how-step-num">3</div>
+          <div class="how-step-text">
+            <h3>実感する</h3>
+            <p>タイムラプスやギャラリーで、自分の変化に気づく。</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
 
+  <!-- ═══ QUOTE ═══ -->
+  <section class="quote-section">
+    <div class="quote-deco quote-deco--l">&ldquo;</div>
+    <div class="quote-deco quote-deco--r">&rdquo;</div>
+    <p class="quote reveal">
+      <em>「変わりたい」</em>を<br><em>「変わってきた」</em>に。
+    </p>
+  </section>
+
+  <!-- ═══ CTA BOTTOM ═══ -->
+  <section class="cta-bottom">
+    <div class="reveal">
+      <h2 class="cta-bottom-title">今日の1枚から始めよう</h2>
+      <p class="cta-bottom-sub">未来の自分がきっと感謝する。<br>まずは無料で。</p>
+      <a href="#" class="hero-cta">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83"/><path d="M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11"/></svg>
+        App Storeで入手
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
   <nav class="legal-links">
     <a href="./terms.html">利用規約</a>
     <a href="./privacy.html">プライバシーポリシー</a>
@@ -339,6 +899,19 @@
   <footer>
     <p>&copy; 2026 <a href="https://usuilab.com">USUI LAB</a></p>
   </footer>
+
+  <!-- ═══ SCROLL REVEAL ═══ -->
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
 
 </body>
 </html>
