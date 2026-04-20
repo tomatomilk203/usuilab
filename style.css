@@ -811,52 +811,138 @@ body.tv-on .channels {
     text-align: center;
 }
 
-/* jidori demo */
+/* jidori demo — phone + timeline */
 .demo-jidori {
     width: 100%;
-    height: 120px;
+    height: 140px;
     position: relative;
-    overflow: hidden;
-}
-.jidori-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 6px;
-    height: 100px;
-}
-.jidori-frame {
-    background: rgba(168,132,110,0.15);
-    border: 1px solid rgba(168,132,110,0.3);
-    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.65rem;
-    letter-spacing: .1em;
-    color: rgba(255,255,255,.6);
-    opacity: 0;
-    animation: jidoriReveal 0.5s ease forwards;
+    gap: 16px;
 }
-.jidori-frame.day1 { animation-delay: 0.3s; }
-.jidori-frame.day2 { animation-delay: 0.6s; }
-.jidori-frame.day3 { animation-delay: 0.9s; }
-.jidori-frame.day4 { animation-delay: 1.2s; }
-@keyframes jidoriReveal {
-    0% { opacity: 0; transform: scale(0.8); }
-    100% { opacity: 1; transform: scale(1); }
+.jidori-phone {
+    width: 68px;
+    height: 110px;
+    background: #faf9f6;
+    border-radius: 14px;
+    border: 2px solid rgba(168,132,110,0.25);
+    box-shadow: 0 4px 16px rgba(44,37,32,0.1);
+    overflow: hidden;
+    flex-shrink: 0;
+    position: relative;
 }
-.jidori-bar {
+.jidori-screen {
     position: absolute;
-    bottom: 4px;
-    left: 0;
-    height: 3px;
-    background: linear-gradient(90deg, rgba(168,132,110,0.3), rgba(196,122,78,0.8));
-    border-radius: 2px;
-    width: 0;
-    animation: jidoriBar 2s ease forwards 0.5s;
+    inset: 4px;
+    background: linear-gradient(160deg, #f0ede6, #e4ded5);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
 }
-@keyframes jidoriBar {
-    to { width: 100%; }
+.jidori-face {
+    width: 32px;
+    height: 38px;
+    background: radial-gradient(ellipse at 50% 40%, rgba(168,132,110,0.3), rgba(168,132,110,0.1));
+    border-radius: 50% 50% 46% 46%;
+    border: 1.5px solid rgba(168,132,110,0.25);
+    animation: jidoriFacePulse 3s ease-in-out infinite;
+}
+@keyframes jidoriFacePulse {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.05); opacity: 1; }
+}
+.jidori-shutter {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid rgba(168,132,110,0.5);
+    position: absolute;
+    bottom: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: jidoriShutter 4s ease infinite;
+}
+@keyframes jidoriShutter {
+    0%, 70%, 100% { background: transparent; }
+    75% { background: rgba(196,122,78,0.6); transform: translateX(-50%) scale(0.8); }
+    80% { background: transparent; transform: translateX(-50%) scale(1); }
+}
+.jidori-day-label {
+    font-size: 0.55rem;
+    font-weight: 800;
+    color: #a8846e;
+    letter-spacing: 0.08em;
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+}
+.jidori-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    max-width: 140px;
+}
+.jidori-tl-track {
+    height: 3px;
+    background: rgba(168,132,110,0.15);
+    border-radius: 2px;
+    overflow: hidden;
+}
+.jidori-tl-fill {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, #c4a08a, #c47a4e);
+    border-radius: 2px;
+    animation: jidoriTimeline 8s ease infinite;
+}
+@keyframes jidoriTimeline {
+    0% { width: 0; }
+    25% { width: 25%; }
+    50% { width: 55%; }
+    75% { width: 80%; }
+    90%, 100% { width: 100%; }
+}
+.jidori-tl-dots {
+    display: flex;
+    justify-content: space-between;
+}
+.jidori-dot {
+    font-size: 0.5rem;
+    font-weight: 800;
+    color: rgba(168,132,110,0.35);
+    letter-spacing: 0.05em;
+    transition: color 0.4s;
+}
+.jidori-dot.active {
+    color: #c47a4e;
+}
+.jidori-float {
+    position: absolute;
+    background: #faf9f6;
+    border: 1px solid rgba(168,132,110,0.2);
+    border-radius: 8px;
+    padding: 3px 8px;
+    font-size: 0.5rem;
+    font-weight: 800;
+    color: #a8846e;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(44,37,32,0.06);
+    opacity: 0;
+    animation: jidoriFloat 4s ease-in-out infinite;
+}
+.jf1 { top: 4px; right: 4px; animation-delay: 1s; }
+.jf2 { bottom: 8px; right: 12px; animation-delay: 3s; }
+@keyframes jidoriFloat {
+    0%, 100% { opacity: 0; transform: translateY(6px); }
+    15%, 75% { opacity: 1; transform: translateY(0); }
+    90% { opacity: 0; transform: translateY(-4px); }
 }
 
 /* Program badge */

@@ -481,6 +481,9 @@ async function powerOn() {
 
     // Start Fall in Love dropper demo
     startDropperDemo();
+
+    // Start jidori demo
+    startJidoriDemo();
 }
 
 async function powerOff() {
@@ -1319,6 +1322,26 @@ function startDemoScore() {
 // BRAINROT CATCH DEMO
 
 // ── DROPPER DEMO (Fall in Love CH) ────────────────────
+// jidori demo
+let jidoriInterval = null;
+function startJidoriDemo() {
+    if (jidoriInterval) clearInterval(jidoriInterval);
+    const dayEl = document.getElementById('jidori-day');
+    const dots = document.querySelectorAll('.jidori-dot');
+    if (!dayEl || !dots.length) return;
+
+    const milestones = [1, 30, 90, 365];
+    let idx = 0;
+
+    function tick() {
+        idx = (idx + 1) % milestones.length;
+        dayEl.textContent = milestones[idx];
+        dots.forEach((d, i) => d.classList.toggle('active', i <= idx));
+    }
+
+    jidoriInterval = setInterval(tick, 2000);
+}
+
 let dropperRAF = null;
 let dropperBlocks = [];
 let dropperScore = 0;
