@@ -17,6 +17,7 @@
       --text-muted: #9a8e83;
       --accent: #a8846e;
       --border: #e4ded5;
+      --white: #ffffff;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -66,82 +67,188 @@
       font-weight: 600;
       margin-bottom: 16px;
     }
-    ul {
-      padding-left: 20px;
-    }
-    li {
-      margin-bottom: 6px;
-    }
+    ul { padding-left: 20px; }
+    li { margin-bottom: 6px; }
+    a { color: var(--accent); }
     .footer {
       margin-top: 48px;
       padding-top: 24px;
       border-top: 1px solid var(--border);
       text-align: center;
     }
-    .footer p {
-      color: var(--text-muted);
-      font-size: 13px;
-    }
+    .footer p { color: var(--text-muted); font-size: 13px; }
     .footer a { color: var(--accent); text-decoration: none; }
+
+    .lang-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      display: flex;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 3px;
+      box-shadow: 0 4px 16px rgba(44, 37, 32, 0.08);
+    }
+    .lang-btn {
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: none;
+      background: transparent;
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .lang-btn.active {
+      background: var(--text);
+      color: var(--bg-card);
+    }
+    .lang-ja, .lang-en { display: none; }
+    [data-active-lang="ja"] .lang-ja { display: block; }
+    [data-active-lang="en"] .lang-en { display: block; }
   </style>
 </head>
-<body>
+<body data-active-lang="ja">
+
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="ja">JP</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+  </div>
+
   <div class="wrap">
-    <a href="./" class="back">&larr; jidori トップへ</a>
-    <h1>利用規約</h1>
-    <p class="updated">最終更新日: 2026年4月20日</p>
+    <a href="./" class="back" data-ja="&larr; jidori トップへ" data-en="&larr; Back to jidori">&larr; jidori トップへ</a>
 
-    <h2>第1条（適用）</h2>
-    <p>本利用規約（以下「本規約」）は、USUI LAB（以下「当方」）が提供するiOSアプリケーション「jidori」（以下「本アプリ」）の利用に関する条件を定めるものです。ユーザーは本アプリをダウンロードまたは利用することにより、本規約に同意したものとみなします。</p>
+    <!-- ═══ JAPANESE ═══ -->
+    <div class="lang-ja">
+      <h1>利用規約</h1>
+      <p class="updated">最終更新日: 2026年4月20日</p>
 
-    <h2>第2条（サービス内容）</h2>
-    <p>本アプリは、ユーザーが毎日の顔写真を記録・閲覧するための個人向けアプリケーションです。写真データはユーザーの端末内にのみ保存され、当方のサーバーには送信されません。</p>
+      <h2>第1条（適用）</h2>
+      <p>本利用規約（以下「本規約」）は、USUI LAB（以下「当方」）が提供するiOSアプリケーション「jidori」（以下「本アプリ」）の利用に関する条件を定めるものです。ユーザーは本アプリをダウンロードまたは利用することにより、本規約に同意したものとみなします。</p>
 
-    <h2>第3条（利用条件）</h2>
-    <ul>
-      <li>本アプリは17歳以上のユーザーを対象としています。</li>
-      <li>ユーザーは自身の責任において本アプリを利用するものとします。</li>
-      <li>本アプリの利用にはiOS 16以上を搭載したiPhone端末が必要です。</li>
-    </ul>
+      <h2>第2条（サービス内容）</h2>
+      <p>本アプリは、ユーザーが毎日の顔写真を記録・閲覧するための個人向けアプリケーションです。写真データはユーザーの端末内にのみ保存され、当方のサーバーには送信されません。</p>
 
-    <h2>第4条（禁止事項）</h2>
-    <p>ユーザーは以下の行為を行ってはなりません。</p>
-    <ul>
-      <li>本アプリの逆コンパイル、リバースエンジニアリング、改変</li>
-      <li>他者の権利を侵害する目的での利用</li>
-      <li>本アプリを利用した違法行為</li>
-      <li>本アプリの運営を妨害する行為</li>
-    </ul>
+      <h2>第3条（利用条件）</h2>
+      <ul>
+        <li>本アプリは17歳以上のユーザーを対象としています。</li>
+        <li>ユーザーは自身の責任において本アプリを利用するものとします。</li>
+        <li>本アプリの利用にはiOS 16以上を搭載したiPhone端末が必要です。</li>
+      </ul>
 
-    <h2>第5条（知的財産権）</h2>
-    <p>本アプリに関するすべてのコンテンツ（デザイン、コード、ロゴ等）の知的財産権は当方に帰属します。ユーザーが本アプリで撮影・保存した写真の権利はユーザーに帰属します。</p>
+      <h2>第4条（禁止事項）</h2>
+      <p>ユーザーは以下の行為を行ってはなりません。</p>
+      <ul>
+        <li>本アプリの逆コンパイル、リバースエンジニアリング、改変</li>
+        <li>他者の権利を侵害する目的での利用</li>
+        <li>本アプリを利用した違法行為</li>
+        <li>本アプリの運営を妨害する行為</li>
+      </ul>
 
-    <h2>第6条（免責事項）</h2>
-    <ul>
-      <li>当方は本アプリの完全性、正確性、継続性を保証しません。</li>
-      <li>端末の故障、OS更新、アプリの削除等によるデータの損失について、当方は一切の責任を負いません。</li>
-      <li>本アプリの利用により生じた損害について、当方の故意または重過失による場合を除き、当方は責任を負いません。</li>
-    </ul>
+      <h2>第5条（知的財産権）</h2>
+      <p>本アプリに関するすべてのコンテンツ（デザイン、コード、ロゴ等）の知的財産権は当方に帰属します。ユーザーが本アプリで撮影・保存した写真の権利はユーザーに帰属します。</p>
 
-    <h2>第7条（広告の表示）</h2>
-    <p>本アプリは第三者の広告を表示する場合があります。広告の内容は広告配信事業者の責任により提供されるものであり、当方はその内容について責任を負いません。</p>
+      <h2>第6条（免責事項）</h2>
+      <ul>
+        <li>当方は本アプリの完全性、正確性、継続性を保証しません。</li>
+        <li>端末の故障、OS更新、アプリの削除等によるデータの損失について、当方は一切の責任を負いません。</li>
+        <li>本アプリの利用により生じた損害について、当方の故意または重過失による場合を除き、当方は責任を負いません。</li>
+      </ul>
 
-    <h2>第8条（アプリ内課金）</h2>
-    <p>本アプリはプレミアムプラン（有料サブスクリプション）を提供する場合があります。課金・解約はAppleのApp Storeを通じて行われ、Appleの利用規約が適用されます。</p>
+      <h2>第7条（広告の表示）</h2>
+      <p>本アプリは第三者の広告を表示する場合があります。広告の内容は広告配信事業者の責任により提供されるものであり、当方はその内容について責任を負いません。</p>
 
-    <h2>第9条（規約の変更）</h2>
-    <p>当方は必要に応じて本規約を変更できるものとします。変更後の規約は本ページにて公開された時点で効力を生じます。重大な変更の場合はアプリ内で通知します。</p>
+      <h2>第8条（アプリ内課金）</h2>
+      <p>本アプリはプレミアムプラン（有料サブスクリプション）を提供する場合があります。課金・解約はAppleのApp Storeを通じて行われ、Appleの利用規約が適用されます。</p>
 
-    <h2>第10条（準拠法・管轄）</h2>
-    <p>本規約は日本法に準拠します。本規約に関する紛争は、当方の所在地を管轄する裁判所を第一審の専属的合意管轄裁判所とします。</p>
+      <h2>第9条（規約の変更）</h2>
+      <p>当方は必要に応じて本規約を変更できるものとします。変更後の規約は本ページにて公開された時点で効力を生じます。重大な変更の場合はアプリ内で通知します。</p>
 
-    <h2>お問い合わせ</h2>
-    <p>本規約に関するお問い合わせは以下までご連絡ください。</p>
-    <p>USUI LAB<br>メール: <a href="mailto:kyouya510@gmail.com" style="color: var(--accent);">kyouya510@gmail.com</a></p>
+      <h2>第10条（準拠法・管轄）</h2>
+      <p>本規約は日本法に準拠します。本規約に関する紛争は、当方の所在地を管轄する裁判所を第一審の専属的合意管轄裁判所とします。</p>
+
+      <h2>お問い合わせ</h2>
+      <p>本規約に関するお問い合わせは以下までご連絡ください。</p>
+      <p>USUI LAB<br>メール: <a href="mailto:kyouya510@gmail.com">kyouya510@gmail.com</a></p>
+    </div>
+
+    <!-- ═══ ENGLISH ═══ -->
+    <div class="lang-en">
+      <h1>Terms of Service</h1>
+      <p class="updated">Last updated: April 20, 2026</p>
+
+      <h2>1. Acceptance</h2>
+      <p>These Terms of Service ("Terms") govern your use of the iOS application "jidori" ("the App") provided by USUI LAB ("we"). By downloading or using the App, you agree to these Terms.</p>
+
+      <h2>2. Service Description</h2>
+      <p>The App allows users to record and view daily face photos for personal use. All photo data is stored solely on the user's device and is not transmitted to our servers.</p>
+
+      <h2>3. Eligibility</h2>
+      <ul>
+        <li>The App is intended for users aged 17 and older.</li>
+        <li>Users are responsible for their own use of the App.</li>
+        <li>An iPhone running iOS 16 or later is required.</li>
+      </ul>
+
+      <h2>4. Prohibited Activities</h2>
+      <p>Users must not:</p>
+      <ul>
+        <li>Decompile, reverse-engineer, or modify the App</li>
+        <li>Use the App to infringe on the rights of others</li>
+        <li>Use the App for any illegal purpose</li>
+        <li>Interfere with the operation of the App</li>
+      </ul>
+
+      <h2>5. Intellectual Property</h2>
+      <p>All content related to the App (design, code, logos, etc.) is the intellectual property of USUI LAB. Photos taken and saved by users remain the property of the user.</p>
+
+      <h2>6. Disclaimer</h2>
+      <ul>
+        <li>We do not guarantee the completeness, accuracy, or continuity of the App.</li>
+        <li>We are not responsible for data loss due to device failure, OS updates, or app deletion.</li>
+        <li>Except in cases of willful misconduct or gross negligence, we are not liable for damages arising from use of the App.</li>
+      </ul>
+
+      <h2>7. Advertising</h2>
+      <p>The App may display third-party advertisements. Ad content is provided under the responsibility of the ad network, and we are not responsible for its content.</p>
+
+      <h2>8. In-App Purchases</h2>
+      <p>The App may offer a premium subscription plan. Purchases and cancellations are processed through Apple's App Store and are subject to Apple's terms.</p>
+
+      <h2>9. Changes to Terms</h2>
+      <p>We may update these Terms as needed. Updated Terms take effect upon publication on this page. Significant changes will be notified within the App.</p>
+
+      <h2>10. Governing Law</h2>
+      <p>These Terms are governed by the laws of Japan. Any disputes shall be subject to the exclusive jurisdiction of the court with jurisdiction over our location.</p>
+
+      <h2>Contact</h2>
+      <p>For questions about these Terms, please contact us:</p>
+      <p>USUI LAB<br>Email: <a href="mailto:kyouya510@gmail.com">kyouya510@gmail.com</a></p>
+    </div>
 
     <div class="footer">
       <p>&copy; 2026 <a href="https://usuilab.com">USUI LAB</a></p>
     </div>
   </div>
+
+  <script>
+    const langBtns = document.querySelectorAll('.lang-btn');
+    function setLang(lang) {
+      document.documentElement.lang = lang;
+      document.body.dataset.activeLang = lang;
+      langBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+      document.querySelectorAll('[data-ja][data-en]').forEach(el => {
+        el.innerHTML = el.dataset[lang];
+      });
+      localStorage.setItem('jidori-lang', lang);
+    }
+    langBtns.forEach(btn => btn.addEventListener('click', () => setLang(btn.dataset.lang)));
+    const saved = localStorage.getItem('jidori-lang');
+    if (saved && saved !== 'ja') setLang(saved);
+  </script>
 </body>
 </html>

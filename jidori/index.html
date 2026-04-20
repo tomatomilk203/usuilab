@@ -654,6 +654,39 @@
 
     footer a { color: var(--accent); text-decoration: none; }
 
+    /* ═══ LANG TOGGLE ═══ */
+    .lang-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      display: flex;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 3px;
+      box-shadow: 0 4px 16px rgba(44, 37, 32, 0.08);
+      backdrop-filter: blur(12px);
+    }
+
+    .lang-btn {
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: none;
+      background: transparent;
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+
+    .lang-btn.active {
+      background: var(--text);
+      color: var(--bg-card);
+    }
+
     /* ═══ SCROLL ANIMATIONS ═══ */
     .reveal {
       opacity: 0;
@@ -749,6 +782,11 @@
 </head>
 <body>
 
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="ja">JP</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+  </div>
+
   <!-- ═══ HERO ═══ -->
   <section class="hero">
     <div class="hero-bg">
@@ -763,13 +801,13 @@
         <div class="hero-badge">iOS App</div>
         <h1 class="hero-title">ji<span>dori</span></h1>
         <p class="hero-subtitle">your daily face journal</p>
-        <p class="hero-catch">毎日1枚の顔写真で、自分の成長を記録する。<br>日々では気づかない変化を、タイムラプスで実感。</p>
+        <p class="hero-catch" data-ja="毎日1枚の顔写真で、自分の成長を記録する。<br>日々では気づかない変化を、タイムラプスで実感。" data-en="Track your growth with one selfie a day.<br>See changes you'd never notice — through timelapse.">毎日1枚の顔写真で、自分の成長を記録する。<br>日々では気づかない変化を、タイムラプスで実感。</p>
         <div class="hero-actions">
-          <a href="#" class="hero-cta">
+          <a href="#" class="hero-cta" data-ja="App Storeで入手" data-en="Get on App Store">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83"/><path d="M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11"/></svg>
             App Storeで入手
           </a>
-          <span class="hero-free">無料 / iOS 16+</span>
+          <span class="hero-free" data-ja="無料 / iOS 16+" data-en="Free / iOS 16+">無料 / iOS 16+</span>
         </div>
       </div>
 
@@ -784,13 +822,13 @@
             </div>
           </div>
         </div>
-        <div class="hero-float-card hero-float-card--1">
+        <div class="hero-float-card hero-float-card--1" data-ja='<span class="float-accent">365日</span> 継続中' data-en='<span class="float-accent">365</span> day streak'>
           <span class="float-accent">365日</span> 継続中
         </div>
-        <div class="hero-float-card hero-float-card--2">
+        <div class="hero-float-card hero-float-card--2" data-ja="今日もかわいい" data-en="Looking great today">
           今日もかわいい
         </div>
-        <div class="hero-float-card hero-float-card--3">
+        <div class="hero-float-card hero-float-card--3" data-ja='#<span class="float-accent">ダイエット</span> 記録' data-en='#<span class="float-accent">diet</span> log'>
           #<span class="float-accent">ダイエット</span> 記録
         </div>
       </div>
@@ -800,8 +838,8 @@
   <!-- ═══ MARQUEE ═══ -->
   <div class="marquee-section">
     <div class="marquee-track">
-      <span class="marquee-item">1日1枚 <span class="dot">/</span> ランダム振り返り <span class="dot">/</span> タイムラプス <span class="dot">/</span> タグ整理 <span class="dot">/</span> 成長を実感 <span class="dot">/</span> シンプル設計 <span class="dot">/</span> 完全無料で撮影 <span class="dot">/</span> プレミアムで全機能 <span class="dot">/</span></span>
-      <span class="marquee-item">1日1枚 <span class="dot">/</span> ランダム振り返り <span class="dot">/</span> タイムラプス <span class="dot">/</span> タグ整理 <span class="dot">/</span> 成長を実感 <span class="dot">/</span> シンプル設計 <span class="dot">/</span> 完全無料で撮影 <span class="dot">/</span> プレミアムで全機能 <span class="dot">/</span></span>
+      <span class="marquee-item" data-ja='1日1枚 <span class="dot">/</span> ランダム振り返り <span class="dot">/</span> タイムラプス <span class="dot">/</span> タグ整理 <span class="dot">/</span> 成長を実感 <span class="dot">/</span> シンプル設計 <span class="dot">/</span> 完全無料で撮影 <span class="dot">/</span> プレミアムで全機能 <span class="dot">/</span>' data-en='One photo a day <span class="dot">/</span> Random flashbacks <span class="dot">/</span> Timelapse <span class="dot">/</span> Tag &amp; organize <span class="dot">/</span> See your growth <span class="dot">/</span> Simple by design <span class="dot">/</span> Free to capture <span class="dot">/</span> Premium for more <span class="dot">/</span>'>1日1枚 <span class="dot">/</span> ランダム振り返り <span class="dot">/</span> タイムラプス <span class="dot">/</span> タグ整理 <span class="dot">/</span> 成長を実感 <span class="dot">/</span> シンプル設計 <span class="dot">/</span> 完全無料で撮影 <span class="dot">/</span> プレミアムで全機能 <span class="dot">/</span></span>
+      <span class="marquee-item" data-ja='1日1枚 <span class="dot">/</span> ランダム振り返り <span class="dot">/</span> タイムラプス <span class="dot">/</span> タグ整理 <span class="dot">/</span> 成長を実感 <span class="dot">/</span> シンプル設計 <span class="dot">/</span> 完全無料で撮影 <span class="dot">/</span> プレミアムで全機能 <span class="dot">/</span>' data-en='One photo a day <span class="dot">/</span> Random flashbacks <span class="dot">/</span> Timelapse <span class="dot">/</span> Tag &amp; organize <span class="dot">/</span> See your growth <span class="dot">/</span> Simple by design <span class="dot">/</span> Free to capture <span class="dot">/</span> Premium for more <span class="dot">/</span>'>1日1枚 <span class="dot">/</span> ランダム振り返り <span class="dot">/</span> タイムラプス <span class="dot">/</span> タグ整理 <span class="dot">/</span> 成長を実感 <span class="dot">/</span> シンプル設計 <span class="dot">/</span> 完全無料で撮影 <span class="dot">/</span> プレミアムで全機能 <span class="dot">/</span></span>
     </div>
   </div>
 
@@ -809,28 +847,28 @@
   <section class="features">
     <div class="features-header reveal">
       <p class="features-label">Features</p>
-      <h2 class="features-title">毎日続く、シンプルな記録</h2>
+      <h2 class="features-title" data-ja="毎日続く、シンプルな記録" data-en="Simple habits, real results">毎日続く、シンプルな記録</h2>
     </div>
     <div class="features-grid">
       <div class="feature-card reveal reveal-delay-1">
         <div class="feature-num">01</div>
-        <h3 class="feature-name">1日1枚、それだけ</h3>
-        <p class="feature-desc">毎日たった1枚の顔写真を撮るだけ。余計な機能はなし。続けることだけに集中できる設計。</p>
+        <h3 class="feature-name" data-ja="1日1枚、それだけ" data-en="One photo a day. That's it.">1日1枚、それだけ</h3>
+        <p class="feature-desc" data-ja="毎日たった1枚の顔写真を撮るだけ。余計な機能はなし。続けることだけに集中できる設計。" data-en="Just one selfie a day. No clutter, no distractions. Designed purely to help you stay consistent.">毎日たった1枚の顔写真を撮るだけ。余計な機能はなし。続けることだけに集中できる設計。</p>
       </div>
       <div class="feature-card reveal reveal-delay-2">
         <div class="feature-num">02</div>
-        <h3 class="feature-name">ランダムで振り返り</h3>
-        <p class="feature-desc">起動するたびにランダムで過去の写真が登場。「これいつの？」のワクワクが習慣を後押し。</p>
+        <h3 class="feature-name" data-ja="ランダムで振り返り" data-en="Random flashbacks">ランダムで振り返り</h3>
+        <p class="feature-desc" data-ja='起動するたびにランダムで過去の写真が登場。「これいつの？」のワクワクが習慣を後押し。' data-en="A random past photo greets you every time. The surprise of &quot;when was this?&quot; keeps the habit alive.">起動するたびにランダムで過去の写真が登場。「これいつの？」のワクワクが習慣を後押し。</p>
       </div>
       <div class="feature-card reveal reveal-delay-3">
         <div class="feature-num">03</div>
-        <h3 class="feature-name">タイムラプスで実感</h3>
-        <p class="feature-desc">撮りためた写真をパラパラ動画に。日々では気づかない変化が、タイムラプスで一目瞭然。</p>
+        <h3 class="feature-name" data-ja="タイムラプスで実感" data-en="Timelapse your glow-up">タイムラプスで実感</h3>
+        <p class="feature-desc" data-ja="撮りためた写真をパラパラ動画に。日々では気づかない変化が、タイムラプスで一目瞭然。" data-en="Turn your collection into a timelapse video. Changes invisible day-to-day become crystal clear.">撮りためた写真をパラパラ動画に。日々では気づかない変化が、タイムラプスで一目瞭然。</p>
       </div>
       <div class="feature-card reveal reveal-delay-4">
         <div class="feature-num">04</div>
-        <h3 class="feature-name">タグで整理</h3>
-        <p class="feature-desc">ダイエット・メイク・ヘアカラーなど、タグで写真を分類。目的別に振り返れる。</p>
+        <h3 class="feature-name" data-ja="タグで整理" data-en="Organize with tags">タグで整理</h3>
+        <p class="feature-desc" data-ja="ダイエット・メイク・ヘアカラーなど、タグで写真を分類。目的別に振り返れる。" data-en="Diet, makeup, hair color — tag your photos by goal and look back by category.">ダイエット・メイク・ヘアカラーなど、タグで写真を分類。目的別に振り返れる。</p>
       </div>
     </div>
   </section>
@@ -840,28 +878,28 @@
     <div class="how-inner">
       <div class="how-header reveal">
         <p class="how-label">How it works</p>
-        <h2 class="how-title">3ステップで始まる</h2>
+        <h2 class="how-title" data-ja="3ステップで始まる" data-en="Start in 3 steps">3ステップで始まる</h2>
       </div>
       <div class="how-steps">
         <div class="how-step reveal reveal-delay-1">
           <div class="how-step-num">1</div>
           <div class="how-step-text">
-            <h3>撮る</h3>
-            <p>毎日1枚、自撮りを撮るだけ。数秒で完了。</p>
+            <h3 data-ja="撮る" data-en="Snap">撮る</h3>
+            <p data-ja="毎日1枚、自撮りを撮るだけ。数秒で完了。" data-en="Take one selfie a day. Done in seconds.">毎日1枚、自撮りを撮るだけ。数秒で完了。</p>
           </div>
         </div>
         <div class="how-step reveal reveal-delay-2">
           <div class="how-step-num">2</div>
           <div class="how-step-text">
-            <h3>記録する</h3>
-            <p>ひとこと・タグを添えて、その日の自分を残す。</p>
+            <h3 data-ja="記録する" data-en="Note">記録する</h3>
+            <p data-ja="ひとこと・タグを添えて、その日の自分を残す。" data-en="Add a comment or tag to capture the moment.">ひとこと・タグを添えて、その日の自分を残す。</p>
           </div>
         </div>
         <div class="how-step reveal reveal-delay-3">
           <div class="how-step-num">3</div>
           <div class="how-step-text">
-            <h3>実感する</h3>
-            <p>タイムラプスやギャラリーで、自分の変化に気づく。</p>
+            <h3 data-ja="実感する" data-en="See it">実感する</h3>
+            <p data-ja="タイムラプスやギャラリーで、自分の変化に気づく。" data-en="Watch your transformation unfold through timelapse and gallery.">タイムラプスやギャラリーで、自分の変化に気づく。</p>
           </div>
         </div>
       </div>
@@ -872,7 +910,7 @@
   <section class="quote-section">
     <div class="quote-deco quote-deco--l">&ldquo;</div>
     <div class="quote-deco quote-deco--r">&rdquo;</div>
-    <p class="quote reveal">
+    <p class="quote reveal" data-ja='<em>「変わりたい」</em>を<br><em>「変わってきた」</em>に。' data-en='From <em>"I want to change"</em><br>to <em>"I have changed."</em>'>
       <em>「変わりたい」</em>を<br><em>「変わってきた」</em>に。
     </p>
   </section>
@@ -880,9 +918,9 @@
   <!-- ═══ CTA BOTTOM ═══ -->
   <section class="cta-bottom">
     <div class="reveal">
-      <h2 class="cta-bottom-title">今日の1枚から始めよう</h2>
-      <p class="cta-bottom-sub">振り返ると、ちょっと面白い。<br>まずは無料で。</p>
-      <a href="#" class="hero-cta">
+      <h2 class="cta-bottom-title" data-ja="今日の1枚から始めよう" data-en="Start with today's photo">今日の1枚から始めよう</h2>
+      <p class="cta-bottom-sub" data-ja="振り返ると、ちょっと面白い。<br>まずは無料で。" data-en="Looking back is more fun than you think.<br>Free to start.">振り返ると、ちょっと面白い。<br>まずは無料で。</p>
+      <a href="#" class="hero-cta" data-ja="App Storeで入手" data-en="Get on App Store">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83"/><path d="M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11"/></svg>
         App Storeで入手
       </a>
@@ -891,9 +929,9 @@
 
   <!-- ═══ FOOTER ═══ -->
   <nav class="legal-links">
-    <a href="./terms.html">利用規約</a>
-    <a href="./privacy.html">プライバシーポリシー</a>
-    <a href="mailto:kyouya510@gmail.com">お問い合わせ</a>
+    <a href="./terms.html" data-ja="利用規約" data-en="Terms of Service">利用規約</a>
+    <a href="./privacy.html" data-ja="プライバシーポリシー" data-en="Privacy Policy">プライバシーポリシー</a>
+    <a href="mailto:kyouya510@gmail.com" data-ja="お問い合わせ" data-en="Contact">お問い合わせ</a>
   </nav>
 
   <footer>
@@ -911,6 +949,22 @@
     }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Language toggle
+    const langBtns = document.querySelectorAll('.lang-btn');
+    function setLang(lang) {
+      document.documentElement.lang = lang;
+      langBtns.forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+      document.querySelectorAll('[data-ja][data-en]').forEach(el => {
+        const svg = el.querySelector('svg');
+        el.innerHTML = el.dataset[lang];
+        if (svg) el.prepend(svg);
+      });
+      localStorage.setItem('jidori-lang', lang);
+    }
+    langBtns.forEach(btn => btn.addEventListener('click', () => setLang(btn.dataset.lang)));
+    const saved = localStorage.getItem('jidori-lang');
+    if (saved && saved !== 'ja') setLang(saved);
   </script>
 
 </body>
