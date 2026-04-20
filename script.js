@@ -239,7 +239,7 @@ const state = {
     currentChannel: 0,
     maxChannel: 5,
     currentProject: 0,
-    maxProjects: 3,
+    maxProjects: 4,
     currentContact: 0,
     maxContacts: 2,
     currentNews: 0,
@@ -1705,11 +1705,27 @@ const translations = {
     },
     '.project-slide[data-project="0"] .project-btn.primary': { ja: '▶ PLAY / 詳細', en: '▶ PLAY / Details' },
     '.project-slide[data-project="1"] .project-desc': {
-        ja: '脳が溶ける何か。<br>詳細は不明。',
-        en: 'Something that melts your brain.<br>Details unknown.',
+        ja: '50体以上のイタリアンブレインロットキャラを収集。<br>時間帯・天気・ステージで出現が変わる本格コレクション。',
+        en: 'Collect 50+ Italian Brainrot characters.<br>Appearances vary by time, weather, and stage.',
         html: true
     },
-    '.project-slide[data-project="2"] .project-desc': { ja: '次なる実験は何になるのか...？', en: 'What will the next experiment be...?' },
+    '.project-slide[data-project="1"] .project-btn.primary': { ja: '▶ 詳細を見る', en: '▶ View Details' },
+    '.project-slide[data-project="2"] .project-name': { ja: 'jidori', en: 'jidori' },
+    '.project-slide[data-project="2"] .project-category': { ja: 'iOS セルフィー記録アプリ', en: 'iOS Selfie Tracking App' },
+    '.project-slide[data-project="2"] .project-desc': {
+        ja: '毎日1枚の顔写真で、自分の成長を記録。<br>日々では気づかない変化を、タイムラプスで実感。',
+        en: 'Track your growth with one selfie a day.<br>See changes you\u0027d never notice \u2014 through timelapse.',
+        html: true
+    },
+    '.project-slide[data-project="2"] .project-btn.primary': { ja: '▶ 詳細を見る', en: '▶ View Details' },
+    '.project-slide[data-project="3"] .project-name': { ja: 'Fall in Love', en: 'Fall in Love' },
+    '.project-slide[data-project="3"] .project-category': { ja: 'Steam ドロッパーゲーム', en: 'Steam Dropper Game' },
+    '.project-slide[data-project="3"] .project-desc': {
+        ja: '故意に、落ちろ。<br>どこまでも落ちていけ。ただし、死ぬな。',
+        en: 'Fall on purpose.<br>Fall as far as you can. Just don\u0027t die.',
+        html: true
+    },
+    '.project-slide[data-project="3"] .project-btn.primary': { ja: '▶ 詳細を見る', en: '▶ View Details' },
     '.demo-bullets': { items: [
         { ja: 'すごい！', en: 'Amazing!' },
         { ja: '面白い', en: 'Fun!' },
