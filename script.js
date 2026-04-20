@@ -2017,16 +2017,6 @@ function init() {
 function initMobile() {
     if (window.innerWidth > 768) return;
 
-    // --- Scroll reveal via IntersectionObserver ---
-    // First, apply stagger delays to .m-stagger containers
-    document.querySelectorAll('.m-stagger').forEach(container => {
-        Array.from(container.children).forEach((child, i) => {
-            if (child.classList.contains('m-anim') || child.classList.contains('m-anim-left')) {
-                child.style.transitionDelay = (i * 0.12) + 's';
-            }
-        });
-    });
-
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -2034,33 +2024,17 @@ function initMobile() {
                 observer.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
 
-    document.querySelectorAll('.m-anim, .m-anim-left').forEach(el => {
-        observer.observe(el);
-    });
+    document.querySelectorAll('#mobile-site .m-anim').forEach(el => observer.observe(el));
 
-    // --- Mobile language toggle ---
     const mLangBtn = document.getElementById('m-lang-btn');
     if (mLangBtn) {
         mLangBtn.addEventListener('click', () => {
             switchLanguage();
-            // sync button label
             mLangBtn.textContent = state.lang === 'ja' ? 'EN' : 'JA';
         });
     }
-
-    // Sync mobile lang button whenever desktop lang changes
-    const desktopLangBtn = document.getElementById('lang-btn');
-    if (desktopLangBtn) {
-        const orig = desktopLangBtn.onclick;
-        desktopLangBtn.addEventListener('click', () => {
-            if (mLangBtn) mLangBtn.textContent = state.lang === 'ja' ? 'EN' : 'JA';
-        });
-    }
-
-    // --- Apply data-ja/data-en on language switch ---
-    const origSwitch = window._switchLangOrig;
 }
 
 function applyMobileLang(lang) {
