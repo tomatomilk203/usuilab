@@ -275,9 +275,9 @@ let currentBgmKey = null;
 function getBgmKey(channel, program) {
     if (channel === 0) return null;
     if (channel === 1) return 'ch1';
-    if (channel === 2) return 'ch2';
-    if (channel === 3) return 'ch3';
-    if (channel === 4) return program === 0 ? 'ch4_0' : 'ch4_1';
+    if (channel === 3) return 'ch2';
+    if (channel === 4) return 'ch3';
+    if (channel === 5) return program === 0 ? 'ch4_0' : 'ch4_1';
     return null;
 }
 
@@ -316,8 +316,8 @@ function updateBgmVolume() {
 
 function getCurrentProgram(channel) {
     if (channel === 1) return state.currentProject;
-    if (channel === 3) return state.currentContact;
-    if (channel === 4) return state.currentNews;
+    if (channel === 4) return state.currentContact;
+    if (channel === 5) return state.currentNews;
     return 0;
 }
 
@@ -338,9 +338,9 @@ let currentVoiceKey = null;
 function getVoiceKey(channel, program) {
     if (channel === 0) return null;
     if (channel === 1) return 'ch1';
-    if (channel === 2) return 'ch2';
-    if (channel === 3) return 'ch3';
-    if (channel === 4 && program === 0) return 'ch4_0';
+    if (channel === 3) return 'ch2';
+    if (channel === 4) return 'ch3';
+    if (channel === 5 && program === 0) return 'ch4_0';
     return null;
 }
 
@@ -552,7 +552,7 @@ async function switchChannel(newChannel) {
     }
 
     // Start/stop profile design rotation
-    if (newChannel === 2) {
+    if (newChannel === 3) {
         startProfileDesignRotation();
         initCafeRain();
     } else {
@@ -837,9 +837,9 @@ function updateNewsTime() {
 function nextProgram() {
     if (state.currentChannel === 1) {
         nextProject();
-    } else if (state.currentChannel === 3) {
-        nextContact();
     } else if (state.currentChannel === 4) {
+        nextContact();
+    } else if (state.currentChannel === 5) {
         // スライドショー中は写真を進める
         if (state.currentNews === 1 && slideshowInterval) {
             nextSlide();
@@ -852,9 +852,9 @@ function nextProgram() {
 function prevProgram() {
     if (state.currentChannel === 1) {
         prevProject();
-    } else if (state.currentChannel === 3) {
-        prevContact();
     } else if (state.currentChannel === 4) {
+        prevContact();
+    } else if (state.currentChannel === 5) {
         // スライドショー中は写真を戻る
         if (state.currentNews === 1 && slideshowInterval) {
             prevSlide();
@@ -867,7 +867,7 @@ function prevProgram() {
 // 番組ボタンの状態を更新
 function updateProgramButtons() {
     // CH1(Projects), CH3(Contact), CH4(News)に番組がある
-    const hasPrograms = state.currentChannel === 1 || state.currentChannel === 3 || state.currentChannel === 4;
+    const hasPrograms = state.currentChannel === 1 || state.currentChannel === 4 || state.currentChannel === 5;
 
     if (elements.progPrev) {
         elements.progPrev.disabled = !hasPrograms;
@@ -876,8 +876,8 @@ function updateProgramButtons() {
         elements.progNext.disabled = !hasPrograms;
     }
 
-    // CH4に入ったらニュース時計を開始、離れたら停止
-    if (state.currentChannel === 4) {
+    // CH5に入ったらニュース時計を開始、離れたら停止
+    if (state.currentChannel === 5) {
         startNewsTime();
     } else {
         stopNewsTime();
@@ -1623,9 +1623,9 @@ function handleKeyboard(e) {
         case 'ArrowLeft':
             if (state.currentChannel === 1) {
                 prevProject();
-            } else if (state.currentChannel === 3) {
-                prevContact();
             } else if (state.currentChannel === 4) {
+                prevContact();
+            } else if (state.currentChannel === 5) {
                 prevNews();
             } else {
                 prevChannel();
@@ -1634,9 +1634,9 @@ function handleKeyboard(e) {
         case 'ArrowRight':
             if (state.currentChannel === 1) {
                 nextProject();
-            } else if (state.currentChannel === 3) {
-                nextContact();
             } else if (state.currentChannel === 4) {
+                nextContact();
+            } else if (state.currentChannel === 5) {
                 nextNews();
             } else {
                 nextChannel();
