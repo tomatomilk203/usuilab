@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お問い合わせ — usui blog</title>
+  <meta name="description" content="usui blogへのお問い合わせ。ご質問・ご意見・記事のリクエストなどお気軽にどうぞ。">
+  <link rel="canonical" href="https://usuilab.com/usuiblog/contact/">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg:        #f5f4ed;
+      --ivory:     #faf9f5;
+      --ink:       #141413;
+      --terra:     #c96442;
+      --stone:     #5e5d59;
+      --muted:     #87867f;
+      --border:    #e8e6dc;
+      --border-lt: #f0eee6;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      line-height: 1.8;
+    }
+
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 28px;
+      background: rgba(245,244,237,.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-lt);
+    }
+    .nav-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--stone);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .nav-back:hover { color: var(--terra); }
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 15px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .page-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 100px 24px 60px;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.6rem, 1rem + 2vw, 2.2rem);
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+    .lead {
+      font-size: 15px;
+      color: var(--stone);
+      margin-bottom: 40px;
+    }
+
+    .contact-card {
+      display: inline-block;
+      padding: 32px 48px;
+      background: var(--ivory);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+    .contact-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: .04em;
+      margin-bottom: 16px;
+    }
+    .dm-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 36px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--ivory);
+      background: var(--ink);
+      border-radius: 10px;
+      text-decoration: none;
+      transition: opacity .2s, transform .15s;
+    }
+    .dm-link:hover { opacity: .82; }
+    .dm-link:active { transform: scale(.97); }
+    .dm-link svg { width: 20px; height: 20px; fill: currentColor; }
+
+    .note {
+      margin-top: 32px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .footer {
+      max-width: 720px;
+      margin: 60px auto 0;
+      padding: 32px 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 15px;
+    }
+    .footer-copy {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .footer-links { display: flex; gap: 16px; }
+    .footer-link {
+      font-size: 13px;
+      color: var(--stone);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    .footer-link:hover { color: var(--terra); }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="../" class="nav-back">← 記事一覧</a>
+    <a href="../" class="nav-logo">usui blog</a>
+  </nav>
+
+  <div class="page-wrap">
+    <h1>お問い合わせ</h1>
+    <p class="lead">ご質問・ご意見・記事のリクエストなど、お気軽にどうぞ。</p>
+
+    <div class="contact-card">
+      <div class="contact-label">X（Twitter）のDMから</div>
+      <a href="https://x.com/messages/compose?recipient_id=Usui_good" target="_blank" rel="noopener" class="dm-link">
+        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        @Usui_good にDM
+      </a>
+    </div>
+
+    <p class="note">DMが届き次第、確認・返信いたします。</p>
+  </div>
+
+  <footer class="footer">
+    <div>
+      <div class="footer-brand">usui blog</div>
+      <div class="footer-copy">© 2026 USUI LAB</div>
+    </div>
+    <div class="footer-links">
+      <a href="../" class="footer-link">← 記事一覧</a>
+      <a href="https://usuilab.com" class="footer-link">usuilab.com</a>
+    </div>
+  </footer>
+
+</body>
+</html>
