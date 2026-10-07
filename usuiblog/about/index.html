@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>お問い合わせ — usui blog</title>
-  <meta name="description" content="usui blogへのお問い合わせ。ご質問・ご意見・記事のリクエストなどお気軽にどうぞ。">
-  <link rel="canonical" href="https://usuilab.com/usuiblog/contact/">
+  <title>運営者・編集方針 — usui blog</title>
+  <meta name="description" content="USUI LABと、うすいのAI備忘録の運営者・公開コンテンツ・編集方針・訂正窓口について。">
+  <link rel="canonical" href="https://usuilab.com/usuiblog/about/">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -149,6 +149,11 @@
       transition: color .2s;
     }
     .footer-link:hover { color: var(--terra); }
+    .page-wrap { text-align:left; }
+    .page-wrap h2 { margin:32px 0 12px; font-size:22px; }
+    .page-wrap p, .page-wrap li { line-height:1.9; margin-bottom:12px; }
+    .page-wrap ul { padding-left:24px; }
+    .page-wrap a { color:#8d442d; }
       .footer-links { flex-wrap:wrap; }
   </style>
 </head>
@@ -159,20 +164,22 @@
     <a href="../" class="nav-logo">usui blog</a>
   </nav>
 
-  <div class="page-wrap">
-    <h1>お問い合わせ</h1>
-    <p class="lead">ご質問・ご意見・記事のリクエストなど、お気軽にどうぞ。</p>
-
-    <div class="contact-card">
-      <div class="contact-label">X（Twitter）のDMから</div>
-      <a href="https://x.com/Usui_good" target="_blank" rel="noopener" class="dm-link">
-        <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-        @Usui_good のプロフィールを開く
-      </a>
-    </div>
-
-    <p class="note">Xのプロフィールからメッセージをお送りください。メッセージ機能の利用にはXへのログインが必要な場合があります。記事の訂正依頼は、対象URLと該当箇所を添えてください。</p>
-  </div>
+  <main class="page-wrap">
+    <h1>運営者・編集方針</h1>
+    <p class="lead">USUI LABは、うすい（USUI）が運営する個人開発と生成AIの実験サイトです。</p>
+    <h2>運営者について</h2>
+    <p>Web・iOSアプリの企画と開発、生成AIの活用を扱っています。制作物と公開コードは、<a href="/">USUI LABのトップページ</a>と<a href="https://github.com/tomatomilk203">GitHub</a>から確認できます。</p>
+    <h2>このサイトで読めるもの</h2>
+    <ul><li>生成AIの基本と使い方を整理した入門記事</li><li>プロンプトと出力例を並べた比較記事</li><li>公開コードを読んで分かる動作・制約・改善方法</li><li><a href="/jidori/">jidori</a>など個人開発アプリの機能と利用案内</li></ul>
+    <h2>記事の読み方と編集方針</h2>
+    <p>公式情報の紹介、掲載例から読み取れる事実、筆者の感想を区別します。外部の情報には参照先を示し、価格・プラン・提供機能は地域や時期によって変わるため、契約前には各サービスの公式情報を確認してください。</p>
+    <p>AIの出力比較は掲載されたサンプルの比較です。正確な生成日時やモデルの版が記録されていない例については、その限界を明記します。少数の出力から、モデル全体の優劣や最新の性能を断定しません。</p>
+    <p>AIを使った出力例は、正しさや安全性が保証された完成品ではありません。コード記事では、読者が判断できるように動作例と注意点を掲載します。実測していない数値や、存在しない体験・検証記録を実績として追加しません。</p>
+    <h2>訂正・お問い合わせ</h2>
+    <p>誤りやリンク切れのご連絡は<a href="../contact/">お問い合わせページ</a>からお願いします。対象ページのURLと該当箇所を添えていただくと確認しやすくなります。</p>
+    <p>広告とCookieの扱いは<a href="../privacy/">プライバシーポリシー</a>に記載しています。</p>
+    <p class="note">編集方針の公開日：2026年10月7日</p>
+  </main>
 
   <footer class="footer">
     <div>

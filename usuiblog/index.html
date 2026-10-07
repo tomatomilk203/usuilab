@@ -622,16 +622,11 @@
     }
 
     /* ─── Ad: in-feed card ───────────────────── */
-    .ad-card { cursor: default !important; pointer-events: none; display: none; }
+    .ad-card { cursor: default !important; display: block; opacity: 1; transform: none; }
     .ad-card .card-wash { display: none; }
     .ad-badge { font-size: 9px; font-weight: 600; letter-spacing: .1em; color: var(--muted); background: var(--border-lt); border: 1px solid var(--border); border-radius: 8px; padding: 2px 8px; display: inline-block; margin-bottom: 6px; }
     .ad-card ins { min-height: 0 !important; }
 
-    /* ─── Ad: anchor (mobile bottom) ─────────── */
-    .ad-anchor { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 200; background: var(--ivory); border-top: 1px solid var(--border); padding: 6px 48px 12px 16px; box-shadow: 0 -4px 16px rgba(0,0,0,.08); }
-    .ad-anchor ins { min-height: 0 !important; }
-    .ad-anchor-close { position: absolute; top: 6px; right: 12px; background: none; border: none; font-size: 18px; color: var(--muted); cursor: pointer; line-height: 1; font-family: inherit; }
-    @media(min-width: 900px) { .ad-anchor { display: none !important; } }
 
     /* ─── Responsive ─────────────────────────── */
     @media (max-width: 900px) {
@@ -658,6 +653,10 @@
         align-items: flex-start;
       }
     }
+      a.card { color: inherit; text-decoration: none; }
+    a.card:focus-visible { outline: 3px solid var(--terra); outline-offset: 5px; }
+    .footer-links { flex-wrap: wrap; }
+    @media (prefers-reduced-motion: reduce) { .card { opacity: 1; transform: none; transition: none; } }
   </style>
   <script type="application/ld+json">
 {
@@ -671,6 +670,7 @@
 }
 </script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6308685522301286" crossorigin="anonymous"></script>
+<noscript><style>.card { opacity:1 !important; transform:none !important; }</style></noscript>
 </head>
 
 <body>
@@ -744,7 +744,7 @@
   <section class="articles">
     <div class="section-head">
       <h2 class="section-title">記事一覧</h2>
-      <span class="section-count">12 articles</span>
+      <span class="section-count">11 articles</span>
     </div>
 
     <div class="cats">
@@ -765,7 +765,7 @@
     <div class="grid">
 
       <!-- 三大AI row — equal thirds -->
-      <article class="card" data-cat="intro" onclick="location.href='chatgpt/'" style="cursor:pointer; grid-column: 1 / 5; --rot: -0.4deg; --accent: var(--terra); --wash: #f6c4a8;">
+      <a class="card" data-cat="intro" style="cursor:pointer; grid-column: 1 / 5; --rot: -0.4deg; --accent: var(--terra); --wash: #f6c4a8;" href="chatgpt/">
         <div class="card-wash"></div>
         <span class="card-tag tag-intro">入門 #01</span>
         <h3 class="card-title">ChatGPT<br>って何者？</h3>
@@ -774,9 +774,9 @@
           <span class="card-time">5 min read</span>
           <div class="card-arrow">→</div>
         </div>
-      </article>
+      </a>
 
-      <article class="card" data-cat="intro" onclick="location.href='gemini/'" style="cursor:pointer; grid-column: 5 / 9; --rot: 0.3deg; --accent: var(--mint); --wash: #b8e8d8;">
+      <a class="card" data-cat="intro" style="cursor:pointer; grid-column: 5 / 9; --rot: 0.3deg; --accent: var(--mint); --wash: #b8e8d8;" href="gemini/">
         <div class="card-wash"></div>
         <span class="card-tag tag-intro">入門 #02</span>
         <h3 class="card-title">Gemini<br>って何？</h3>
@@ -785,9 +785,9 @@
           <span class="card-time">5 min read</span>
           <div class="card-arrow">→</div>
         </div>
-      </article>
+      </a>
 
-      <article class="card" data-cat="intro" onclick="location.href='claude/'" style="cursor:pointer; grid-column: 9 / 13; --rot: -0.3deg; --accent: var(--lav); --wash: #dcc8f0;">
+      <a class="card" data-cat="intro" style="cursor:pointer; grid-column: 9 / 13; --rot: -0.3deg; --accent: var(--lav); --wash: #dcc8f0;" href="claude/">
         <div class="card-wash"></div>
         <span class="card-tag tag-intro">入門 #03</span>
         <h3 class="card-title">Claude<br>って何？</h3>
@@ -796,7 +796,7 @@
           <span class="card-time">5 min read</span>
           <div class="card-arrow">→</div>
         </div>
-      </article>
+      </a>
 
     </div>
 
@@ -809,7 +809,7 @@
     <div class="grid">
 
       <!-- Q&A wide -->
-      <article class="card" data-cat="qa" onclick="location.href='hallucination/'" style="cursor:pointer; grid-column: 1 / 8; --rot: 0.4deg; --accent: var(--lav); --wash: #dcc8f0;">
+      <a class="card" data-cat="qa" style="cursor:pointer; grid-column: 1 / 8; --rot: 0.4deg; --accent: var(--lav); --wash: #dcc8f0;" href="hallucination/">
         <div class="card-wash"></div>
         <span class="card-tag tag-qa">疑問</span>
         <h3 class="card-title">AIは嘘をつく？<br>ハルシネーションと「忖度」の正体</h3>
@@ -818,10 +818,10 @@
           <span class="card-time">8 min read</span>
           <div class="card-arrow">→</div>
         </div>
-      </article>
+      </a>
 
       <!-- How-to narrow -->
-      <article class="card" data-cat="howto" style="grid-column: 8 / 13; --rot: -0.5deg; --accent: var(--mint); --wash: #b8e8d8; cursor:pointer;" onclick="location.href='prompt/'">
+      <a class="card" data-cat="howto" style="grid-column: 8 / 13; --rot: -0.5deg; --accent: var(--mint); --wash: #b8e8d8; cursor:pointer;" href="prompt/">
         <div class="card-wash"></div>
         <span class="card-tag tag-howto">使い方</span>
         <h3 class="card-title">プロンプト<br>って何？</h3>
@@ -830,10 +830,10 @@
           <span class="card-time">3 min read</span>
           <div class="card-arrow">→</div>
         </div>
-      </article>
+      </a>
 
       <!-- News full -->
-      <article class="card" data-cat="news" style="grid-column: 1 / -1; --rot: 0.2deg; --accent: var(--gold); --wash: #f0e8a0; cursor:pointer;" onclick="location.href='ai-jobs/'">
+      <a class="card" data-cat="news" style="grid-column: 1 / -1; --rot: 0.2deg; --accent: var(--gold); --wash: #f0e8a0; cursor:pointer;" href="ai-jobs/">
         <div class="card-wash"></div>
         <span class="card-tag tag-news">最新ニュース</span>
         <h3 class="card-title">AIの仕事を奪うって本当？ 2026年版</h3>
@@ -842,7 +842,7 @@
           <span class="card-time">6 min read</span>
           <div class="card-arrow">→</div>
         </div>
-      </article>
+      </a>
 
       <!-- Ad: in-feed (hidden until filled) -->
       <article class="card ad-card" data-cat="ad" style="grid-column: 4 / 10; --rot: 0deg;">
@@ -857,7 +857,7 @@
       </article>
 
       <!-- Honest money talk series -->
-      <article class="card" data-cat="qa" style="grid-column: 1 / 8; --rot: -0.3deg; --accent: var(--lav); --wash: #dcc8f0; cursor:pointer;" onclick="location.href='ai-money/'">
+      <a class="card" data-cat="qa" style="grid-column: 1 / 8; --rot: -0.3deg; --accent: var(--lav); --wash: #dcc8f0; cursor:pointer;" href="ai-money/">
         <div class="card-wash"></div>
         <span class="card-tag tag-qa">疑問</span>
         <span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;background:var(--ivory);color:var(--stone);border:1px solid var(--border);border-radius:10px;padding:3px 10px;margin-left:6px;">前編</span>
@@ -867,34 +867,34 @@
           <span class="card-time">7 min read</span>
           <div class="card-arrow">→</div>
         </div>
-      </article>
+      </a>
 
-      <article class="card" data-cat="howto" style="grid-column: 8 / 13; --rot: 0.4deg; --accent: var(--mint); --wash: #b8e8d8; cursor:pointer;" onclick="location.href='ai-money-2/'">
+      <a class="card" data-cat="howto" style="grid-column: 8 / 13; --rot: 0.4deg; --accent: var(--mint); --wash: #b8e8d8; cursor:pointer;" href="ai-money-2/">
         <div class="card-wash"></div>
         <span class="card-tag tag-howto">使い方</span>
         <span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;background:var(--ivory);color:var(--stone);border:1px solid var(--border);border-radius:10px;padding:3px 10px;margin-left:6px;">後編</span>
-        <h3 class="card-title">稼ぎやすい仕事<br>ランキングTop5</h3>
-        <p class="card-excerpt">業務自動化・AI動画・Web制作まで。必要スキルと月収目安つきで解説。</p>
+        <h3 class="card-title">AIを仕事に使う<br>5つの候補</h3>
+        <p class="card-excerpt">業務自動化・AI動画・Web制作まで。必要スキル、納品前の確認項目、見積もりの考え方を解説。</p>
         <div class="card-foot">
           <span class="card-time">8 min read</span>
           <div class="card-arrow">→</div>
         </div>
-      </article>
+      </a>
 
       <!-- AI Compare series -->
-      <article class="card" data-cat="compare" style="grid-column: 1 / -1; --rot: -0.2deg; --accent: #60a0d0; --wash: #c8e4f4; cursor:pointer;" onclick="location.href='ai-compare/'">
+      <a class="card" data-cat="compare" style="grid-column: 1 / -1; --rot: -0.2deg; --accent: #60a0d0; --wash: #c8e4f4; cursor:pointer;" href="ai-compare/">
         <div class="card-wash"></div>
         <span class="card-tag tag-compare">徹底比較</span>
         <span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;background:var(--ivory);color:var(--stone);border:1px solid var(--border);border-radius:10px;padding:3px 10px;margin-left:6px;">全3回 · 前編</span>
         <h3 class="card-title">ChatGPT vs Gemini vs Claude<br>どれが最強？本音で比べる。</h3>
-        <p class="card-excerpt">シェア・価格・最新機能から、同じプロンプトへの実際の回答まで。3大AIを同じ条件で徹底比較。</p>
+        <p class="card-excerpt">公式プランの確認先と、文章・コードの掲載例を比較。検証条件の限界も説明します。</p>
         <div class="card-foot">
           <span class="card-time">8 min read</span>
           <div class="card-arrow">→</div>
         </div>
-      </article>
+      </a>
 
-      <article class="card" data-cat="compare" style="grid-column: 1 / 7; --rot: 0.3deg; --accent: #60a0d0; --wash: #c8e4f4; cursor:pointer;" onclick="location.href='ai-compare-2/'">
+      <a class="card" data-cat="compare" style="grid-column: 1 / 7; --rot: 0.3deg; --accent: #60a0d0; --wash: #c8e4f4; cursor:pointer;" href="ai-compare-2/">
         <div class="card-wash"></div>
         <span class="card-tag tag-compare">徹底比較</span>
         <span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;background:var(--ivory);color:var(--stone);border:1px solid var(--border);border-radius:10px;padding:3px 10px;margin-left:6px;">全3回 · 中編</span>
@@ -904,9 +904,9 @@
           <span class="card-time">8 min read</span>
           <div class="card-arrow">→</div>
         </div>
-      </article>
+      </a>
 
-      <article class="card" data-cat="compare" style="grid-column: 7 / -1; --rot: -0.4deg; --accent: #60a0d0; --wash: #b8d8f0; cursor:pointer;" onclick="location.href='ai-compare-3/'">
+      <a class="card" data-cat="compare" style="grid-column: 7 / -1; --rot: -0.4deg; --accent: #60a0d0; --wash: #b8d8f0; cursor:pointer;" href="ai-compare-3/">
         <div class="card-wash"></div>
         <span class="card-tag tag-compare">徹底比較</span>
         <span style="display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;background:var(--ivory);color:var(--stone);border:1px solid var(--border);border-radius:10px;padding:3px 10px;margin-left:6px;">全3回 · 後編</span>
@@ -916,23 +916,12 @@
           <span class="card-time">10 min read</span>
           <div class="card-arrow">→</div>
         </div>
-      </article>
+      </a>
 
     </div>
 
   </section>
 
-  <!-- ── Ad: anchor (mobile only, hidden until filled) ── -->
-  <div class="ad-anchor" id="adAnchor">
-    <button class="ad-anchor-close" onclick="document.getElementById('adAnchor').style.display='none'" aria-label="閉じる">×</button>
-    <ins class="adsbygoogle"
-         style="display:block;"
-         data-ad-client="ca-pub-6308685522301286"
-         data-ad-slot="2443601635"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
 
   <!-- ── Footer ── -->
   <footer class="footer">
@@ -942,6 +931,7 @@
       <div class="footer-tagline" style="margin-top:4px;font-size:11px;opacity:.6;">© 2026 USUI LAB</div>
     </div>
     <div class="footer-links">
+      <a href="about/" class="footer-link">運営者・編集方針</a>
       <a href="https://usuilab.com" class="footer-link">← usuilab.com</a>
       <a href="https://x.com/Usui_good" class="footer-link">X / Twitter</a>
       <a href="privacy/" class="footer-link">プライバシーポリシー</a>
@@ -952,7 +942,7 @@
   <script>
 
     /* ── Card reveal on scroll ── */
-    const cards = document.querySelectorAll('.card');
+    const cards = document.querySelectorAll('a.card');
     const io = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -966,7 +956,7 @@
 
 
     /* ── Category filter ── */
-    const allCards = document.querySelectorAll('.card');
+    const allCards = document.querySelectorAll('a.card');
     const allGrids = document.querySelectorAll('.grid');
     const seriesLabels = document.querySelectorAll('.series-label');
     const countEl = document.querySelector('.section-count');
@@ -1012,7 +1002,7 @@
             el.style.display = (i === 0 && cat === 'intro') || (i === 1 && cat !== 'intro') ? '' : 'none';
           });
 
-          if (countEl) countEl.textContent = isAll ? '12 articles' : `${shown} article${shown !== 1 ? 's' : ''}`;
+          if (countEl) countEl.textContent = isAll ? `${allCards.length} articles` : `${shown} article${shown !== 1 ? 's' : ''}`;
 
           // Phase 3: stagger fade in
           const entering = [...allCards].filter(c => c.classList.contains('filter-entering'));
@@ -1027,31 +1017,20 @@
       });
     });
 
-    // init mobile limit on first load
-    initMobileLimit();
 
-    /* ── Ad: show only when filled ── */
+
+    /* Collapse an unfilled slot only after it has been measured. */
     const adCard = document.querySelector('.ad-card');
     if (adCard) {
       const adIns = adCard.querySelector('ins');
       new MutationObserver((_, obs) => {
-        if (adIns.dataset.adStatus === 'filled') {
-          adCard.style.display = '';
+        if (adIns.dataset.adStatus === 'unfilled') {
+          adCard.style.display = 'none';
           obs.disconnect();
         }
       }).observe(adIns, { attributes: true, attributeFilter: ['data-ad-status'] });
     }
 
-    const anchorEl = document.getElementById('adAnchor');
-    if (anchorEl && window.innerWidth < 900) {
-      const anchorIns = anchorEl.querySelector('ins');
-      new MutationObserver((_, obs) => {
-        if (anchorIns.dataset.adStatus === 'filled') {
-          anchorEl.style.display = 'block';
-          obs.disconnect();
-        }
-      }).observe(anchorIns, { attributes: true, attributeFilter: ['data-ad-status'] });
-    }
   </script>
 </body>
 </html>

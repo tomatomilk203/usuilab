@@ -165,6 +165,9 @@
       .obs-label{font-size:9px;letter-spacing:.1em}
       .obs-item{font-size:13px}
     }
+      .footer-links { flex-wrap:wrap; }
+      .review-note { padding:20px; margin-bottom:32px; background:#f3f3ed; border:1px solid var(--border); border-radius:12px; }
+    .review-note p { font-size:14px; }
   </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6308685522301286" crossorigin="anonymous"></script>
   <script type="application/ld+json">
@@ -175,7 +178,7 @@
     "description": "同じプロンプトで3つのAIに答えてもらったら、こんなに違った。140字小説・ビジネス文書の実際の出力を比較します。",
     "url": "https://usuilab.com/usuiblog/ai-compare-2/",
     "datePublished": "2026-04-13",
-    "dateModified": "2026-04-13",
+    "dateModified": "2026-10-07",
     "author": { "@type": "Person", "name": "うすい", "url": "https://x.com/Usui_good" },
     "publisher": { "@type": "Organization", "name": "うすいのAI備忘録", "url": "https://usuilab.com/usuiblog/" },
     "image": "https://usuilab.com/assets/background.jpg",
@@ -217,6 +220,13 @@
   <div class="divider"></div>
 
   <article class="article-body">
+    <section class="review-note" aria-label="比較の条件と限界">
+      <h2>比較の条件と限界</h2>
+      <p>この記事は、掲載済みのプロンプトと出力例を比較するものです。元の生成日時、モデルの詳細な版、会話履歴、試行回数の記録は記事に残っていません。「無料版」などの表記は掲載時の呼称であり、現在提供されているモデルを保証するものではありません。</p>
+      <p>同じプロンプトでも出力は変わります。以下の評価は、このページのサンプルに限定した観察です。各サービス全体の性能ランキングとしては扱わず、自分の用途・入力・評価条件をそろえて試してください。</p>
+      <p>2026年10月7日更新：比較条件の限界、確認できる根拠、参照先を追記しました。新しいモデルを使って再実験したという意味ではありません。</p>
+    </section>
+
 
     <ins class="adsbygoogle" style="display:block;margin:0 0 40px" data-ad-client="ca-pub-6308685522301286" data-ad-slot="2443601635" data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -362,7 +372,7 @@
       <div class="obs-label">読んでみて気づいたこと</div>
       <div class="obs-list">
         <div class="obs-item"><strong>GPT</strong>は見出しも箇条書きもない流れる文語体で、「叩き台」と明示して続きを促す姿勢があります。実際の稟議書として使うには内容が薄く、これをそのまま出せる場面は少ないでしょう。末尾の「IT系・BtoB向けにも最適化できます」という誘導は便利ですが、あなたのニーズを把握する前からアップセルしている構造です。</div>
-        <div class="obs-item"><strong>注目してほしいのはGeminiが出した「検索時間の30%削減」という数字です。</strong>この数字はGeminiが自分で作ったもので、根拠はありません。見出し・箇条書き・具体的な数字が揃っていると「実用的な資料」に見えますが、AIが書いたビジネス文書に含まれる具体的な数値は捏造されている可能性があります。Geminiモデルではこの傾向が特に強いと報告されています。実際の稟議書にこの数字をそのまま使うと、出典を問われたときに詰みます。</div>
+        <div class="obs-item"><strong>注目してほしいのはGeminiが出した「検索時間の30%削減」という数字です。</strong>この数字はGeminiが自分で作ったもので、根拠はありません。見出し・箇条書き・具体的な数字が揃っていると「実用的な資料」に見えますが、AIが書いたビジネス文書に含まれる具体的な数値は捏造されている可能性があります。この掲載例だけから、特定のモデルでこの傾向が強いとは判断できません。実際の稟議書にこの数字をそのまま使うと、出典を問われたときに詰みます。</div>
         <div class="obs-item"><strong>Claudeが「特別なシステム投資を必要とせず」と書いたのは、地味に重要です。</strong>提案の実現可能性を制約込みで考えている——これは実際の稟議で一番問われる視点です。フォローアップの押しつけもなく、「読んで判断してください」という姿勢で終わっています。3つの中で実務にそのまま近い文書を出してきたのはClaudeだとうすいは思いました。</div>
       </div>
     </div>
@@ -370,7 +380,7 @@
     <div class="summary">
       <div class="summary-title">中編のまとめ</div>
       <ul class="summary-list">
-        <li>同じプロンプトで返ってくる文章が3つとも明確に違う。これはトレーニングの設計思想の差が出ています</li>
+        <li>同じプロンプトで返ってくる文章が3つとも明確に違う。掲載例の表現の差は確認できますが、学習方法やモデル全体の性質までは判断できません</li>
         <li>AIが書いたビジネス文書の数字は根拠を確認すること。「30%削減」のような具体的な数値ほど、出どころがないケースがあります</li>
         <li>文章の記憶残りはClaude、見た目の整形はGemini、さらっとした叩き台はGPT——うすいの実感です</li>
       </ul>
@@ -384,7 +394,7 @@
     </div>
 
     <div class="source-note">
-      <p>出典：OpenAI「Sycophancy in GPT-4o: What happened」(2025年4月) / AllAboutAI「AI Hallucination Report 2026」/ Anthropic「Claude's Character」モデルカード / type.ai「Who Wrote it Better? Claude vs ChatGPT vs Gemini」</p>
+      <p>参考：<a href="https://openai.com/index/sycophancy-in-gpt-4o/">OpenAIによるGPT-4oの迎合問題の説明（2025年）</a>。これは過去の特定の更新に関する資料で、掲載した3サービスの性能順位を裏付けるものではありません。文章への評価は本文の出力例に基づきます。</p>
     </div>
 
   </article>
@@ -394,7 +404,7 @@
     <div class="next-cards">
       <a href="../ai-compare/" class="next-card">
         <span class="next-card-tag" style="color:var(--cmp-tx)">徹底比較・前編</span>
-        <div class="next-card-title">シェア・価格・最新機能を比較</div>
+        <div class="next-card-title">選び方・料金の確認先を整理</div>
         <div class="next-card-arrow">→</div>
       </a>
       <a href="../hallucination/" class="next-card">
@@ -411,6 +421,10 @@
       <div class="footer-copy">© 2026 USUI LAB</div>
     </div>
     <div class="footer-links">
+      <a href="/usuiblog/about/" class="footer-link">運営者・編集方針</a>
+      <a href="/usuiblog/privacy/" class="footer-link">プライバシー</a>
+      <a href="/usuiblog/contact/" class="footer-link">お問い合わせ</a>
+
       <a href="../" class="footer-link">← ブログ一覧</a>
       <a href="https://x.com/Usui_good" class="footer-link">X / Twitter</a>
     </div>

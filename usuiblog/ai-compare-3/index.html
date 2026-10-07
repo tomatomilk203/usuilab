@@ -163,6 +163,12 @@
       .obs-label{font-size:9px;letter-spacing:.1em}
       .obs-item{font-size:13px}
     }
+      .footer-links { flex-wrap:wrap; }
+      .review-note { padding:20px; margin-bottom:32px; background:#f3f3ed; border:1px solid var(--border); border-radius:12px; }
+    .review-note p { font-size:14px; }
+      .article-body h3 { font-size:20px; line-height:1.5; margin:28px 0 14px; }
+    .article-body ol { padding-left:24px; line-height:1.9; margin:20px 0; }
+    .article-body > pre { overflow-x:auto; padding:18px; background:#f3f3ed; border-radius:10px; font-size:13px; }
   </style>
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6308685522301286" crossorigin="anonymous"></script>
   <script type="application/ld+json">
@@ -173,7 +179,7 @@
     "description": "グラフ作成コードとシューティングゲームを3つのAIに作ってもらいました。コードの書き方・品質・個性の違いをそのまま見せます。",
     "url": "https://usuilab.com/usuiblog/ai-compare-3/",
     "datePublished": "2026-04-13",
-    "dateModified": "2026-04-13",
+    "dateModified": "2026-10-07",
     "author": { "@type": "Person", "name": "うすい", "url": "https://x.com/Usui_good" },
     "publisher": { "@type": "Organization", "name": "うすいのAI備忘録", "url": "https://usuilab.com/usuiblog/" },
     "image": "https://usuilab.com/assets/background.jpg",
@@ -208,13 +214,20 @@
     <div class="header-right">
       <div class="hr-badge">コード実験編 — 実際に動きます</div>
       <div style="font-family:'DM Serif Display',serif;font-size:26px;color:#fff;line-height:1.25;">書かせると<br>本性が出る。</div>
-      <div style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.6;">Python / HTML+JS<br>無料版・同条件で実験</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.6;">Python / HTML+JS<br>掲載例の比較・条件の限界あり</div>
     </div>
   </header>
 
   <div class="divider"></div>
 
   <article class="article-body">
+    <section class="review-note" aria-label="比較の条件と限界">
+      <h2>比較の条件と限界</h2>
+      <p>この記事は、掲載済みのプロンプトと出力例を比較するものです。元の生成日時、モデルの詳細な版、会話履歴、試行回数の記録は記事に残っていません。「無料版」などの表記は掲載時の呼称であり、現在提供されているモデルを保証するものではありません。</p>
+      <p>同じプロンプトでも出力は変わります。以下の評価は、このページのサンプルに限定した観察です。各サービス全体の性能ランキングとしては扱わず、自分の用途・入力・評価条件をそろえて試してください。</p>
+      <p>2026年10月7日更新：比較条件の限界、確認できる根拠、参照先を追記しました。新しいモデルを使って再実験したという意味ではありません。</p>
+    </section>
+
 
     <ins class="adsbygoogle" style="display:block;margin:0 0 40px" data-ad-client="ca-pub-6308685522301286" data-ad-slot="2443601635" data-ad-format="auto" data-full-width-responsive="true"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
@@ -310,7 +323,7 @@ plt.show()</code></pre>
       </div>
     </div>
 
-    <p style="font-size:14px;color:var(--stone);margin:28px 0 4px;">▼ 実際に実行するとこんなグラフになります</p>
+    <p style="font-size:14px;color:var(--stone);margin:28px 0 4px;">▼ 掲載コードに合わせたグラフの表示イメージ</p>
     <div class="game-cards">
       <div class="game-card">
         <div class="game-card-head head-gpt">
@@ -363,7 +376,7 @@ plt.show()</code></pre>
           <span class="code-card-model">GPT-4o / Simple Shooting Game</span>
         </div>
         <iframe class="game-frame" src="game-gpt.html" height="620" scrolling="no" title="GPT製シューティングゲーム"></iframe>
-        <div class="game-caption">↑キー：左右移動 / スペース：射撃（縦スクロール型）</div>
+        <div class="game-caption">←→キー：左右移動 / スペース：射撃（縦スクロール型）</div>
       </div>
       <div class="game-card">
         <div class="game-card-head head-gem">
@@ -379,7 +392,7 @@ plt.show()</code></pre>
           <span class="code-card-model">Claude Sonnet / Space Defender</span>
         </div>
         <iframe class="game-frame" src="game-cla.html" height="620" scrolling="no" title="Claude製シューティングゲーム"></iframe>
-        <div class="game-caption">↑↓←→キー：移動 / スペース：射撃（星背景・ライフ制・ゲームオーバーあり）</div>
+        <div class="game-caption">←→キー：移動 / スペース：射撃（星背景・ライフ制・ゲームオーバーあり）</div>
       </div>
     </div>
 
@@ -388,25 +401,50 @@ plt.show()</code></pre>
       <div class="obs-list">
         <div class="obs-item"><strong>GPTのゲームには実際のバグがあります。</strong>縦スクロール型で素早く動く最小構成を出してくるのは確かですが、プレイヤーの左右移動に境界チェックがなく、画面の外に出続けることができます。射撃制限もありません。「動く最小構成」ではなく「最低限の動作しか確認していない構成」と言う方が正確です。プロトタイプとして渡すのは問題ありませんが、そのまま公開するには手を入れる必要があります。</div>
         <div class="obs-item"><strong>Geminiの設計思想は、3つの中で最も「ゲームらしい」です。</strong>横スクロール型という独自路線を選び、弾数上限（5発）・敵を逃すと減点というゲームデザインが加わっています。コードにも上下移動の境界チェックが実装されており、単なる動作確認を超えています。ただしスコア表示をHTMLのdivで実装するなど「見栄え」に寄った構成が、コードの見通しを下げています。</div>
-        <div class="obs-item"><strong>Claudeは最初から「壊れないこと」を考えて書いています。</strong>プレイヤー移動に<code>Math.max</code>・<code>Math.min</code>の境界クランプ、射撃クールダウン（連打防止）、ライフ制、ゲームオーバー後のリスタート——これらはすべて「ユーザーが何をしても壊れない」ための設計です。機能が多いのではなく、起こりうる状態を最初から潰しているということです。複雑な構造・長期メンテを要するプロジェクトでClaudeのコード品質が高く評価されている理由が、この80行に凝縮されています。</div>
+        <div class="obs-item"><strong>掲載されたClaudeのコードには、境界制限と再開処理があります。</strong>プレイヤー移動に<code>Math.max</code>・<code>Math.min</code>の境界クランプ、射撃クールダウン（連打防止）、ライフ制、ゲームオーバー後のリスタート——これらの処理は、このサンプルの操作と状態管理を助けます。ただし、すべての不具合を防ぐものではありません。端末による速度差やタッチ操作は別途確認が必要です。</div>
       </div>
     </div>
 
-    <p>「素早く動くプロトタイプを出したい」ならGPT、「最初から品質を意識したコードが欲しい」ならClaude——今回の実験で、うすいはこの使い分けをはっきり確信しました。</p>
+    <p>この掲載例では、GPTのコードは小さく、Claudeのコードには状態管理が多く含まれます。用途に必要な処理があるかを読むことが大切で、この結果だけで次の生成でも同じ差が出るとは言えません。</p>
 
-    <h2 id="s3">3つのAIを使い分けるなら</h2>
 
-    <p>3回の比較を通じて、それぞれの「得意な場面」がはっきり見えてきました。どれが最強ではなく、<strong>目的によって選ぶのが正解</strong>だと思っています。</p>
+    <h2 id="code-review">公開コードを読む：確認手順と直し方</h2>
+    <p>この節では、サイト上で公開している3つのゲームの実装を確認します。生成時の会話を再現する検証ではなく、読者が同じファイルで確認できるコードレビューです。デモにはタッチ操作用の追加コードも含まれるため、生成直後の出力そのものとは区別してください。</p>
+    <div class="eval-table-wrap"><table class="eval-table">
+      <thead><tr><th>確認項目</th><th>GPTの掲載例</th><th>Geminiの掲載例</th><th>Claudeの掲載例</th></tr></thead>
+      <tbody>
+        <tr><td>移動</td><td>左右。境界制限なし</td><td>上下。移動前に位置を判定</td><td>左右。Math.min/maxで位置を制限</td></tr>
+        <tr><td>射撃</td><td>keydownイベントで発射</td><td>キー保持中、弾が5個未満なら発射</td><td>キー保持中、10フレームの間隔で発射</td></tr>
+        <tr><td>敵を逃したとき</td><td>削除。スコアは変化しない</td><td>5点減点。0点未満にはならない</td><td>ライフ減少。0でゲーム終了</td></tr>
+        <tr><td>タッチ射撃</td><td>追加コードはキー状態を変えるだけで、発射処理にはつながらない</td><td>キー状態をupdateで読み取る</td><td>キー状態をupdateで読み取る</td></tr>
+      </tbody>
+    </table></div>
+    <p>参照するファイル：<a href="game-gpt.html">GPTの掲載デモ</a>／<a href="game-gem.html">Geminiの掲載デモ</a>／<a href="game-cla.html">Claudeの掲載デモ</a>。PCでは別タブで開き、ブラウザの「ページのソースを表示」からupdate・shoot・touchstartを探すと、表の根拠を確認できます。</p>
+    <h3>1. 境界チェックは「判定」と「制限」を分けて読む</h3>
+    <p>GPT版のupdateは左キーでplayer.xを6ずつ減らします。初期値180から31回更新すると−6になり、左端を越えます。Gemini版は移動前にplayer.y &gt; 0を確認しますが、上限・下限へ値を固定する処理ではないため、端数がある場合は1回分だけ境界を越える可能性があります。Claude版は移動後の値をMath.maxとMath.minで制限しています。</p>
+    <p>GPT版を教材として修正するなら、左右移動の直後に次の1行を加えます。右端の上限は「キャンバスの幅−プレイヤーの幅」です。掲載デモは比較用の状態を保持しているため、この修正は適用していません。</p>
+    <pre><code>player.x = Math.max(0, Math.min(canvas.width - player.width, player.x));</code></pre>
+    <h3>2. 画面にボタンがあっても、入力が処理につながっているか確認する</h3>
+    <p>GPT版のタッチボタンはkeys[' ']をtrueにします。一方、shootを呼ぶのはキーボードのkeydownイベントだけです。状態を変えても発射イベントは発生しないため、タッチの●ボタンからは射撃できません。修正する場合は、タッチ開始時にshootを呼ぶか、ほかの版と同様にupdateでキー状態と発射間隔を処理する必要があります。</p>
+    <h3>3. 10フレームは、どの端末でも同じ秒数ではない</h3>
+    <p>Claude版のcooldownは1更新につき1減ります。毎秒60更新なら10フレームは約0.167秒、120更新なら約0.083秒です。3つとも移動量をフレームごとに加算しているので、画面の更新頻度で速度が変わります。時間を基準にするゲームでは、requestAnimationFrameの時刻から経過秒を求め、移動量と待ち時間に反映します。</p>
+    <h3>自分で確かめる順番</h3>
+    <ol><li>PCでデモを別タブに開き、ゲーム画面をクリックしてから左右または上下キーを押す。</li><li>端まで移動し、画面外への移動を防ぐ処理があるかソースと照合する。</li><li>スペースを短く押す場合と長押しする場合を比べ、発射イベントとキー状態の違いを確認する。</li><li>スマートフォンでは移動ボタンと射撃ボタンを別々に試す。表示されているだけで動作すると判断しない。</li><li>端末・ブラウザ・確認日・操作・期待した動作・実際の結果を残す。モデル名だけで原因を決めない。</li></ol>
+    <p>確認対象は2026年10月7日時点の掲載ソースです。ゲームの乱数、フレーム数、入力方式が異なるため、スコアや画面の華やかさだけをAIの性能指標にはできません。これらの確認項目は、別のAIで生成したコードを公開するときにも使えます。</p>
+
+    <h2 id="s3">掲載例を用途に合わせて読む</h2>
+
+    <p>掲載したサンプルには、構成と処理の違いがあります。どれが最強ではなく、<strong>目的によって選ぶのが正解</strong>だと思っています。</p>
 
     <div class="eval-table-wrap"><table class="eval-table">
       <thead>
-        <tr><th>こんなときは…</th><th>おすすめ</th><th>理由</th></tr>
+        <tr><th>こんなときは…</th><th>確認する掲載例</th><th>理由</th></tr>
       </thead>
       <tbody>
-        <tr><td>とりあえず素早く動かしたい</td><td class="tx-gpt">ChatGPT</td><td>最短コードで即動く。迷ったらまずここ</td></tr>
-        <tr><td>Google系サービスと連携したい</td><td class="tx-gem">Gemini</td><td>Gmail・Docs・Chromeとそのまま使える</td></tr>
-        <tr><td>文章の精度・ニュアンスを重視</td><td class="tx-cla">Claude</td><td>長文・繊細な表現・一貫性に強み</td></tr>
-        <tr><td>きれいなコードが欲しい</td><td class="tx-cla">Claude</td><td>設計を意識した書き方、コメントが丁寧</td></tr>
+        <tr><td>とりあえず素早く動かしたい</td><td class="tx-gpt">ChatGPT</td><td>掲載コードは小さいが、境界や入力の修正が必要</td></tr>
+        <tr><td>Google系サービスと連携したい</td><td class="tx-gem">Gemini</td><td>連携の可否は公式プランとアカウントで別途確認</td></tr>
+        <tr><td>文章の精度・ニュアンスを重視</td><td class="tx-cla">Claude</td><td>中編の文体についての感想。正確さは別途確認</td></tr>
+        <tr><td>きれいなコードが欲しい</td><td class="tx-cla">Claude</td><td>掲載ゲームには境界制限・ライフ・再開処理がある</td></tr>
         <tr><td>見せるグラフ・実用的な出力</td><td class="tx-gem">Gemini</td><td>数字・構造・装飾のバランスが良い</td></tr>
         <tr><td>汎用的なたたき台が欲しい</td><td class="tx-gpt">ChatGPT</td><td>シンプルで改変しやすい</td></tr>
       </tbody>
@@ -416,19 +454,19 @@ plt.show()</code></pre>
       <div class="summary-title">後編のまとめ</div>
       <ul class="summary-list">
         <li>グラフコード：GPTは最短、Geminiは実用的な構造、Claudeはデザイン設計寄り。コードの「意図」が3つとも違います</li>
-        <li>ゲームコード：GPTは動くが境界バグあり、Geminiはゲームデザインに個性あり、Claudeは防御的で品質が最も高い</li>
-        <li>うすいの結論——「素早いプロトタイプならGPT、本番に近いコードを書くならClaude」。これは今後も変わらないと思います</li>
+        <li>ゲームコード：GPTは動くが境界バグあり、Geminiはゲームデザインに個性あり、Claudeは防御的で状態管理の処理が多い</li>
+        <li>うすいの結論——「素早いプロトタイプならGPT、本番に近いコードを書くならClaude」。これは掲載例についての感想で、モデルの更新後や別の課題では変わる可能性があります</li>
       </ul>
     </div>
 
     <div class="series-end">
       <div class="series-end-label">シリーズ完結</div>
       <div class="series-end-title">3回読んで、あなたの答えは出ましたか？</div>
-      <div class="series-end-body">前編でシェアと価格、中編で文章の個性、後編でコードの品質を比べてきました。「どれが最強」という問いの答えは、正直まだ存在しないと思っています。でも「どれを信頼するか」という問いには、うすいなりの答えが出ました。コードや長文はClaude。情報収集やリアルタイム調査はGemini。最初の一手やラフなアイデア出しはChatGPT。3つを使い分けるのではなく、用途ごとに「メイン」を決めてしまうのが、今のうすいには一番しっくりきています。</div>
+      <div class="series-end-body">前編で選び方と料金の確認先、中編で文章の個性、後編でコードの品質を比べてきました。「どれが最強」という問いの答えは、正直まだ存在しないと思っています。でも「どれを信頼するか」という問いには、うすいなりの答えが出ました。コードや長文はClaude。情報収集やリアルタイム調査はGemini。最初の一手やラフなアイデア出しはChatGPT。3つを使い分けるのではなく、用途ごとに「メイン」を決めてしまうのが、今のうすいには一番しっくりきています。</div>
     </div>
 
     <div class="source-note" style="margin-top:32px">
-      <p>出典：Playcode「ChatGPT vs Claude vs Gemini for Coding 2026」/ type.ai「Who Wrote it Better? Claude vs ChatGPT vs Gemini」/ AllAboutAI「AI Hallucination Report 2026」/ OpenAI「Sycophancy in GPT-4o」(2025年4月) / IntuitionLabs「Claude vs ChatGPT vs Copilot vs Gemini: 2026 Enterprise Guide」</p>
+      <p>このコードレビューの一次資料は、上記の公開デモ3ファイルです。APIの参照：<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/min">MDN：Math.min</a>／<a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/requestAnimationFrame">MDN：requestAnimationFrame</a>。参考資料はAPIの意味を確認するためのもので、AIの性能順位を裏付けるものではありません。</p>
     </div>
 
   </article>
@@ -438,7 +476,7 @@ plt.show()</code></pre>
     <div class="next-cards">
       <a href="../ai-compare/" class="next-card">
         <span class="next-card-tag" style="color:var(--cmp-tx)">前編</span>
-        <div class="next-card-title">シェア・価格・最新機能を比較</div>
+        <div class="next-card-title">選び方・料金の確認先を整理</div>
         <div class="next-card-arrow">→</div>
       </a>
       <a href="../ai-compare-2/" class="next-card">
@@ -455,6 +493,10 @@ plt.show()</code></pre>
       <div class="footer-copy">© 2026 USUI LAB</div>
     </div>
     <div class="footer-links">
+      <a href="/usuiblog/about/" class="footer-link">運営者・編集方針</a>
+      <a href="/usuiblog/privacy/" class="footer-link">プライバシー</a>
+      <a href="/usuiblog/contact/" class="footer-link">お問い合わせ</a>
+
       <a href="../" class="footer-link">← ブログ一覧</a>
       <a href="https://x.com/Usui_good" class="footer-link">X / Twitter</a>
     </div>

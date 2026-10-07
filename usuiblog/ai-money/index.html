@@ -231,6 +231,7 @@
       .teaser{padding:24px 22px}
       .footer{padding:32px 20px;flex-direction:column;gap:20px;align-items:flex-start}
     }
+      .footer-links { flex-wrap:wrap; }
   </style>
   <script type="application/ld+json">
 {
@@ -240,7 +241,7 @@
   "description": "「AIで稼ぐ」の現実を正直に書く。フリーランスデータ・収益化のハードル・最初の半年は支出しか増えなかった筆者の実体験まで。",
   "url": "https://usuilab.com/usuiblog/ai-money/",
   "datePublished": "2026-04-05",
-  "dateModified": "2026-04-10",
+  "dateModified": "2026-10-07",
   "author": { "@type": "Person", "name": "うすい", "url": "https://x.com/Usui_good" },
   "publisher": { "@type": "Organization", "name": "うすいのAI備忘録", "url": "https://usuilab.com/usuiblog/" },
   "image": "https://usuilab.com/assets/background.jpg",
@@ -314,7 +315,7 @@
       <div class="warning-title">「AI情報屋」を絶対に信じるな</div>
       <div class="warning-body">
         <p>この記事を読む前に、ひとつだけ言わせてください。</p>
-        <p>SNS上に溢れる<strong>「AIで月収100万円達成！」「副業で爆益！未経験でも3ヶ月でAIエンジニア！」</strong>という情報の発信者たち——彼らの大半は、<strong>AIで稼いでいるのではなく、「AIで稼ぐ方法を教えること」で稼いでいます。</strong>商品はAIの情報そのもの。実態は情報商材屋です。</p>
+        <p>SNS上に溢れる<strong>「AIで月収100万円達成！」「副業で爆益！未経験でも3ヶ月でAIエンジニア！」</strong>という情報の発信者たち——発信の内容だけでは、<strong>受託や製品の売上なのか、教材販売の売上なのか判断できません。</strong>根拠、費用、期間を確認せず、自分も同じ収入を得られると考えるのは避けたいところです。</p>
         <p>もっとはっきり言いましょう。<em>捕まってないだけの詐欺師です。</em>……冗談半分ですが、半分は本気です。高額なオンラインサロン、「限定コミュニティ」、謎の教材——再現性の低い成功体験を売りつけ、消えていくパターンを何度も見てきました。</p>
         <p><strong>彼らを信じて課金しないでください。この記事では、数字をちゃんと出しながら、現実を書きます。</strong></p>
       </div>
@@ -361,71 +362,11 @@
       </div>
     </div>
 
-    <h2 id="s2">データで見る「AI系収入」の実態</h2>
-    <p>
-      フリーランスプラットフォームと求人データから、実際の数字を整理します。
-    </p>
-
-    <div class="stat-row">
-      <div class="stat">
-        <div class="stat-num">+47%</div>
-        <div class="stat-label">AI関連スキル保有者の<br>時給プレミアム</div>
-        <div class="stat-src">Freelancer.com 2024</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">1,000%</div>
-        <div class="stat-label">ChatGPT登場後の<br>AI求人増加率（世界）</div>
-        <div class="stat-src">Upwork Skills Index 2024</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">750万〜</div>
-        <div class="stat-label">日本のAIエンジニア<br>平均年収（正社員）</div>
-        <div class="stat-src">doda / bizreach 2025</div>
-      </div>
-    </div>
-
-    <p>
-      「AI関連スキルを持つフリーランサーは時給が47%高い」は本当です。ただしこれは<strong>「元から時給の高いエンジニアやデータサイエンティストが、さらにAIを使えるようになった場合」</strong>の話がほとんどです。
-    </p>
-    <p>
-      「AIツールを使えます」だけの人が47%高い単価を取れるわけではありません。これは重要な見落としポイントです。
-    </p>
-
-    <div class="salary-grid">
-      <div class="salary-row">
-        <div class="salary-top">
-          <div class="salary-title">AIエンジニア（正社員・上位層）</div>
-          <div class="salary-range">1,200万〜1,800万円</div>
-        </div>
-        <div class="salary-bar-track"><div class="salary-bar-fill" style="width:90%"></div></div>
-        <div class="salary-note">大手・外資・スタートアップ。機械学習・LLMの深い実装スキルが条件</div>
-      </div>
-      <div class="salary-row">
-        <div class="salary-top">
-          <div class="salary-title">AI導入コンサルタント・PMレイヤー</div>
-          <div class="salary-range">700万〜1,100万円</div>
-        </div>
-        <div class="salary-bar-track"><div class="salary-bar-fill" style="width:68%"></div></div>
-        <div class="salary-note">業務知識＋AIツール活用。技術より提案力・導入実績が重要</div>
-      </div>
-      <div class="salary-row">
-        <div class="salary-top">
-          <div class="salary-title">AIフリーランス（業務自動化・Bot開発）</div>
-          <div class="salary-range">40万〜120万円 / 月</div>
-        </div>
-        <div class="salary-bar-track"><div class="salary-bar-fill" style="width:50%"></div></div>
-        <div class="salary-note">Pythonスキルと継続案件があれば。単発は単価が下がりやすい</div>
-      </div>
-      <div class="salary-row">
-        <div class="salary-top">
-          <div class="salary-title">AI画像・コンテンツ生成の副業</div>
-          <div class="salary-range">0〜数万円 / 月</div>
-        </div>
-        <div class="salary-bar-track"><div class="salary-bar-fill" style="width:18%"></div></div>
-        <div class="salary-note">競合が多く、差別化が難しい。ツール代がかさむことも</div>
-      </div>
-    </div>
-
+    <h2 id="s2">収益を見る前に、売上と利益を分ける</h2>
+    <p>職種名だけで収入は決まりません。以前掲載していた年収帯と増加率は、対象・期間・原資料の該当箇所を十分に示せていなかったため、2026年10月7日の更新で削除しました。ここでは自分の案件を評価するための計算方法を整理します。</p>
+    <div class="box box-gold"><div class="box-title">架空の見積もり例</div><p>1件3万円の作業を月2件受けたとすると、売上は6万円です。ツール費が月5千円、その他の直接費が5千円なら、税金等を考慮する前の差額は5万円になります。営業・制作・修正を合わせて40時間なら、差額を時間で割った値は1,250円です。これは相場や実績ではなく、計算用の仮定です。</p></div>
+    <p>作業時間には打ち合わせ、事実確認、修正、納品、保守も含めます。AIで下書きが早くなっても、検証や修正に時間がかかれば案件全体の利益は増えません。</p>
+    <p>最初の案件では「何を納品するか」「何回まで修正するか」「追加作業はどう扱うか」を書き出し、想定時間と実際の時間を比べると次の見積もりに使えます。請求額だけを成功指標にしないことが大切です。</p>
     <h2 id="s3">稼げている人の共通点</h2>
     <p>
       実際に収益を出しているAI活用者を見ると、共通するパターンがあります。
@@ -562,6 +503,10 @@
       <div class="footer-copy">AIって、むずかしくない。</div>
     </div>
     <div class="footer-links">
+      <a href="/usuiblog/about/" class="footer-link">運営者・編集方針</a>
+      <a href="/usuiblog/privacy/" class="footer-link">プライバシー</a>
+      <a href="/usuiblog/contact/" class="footer-link">お問い合わせ</a>
+
       <a href="../../" class="footer-link">ホーム</a>
       <a href="../" class="footer-link">ブログ一覧</a>
     </div>
