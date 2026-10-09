@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <base href="/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>レトロなラボ｜USUI LAB</title>
+    <meta name="description" content="USUI LAB（ウスイ研究所）- 個人開発プロジェクトの実験場">
+    <meta name="theme-color" content="#0a0a0a">
+    <!-- OGP -->
+    <meta property="og:title" content="レトロなラボ｜USUI LAB">
+    <meta property="og:description" content="個人開発プロジェクトの実験場。ブラウン管TVインターフェースで体験する没入型ポートフォリオ。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://usuilab.com/lab/">
+    <meta property="og:image" content="https://usuilab.com/assets/ogp.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://usuilab.com/lab/">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/avatar.png">
+    <link rel="apple-touch-icon" href="assets/avatar.png">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Permanent+Marker&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="tv-off">
+    <aside class="site-directory" aria-label="USUI LAB サイト案内">
+      <a class="directory-brand" href="/">USUI LAB / ウスイ研究所</a>
+      <p>レトロなテレビで遊べる、USUI LABの実験場。仕事の相談・制作事例はトップページへ。</p>
+      <nav aria-label="主要ページ">
+        <a href="/usuiblog/">記事一覧</a>
+        <a href="/usuiblog/ai-compare-3/">コード比較とデモ</a>
+        <a href="/jidori/">自作アプリ jidori</a>
+        <a href="/usuiblog/about/">運営者・編集方針</a>
+        <a href="/usuiblog/contact/">お問い合わせ</a>
+        <a href="/usuiblog/privacy/">プライバシー</a>
+      </nav>
+    </aside>
+
+    <!-- ========== FULL SCREEN TV INTERFACE ========== -->
+    <div class="tv-terminal" id="tv-terminal">
+        <!-- Room ambient (dark when TV off, slight glow when on) -->
+        <div class="room-ambient"></div>
+
+        <!-- CRT Monitor -->
+        <div class="crt-monitor">
+            <!-- TV Frame Image -->
+            <div class="tv-frame-image"></div>
+
+            <!-- Screen Area -->
+            <div class="screen-container">
+                <!-- CRT Effects Layer -->
+                <div class="crt-effects">
+                    <div class="scanlines"></div>
+                    <div class="scanline-thick"></div>
+                    <div class="screen-curve"></div>
+                    <div class="vignette"></div>
+                    <div class="screen-flicker"></div>
+                    <div class="rgb-shift"></div>
+                    <div class="static-noise" id="static-noise"></div>
+                </div>
+
+                <!-- Power ON Animation Layer -->
+                <div class="power-sequence" id="power-sequence">
+                    <div class="power-line"></div>
+                </div>
+
+                <!-- Screen Off State -->
+                <div class="screen-off" id="screen-off">
+                    <div class="crt-dot"></div>
+                </div>
+
+                <!-- VHS Overlay -->
+                <div class="vhs-ui" id="vhs-ui">
+                    <div class="vhs-top">
+                        <span class="vhs-rec">REC</span>
+                        <span class="vhs-play" id="vhs-play">PLAY <span class="play-icon">▶</span></span>
+                    </div>
+                    <div class="vhs-bottom">
+                        <span class="vhs-mode">SP</span>
+                        <span class="vhs-counter" id="vhs-counter">00:00:00</span>
+                    </div>
+                    <div class="vhs-channel" id="vhs-channel">CH-0</div>
+                </div>
+
+                <!-- Volume OSD -->
+                <div class="volume-osd" id="volume-osd">
+                    <span class="volume-label">VOL</span>
+                    <span class="volume-bar" id="volume-bar">███░░</span>
+                    <span class="volume-level" id="volume-level">3</span>
+                </div>
+
+                <!-- Channel Content Area -->
+                <div class="channels" id="channels">
+
+                    <!-- CH 0: Welcome / Standby -->
+                    <div class="channel active" data-channel="0">
+                        <div class="ch-standby">
+                            <div class="standby-noise"></div>
+                            <div class="standby-content">
+                                <div class="standby-logo">
+                                    <span class="logo-welcome">ようこそ</span>
+                                    <span class="logo-main">USUI LAB</span>
+                                    <span class="logo-sub">ウスイ研究所</span>
+                                </div>
+                                <div class="standby-hint">
+                                    <span class="hint-arrow">◀</span>
+                                    <span>SELECT CHANNEL</span>
+                                    <span class="hint-arrow">▶</span>
+                                </div>
+                                <div class="standby-channels">
+                                    <span>CH1: PROJECTS</span>
+                                    <span>CH2: BLOG</span>
+                                    <span>CH3: ABOUT</span>
+                                    <span>CH4: CONTACT</span>
+                                    <span>CH5: NEWS</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CH 1: Projects -->
+                    <div class="channel" data-channel="1">
+                        <div class="ch-projects">
+                            <div class="ch-header">
+                                <span class="ch-number">CH.01</span>
+                                <span class="ch-title">PROJECTS</span>
+                                <span class="ch-status on-air">● ON AIR</span>
+                            </div>
+
+                            <div class="projects-carousel" id="projects-carousel">
+                                <!-- Project 1: YouTube Shooting -->
+                                <div class="project-slide active" data-project="0">
+                                    <div class="project-badge released">✓ RELEASED</div>
+                                    <div class="project-icon">🎯</div>
+                                    <h2 class="project-name">YouTube Shooting</h2>
+                                    <p class="project-category">Chrome Extension</p>
+                                    <p class="project-desc">
+                                        YouTubeのコメントが弾幕になって襲いかかる！<br>
+                                        避けて撃って、コメントを制圧せよ。
+                                    </p>
+                                    <div class="project-demo">
+                                        <div class="demo-game" id="demo-game">
+                                            <div class="demo-score">SCORE: <span id="demo-score">0</span></div>
+                                            <div class="demo-bullets">
+                                                <span class="demo-bullet" style="--i:0">すごい！</span>
+                                                <span class="demo-bullet" style="--i:1">面白い</span>
+                                                <span class="demo-bullet" style="--i:2">最高www</span>
+                                            </div>
+                                            <div class="demo-player" id="demo-player">▲</div>
+                                            <div class="demo-gameover" id="demo-gameover">
+                                                <span class="gameover-text">GAME OVER</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="project-links">
+                                        <a href="youtube-shooting/" class="project-btn primary">▶ PLAY / 詳細</a>
+                                        <a href="https://github.com/tomatomilk203/Yotubeshooting" target="_blank" rel="noopener noreferrer" class="project-btn">GitHub</a>
+                                    </div>
+                                </div>
+
+                                <!-- Project 2: Brainrot -->
+                                <div class="project-slide" data-project="1">
+                                    <div class="project-badge released">✓ RELEASED</div>
+                                    <div class="project-icon" style="padding:0;overflow:hidden;border-radius:20%;width:6.2rem;height:6.2rem;"><img src="brainrot-collection/gameicon.png" style="width:100%;height:100%;object-fit:cover;border-radius:20%;display:block;"></div>
+                                    <h2 class="project-name">ブレインロットコレクターズ</h2>
+                                    <p class="project-category">iOS カジュアルコレクションゲーム</p>
+                                    <p class="project-desc">
+                                        50体以上のイタリアンブレインロットキャラを収集。<br>
+                                        時間帯・天気・ステージで出現が変わる本格コレクション。
+                                    </p>
+                                    <div class="project-demo">
+                                        <div class="demo-catch" id="demo-catch">
+                                            <div class="catch-hud">GET: <span id="catch-count">0</span></div>
+                                            <span class="catch-char bob" id="cc-0">🐬</span>
+                                            <span class="catch-char bob" id="cc-1">🦍</span>
+                                            <span class="catch-char bob" id="cc-2">🐪</span>
+                                            <span class="catch-char bob" id="cc-3">🩰</span>
+                                            <span class="catch-net" id="catch-net">🕸️</span>
+                                            <div class="catch-get" id="catch-get">GET!</div>
+                                        </div>
+                                    </div>
+                                    <div class="project-links">
+                                        <a href="brainrot-collection/" class="project-btn primary">▶ 詳細を見る</a>
+                                        <a href="https://apps.apple.com/jp/app/%E3%83%96%E3%83%AC%E3%82%A4%E3%83%B3%E3%83%AD%E3%83%83%E3%83%88%E3%82%B3%E3%83%AC%E3%82%AF%E3%82%BF%E3%83%BC%E3%82%BA/id6760715798" target="_blank" rel="noopener noreferrer" class="project-btn">App Store</a>
+                                    </div>
+                                </div>
+
+                                <!-- Project 3: jidori -->
+                                <div class="project-slide" data-project="2">
+                                    <div class="project-badge released">✓ RELEASED</div>
+                                    <div class="project-icon">📸</div>
+                                    <h2 class="project-name">jidori</h2>
+                                    <p class="project-category">iOS セルフィー記録アプリ</p>
+                                    <p class="project-desc">
+                                        毎日1枚の顔写真で、自分の成長を記録。<br>
+                                        日々では気づかない変化を、タイムラプスで実感。
+                                    </p>
+                                    <div class="project-demo">
+                                        <div class="demo-jidori" id="demo-jidori">
+                                            <div class="jidori-strip">
+                                                <div class="jidori-card jc0"><div class="jc-face"></div><span class="jc-day">DAY 1</span></div>
+                                                <div class="jidori-card jc1"><div class="jc-face"></div><span class="jc-day">DAY 30</span></div>
+                                                <div class="jidori-card jc2"><div class="jc-face"></div><span class="jc-day">DAY 90</span></div>
+                                                <div class="jidori-card jc3"><div class="jc-face"></div><span class="jc-day">DAY 365</span></div>
+                                            </div>
+                                            <div class="jidori-counter">
+                                                <span class="jidori-counter-num" id="jidori-day">1</span>
+                                                <span class="jidori-counter-unit">DAYS</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="project-links">
+                                        <a href="jidori/" class="project-btn primary">▶ 詳細を見る</a>
+                                    </div>
+                                </div>
+
+                                <!-- Project 4: Fall in Love -->
+                                <div class="project-slide" data-project="3">
+                                    <div class="project-badge indev">🚧 IN DEV</div>
+                                    <div class="project-icon">🪂</div>
+                                    <h2 class="project-name">Fall in Love</h2>
+                                    <p class="project-category">Steam ドロッパーゲーム</p>
+                                    <p class="project-desc">
+                                        故意に、落ちろ。<br>
+                                        どこまでも落ちていけ。ただし、死ぬな。
+                                    </p>
+                                    <div class="project-demo">
+                                        <div class="demo-dropper" id="demo-dropper">
+                                            <div class="drop-hud">DEPTH: <span id="drop-score">0</span>m</div>
+                                            <div class="drop-lanes">
+                                                <div class="drop-lane"></div>
+                                                <div class="drop-lane"></div>
+                                                <div class="drop-lane"></div>
+                                            </div>
+                                            <div class="drop-player" id="drop-player">▽</div>
+                                            <div class="drop-hit" id="drop-hit">MISS!</div>
+                                        </div>
+                                    </div>
+                                    <div class="project-links">
+                                        <a href="fall-in-love/" class="project-btn primary">▶ 詳細を見る</a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 番組インジケーター（ドットのみ、ボタンは外部に） -->
+                            <div class="carousel-dots" id="carousel-dots">
+                                <span class="dot active"></span>
+                                <span class="dot"></span>
+                                <span class="dot"></span>
+                                <span class="dot"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CH 2: Blog -->
+                    <div class="channel" data-channel="2">
+                        <div class="ch-blog">
+                            <div class="blog-bg-stripe s1"></div>
+                            <div class="blog-bg-stripe s2"></div>
+                            <div class="blog-bg-stripe s3"></div>
+
+                            <!-- Background animation blobs -->
+                            <div class="blog-blob b1"></div>
+                            <div class="blog-blob b2"></div>
+                            <div class="blog-blob b3"></div>
+                            <div class="blog-blob b4"></div>
+
+                            <!-- Left floating cards -->
+                            <div class="blog-float-col left">
+                                <a href="usuiblog/chatgpt/" class="bfc-card" style="--r:-3deg; --delay:.5s; text-decoration:none;">
+                                    <span class="bfc-tag" style="--tc:#ff5c1a;--tb:rgba(255,92,26,.15)">入門</span>
+                                    <span class="bfc-text">ChatGPTって<br>何者？</span>
+                                </a>
+                                <a href="usuiblog/gemini/" class="bfc-card" style="--r:2deg; --delay:.65s; text-decoration:none;">
+                                    <span class="bfc-tag" style="--tc:#ff5c1a;--tb:rgba(255,92,26,.15)">入門</span>
+                                    <span class="bfc-text">Geminiって<br>何？</span>
+                                </a>
+                                <div class="bfc-card" style="--r:-1.5deg; --delay:.8s">
+                                    <span class="bfc-tag" style="--tc:#7ecbb0;--tb:rgba(126,203,176,.15)">使い方</span>
+                                    <span class="bfc-text">今更聞けない<br>AI使い方</span>
+                                </div>
+                            </div>
+
+                            <!-- Center -->
+                            <div class="blog-body">
+                                <h2 class="blog-main-catch">超AI入門</h2>
+                                <p class="blog-sub-catch">～基礎はここで～</p>
+                                <a href="usuiblog/" class="blog-read-btn">
+                                    ▶ &nbsp;ブログを読む
+                                </a>
+                            </div>
+
+                            <!-- Right floating cards -->
+                            <div class="blog-float-col right">
+                                <div class="bfc-card" style="--r:3deg; --delay:.8s">
+                                    <span class="bfc-tag" style="--tc:#7ecbb0;--tb:rgba(126,203,176,.15)">使い方</span>
+                                    <span class="bfc-text">プロンプトって<br>何？</span>
+                                </div>
+                                <div class="bfc-card" style="--r:-2deg; --delay:.95s">
+                                    <span class="bfc-tag" style="--tc:#c4a8e0;--tb:rgba(196,168,224,.15)">疑問</span>
+                                    <span class="bfc-text">AIは嘘を<br>つく？</span>
+                                </div>
+                                <div class="bfc-card" style="--r:1.5deg; --delay:1.1s">
+                                    <span class="bfc-tag" style="--tc:#f0c060;--tb:rgba(240,192,96,.15)">最新</span>
+                                    <span class="bfc-text">AIは仕事を<br>奪うの？</span>
+                                </div>
+                            </div>
+
+                            <!-- Mascot + speech bubble -->
+                            <div class="blog-mascot">
+                                <img src="assets/avatar.png" alt="Usui" class="blog-avatar">
+                                <div class="blog-bubble">
+                                    ここで基礎は完全に抑えられる！
+                                    <div class="bubble-tail"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CH 3: About - Multiple Design Showcase -->
+                    <div class="channel" data-channel="3">
+                        <div class="ch-about">
+                            <!-- Glitch overlay for transitions -->
+                            <div class="profile-glitch" id="profile-glitch"></div>
+
+                            <!-- Design 1: Persona 5 Style -->
+                            <div class="profile-design persona5 active" data-design="0">
+                                <div class="p5-bg">
+                                    <div class="p5-stripe stripe-1"></div>
+                                    <div class="p5-stripe stripe-2"></div>
+                                    <div class="p5-stripe stripe-3"></div>
+                                    <div class="p5-stripe stripe-4"></div>
+                                </div>
+                                <!-- Decorations -->
+                                <div class="p5-decos">
+                                    <div class="p5-star star-1">★</div>
+                                    <div class="p5-star star-2">☆</div>
+                                    <div class="p5-star star-3">★</div>
+                                    <div class="p5-diamond diamond-1">◆</div>
+                                    <div class="p5-diamond diamond-2">◇</div>
+                                    <div class="p5-line line-1"></div>
+                                    <div class="p5-line line-2"></div>
+                                    <div class="p5-line line-3"></div>
+                                    <div class="p5-circle circle-1"></div>
+                                    <div class="p5-circle circle-2"></div>
+                                    <div class="p5-slash slash-1">//</div>
+                                    <div class="p5-slash slash-2">//</div>
+                                </div>
+                                <div class="p5-content">
+                                    <div class="p5-cutin">
+                                        <img src="assets/avatar.png" alt="Usui" class="p5-avatar">
+                                        <div class="p5-avatar-frame"></div>
+                                        <div class="p5-avatar-shadow"></div>
+                                    </div>
+                                    <div class="p5-info">
+                                        <div class="p5-name">
+                                            <span class="p5-name-main">USUI</span>
+                                            <span class="p5-name-sub">ウスイ</span>
+                                        </div>
+                                        <div class="p5-title">CREATOR × ENGINEER</div>
+                                        <div class="p5-services">
+                                            <div class="p5-service">
+                                                <span class="service-icon">▶</span>
+                                                <span class="service-text">AI / 生成AI</span>
+                                            </div>
+                                            <div class="p5-service">
+                                                <span class="service-icon">◆</span>
+                                                <span class="service-text">AI講師</span>
+                                            </div>
+                                            <div class="p5-service">
+                                                <span class="service-icon">■</span>
+                                                <span class="service-text">アプリ開発</span>
+                                            </div>
+                                            <div class="p5-service">
+                                                <span class="service-icon">★</span>
+                                                <span class="service-text">Web Design</span>
+                                            </div>
+                                        </div>
+                                        <div class="p5-skills">
+                                            <span class="p5-skill">JavaScript</span>
+                                            <span class="p5-skill">React</span>
+                                            <span class="p5-skill">Node.js</span>
+                                            <span class="p5-skill">Python</span>
+                                            <span class="p5-skill">Chrome Ext</span>
+                                            <span class="p5-skill">Figma</span>
+                                        </div>
+                                    </div>
+                                    <div class="p5-cta">WORK WITH ME →</div>
+                                </div>
+                                <div class="p5-corner tl"></div>
+                                <div class="p5-corner tr"></div>
+                                <div class="p5-corner bl"></div>
+                                <div class="p5-corner br"></div>
+                                <!-- P5 Terminal -->
+                                <div class="p5-terminal">
+                                    <div class="p5-terminal-header">
+                                        <span class="p5-terminal-icon">▶</span>
+                                        <span class="p5-terminal-title">COMMAND</span>
+                                        <span class="p5-terminal-hint">ここに入力 ↓</span>
+                                    </div>
+                                    <div class="p5-terminal-body">
+                                        <div class="p5-terminal-output" id="p5-terminal-output">TAKE YOUR TIME.</div>
+                                        <div class="p5-terminal-input-row">
+                                            <span class="p5-terminal-prompt">＞</span>
+                                            <input type="text" class="p5-terminal-input" id="p5-terminal-input" placeholder="try: help, sg ..." maxlength="30" autocomplete="off">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Design 2: Poolsuite/Windows Style -->
+                            <div class="profile-design windows" data-design="1">
+                                <div class="win-desktop">
+                                    <!-- Desktop Icons -->
+                                    <div class="win-icons">
+                                        <div class="win-icon">
+                                            <div class="icon-img">💾</div>
+                                            <span>Projects</span>
+                                        </div>
+                                        <div class="win-icon">
+                                            <div class="icon-img">📁</div>
+                                            <span>Skills</span>
+                                        </div>
+                                        <div class="win-icon">
+                                            <div class="icon-img">🌐</div>
+                                            <span>Internet</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Main Window (larger) -->
+                                    <div class="win-window main-window">
+                                        <div class="win-titlebar">
+                                            <span class="win-title">USUI.exe - Profile</span>
+                                            <div class="win-buttons">
+                                                <span class="win-btn minimize">─</span>
+                                                <span class="win-btn maximize">□</span>
+                                                <span class="win-btn close">×</span>
+                                            </div>
+                                        </div>
+                                        <div class="win-menubar">
+                                            <span>File</span>
+                                            <span>Edit</span>
+                                            <span>View</span>
+                                            <span>Help</span>
+                                        </div>
+                                        <div class="win-content">
+                                            <div class="win-profile">
+                                                <div class="win-avatar">
+                                                    <img src="assets/avatar.png" alt="Usui">
+                                                </div>
+                                                <div class="win-info">
+                                                    <div class="win-name">USUI</div>
+                                                    <div class="win-role">Creator & Engineer</div>
+                                                    <div class="win-status">
+                                                        <span class="status-dot"></span>
+                                                        <span>Online - Available for work</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="win-services">
+                                                <div class="win-service">▸ AI / 生成AI</div>
+                                                <div class="win-service">▸ AI講師</div>
+                                                <div class="win-service">▸ アプリ開発</div>
+                                                <div class="win-service">▸ Web Design</div>
+                                            </div>
+                                        </div>
+                                        <div class="win-statusbar">
+                                            <span>Ready</span>
+                                            <span>Tokyo, Japan</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Skills Window -->
+                                    <div class="win-window skills-window">
+                                        <div class="win-titlebar">
+                                            <span class="win-title">Skills.txt</span>
+                                            <div class="win-buttons">
+                                                <span class="win-btn close">×</span>
+                                            </div>
+                                        </div>
+                                        <div class="win-content notepad">
+                                            <p>// TECH STACK</p>
+                                            <p>JavaScript, React</p>
+                                            <p>Node.js, Python</p>
+                                            <p>Figma, Chrome Ext</p>
+                                            <p>&nbsp;</p>
+                                            <p>// HIRE ME →</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Memo Window -->
+                                    <div class="win-window memo-window">
+                                        <div class="win-titlebar">
+                                            <span class="win-title">MEMO.txt</span>
+                                            <div class="win-buttons">
+                                                <span class="win-btn close">×</span>
+                                            </div>
+                                        </div>
+                                        <div class="win-content notepad">
+                                            <p>■ 買い物リスト</p>
+                                            <p>☑ 人参</p>
+                                            <p>☑ じゃがいも</p>
+                                            <p>☑ アスパラ</p>
+                                            <p>☑ シチュールー</p>
+                                            <p>☑ カレールー</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tips Window -->
+                                    <div class="win-window tips-window">
+                                        <div class="win-titlebar tips-titlebar">
+                                            <span class="win-title">💡 Tips - 豆知識</span>
+                                            <div class="win-buttons">
+                                                <span class="win-btn close">×</span>
+                                            </div>
+                                        </div>
+                                        <div class="win-content tips-content">
+                                            <p class="tips-q">▸ 知ってた？</p>
+                                            <p class="tips-a">シロナガスクジラより大きいクラゲがおり、名前は<strong>キタユウレイクラゲ</strong>という</p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Error Window -->
+                                    <div class="win-window error-window">
+                                        <div class="win-titlebar error-titlebar">
+                                            <span class="win-title">⚠ Error</span>
+                                            <div class="win-buttons">
+                                                <span class="win-btn close">×</span>
+                                            </div>
+                                        </div>
+                                        <div class="win-content error-content">
+                                            <div class="error-body">
+                                                <span class="error-icon">⚠</span>
+                                                <span class="error-msg">才能が見つかりません<br>やる気で補いますか？</span>
+                                            </div>
+                                            <div class="error-buttons">
+                                                <span class="error-btn">はい</span>
+                                                <span class="error-btn active">はい</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Run/Command Window -->
+                                    <div class="win-window run-window">
+                                        <div class="win-titlebar">
+                                            <span class="win-title">▸ Run - ここに入力</span>
+                                            <div class="win-buttons">
+                                                <span class="win-btn close">×</span>
+                                            </div>
+                                        </div>
+                                        <div class="win-content run-content">
+                                            <div class="run-row">
+                                                <span class="run-label">Open:</span>
+                                                <input type="text" class="run-input" id="win-terminal-input" placeholder="try: help, sg ..." maxlength="30" autocomplete="off">
+                                            </div>
+                                            <div class="run-output" id="win-terminal-output">Ready.</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Taskbar -->
+                                    <div class="win-taskbar">
+                                        <div class="win-start">
+                                            <span class="start-logo">◈</span>
+                                            <span>Start</span>
+                                        </div>
+                                        <div class="win-tasks">
+                                            <div class="win-task active">USUI.exe</div>
+                                            <div class="win-task">Skills</div>
+                                            <div class="win-task">MEMO</div>
+                                            <div class="win-task">Tips</div>
+                                            <div class="win-task">⚠Err</div>
+                                            <div class="win-task">Run</div>
+                                        </div>
+                                        <div class="win-tray">
+                                            <span class="tray-time" id="win-time">00:00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Design 3: Cafe/Warm Style -->
+                            <div class="profile-design cafe" data-design="2">
+                                <!-- Rain -->
+                                <div class="cafe-rain" id="cafe-rain"></div>
+
+                                <div class="cafe-content">
+                                    <div class="cafe-header">
+                                        <span class="cafe-label">MENU</span>
+                                        <div class="cafe-line"></div>
+                                    </div>
+
+                                    <div class="cafe-profile">
+                                        <div class="cafe-avatar">
+                                            <img src="assets/avatar.png" alt="Usui">
+                                        </div>
+                                        <div class="cafe-name">Usui</div>
+                                        <div class="cafe-role">Creator & Engineer</div>
+                                    </div>
+
+                                    <div class="cafe-menu">
+                                        <div class="cafe-section">
+                                            <span class="section-title">- 本日のおすすめ -</span>
+                                        </div>
+                                        <div class="cafe-item">
+                                            <span class="item-name">AI / 生成AI</span>
+                                            <span class="item-dots"></span>
+                                            <span class="item-price">◎</span>
+                                        </div>
+                                        <div class="cafe-item">
+                                            <span class="item-name">AI講師</span>
+                                            <span class="item-dots"></span>
+                                            <span class="item-price">◎</span>
+                                        </div>
+                                        <div class="cafe-item">
+                                            <span class="item-name">アプリ開発</span>
+                                            <span class="item-dots"></span>
+                                            <span class="item-price">◎</span>
+                                        </div>
+                                        <div class="cafe-item">
+                                            <span class="item-name">Web Design</span>
+                                            <span class="item-dots"></span>
+                                            <span class="item-price">◎</span>
+                                        </div>
+                                        <div class="cafe-section sub">
+                                            <span class="section-title">- TECH -</span>
+                                        </div>
+                                        <div class="cafe-techs">
+                                            <span>JS</span><span>React</span><span>Node</span><span>Python</span><span>Figma</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="cafe-footer">
+                                        <div class="cafe-line"></div>
+                                        <span class="cafe-hours">OPEN : いつでもご相談ください</span>
+                                    </div>
+                                </div>
+
+                                <!-- Bottom: Terminal + Table with coffee -->
+                                <div class="cafe-bottom">
+                                    <div class="cafe-terminal">
+                                        <div class="cafe-terminal-header">ご注文は？</div>
+                                        <div class="cafe-terminal-body">
+                                            <div class="cafe-terminal-output" id="cafe-terminal-output">ごゆっくりどうぞ。</div>
+                                            <div class="cafe-terminal-input-row">
+                                                <span class="cafe-terminal-prompt">›</span>
+                                                <input type="text" class="cafe-terminal-input" id="cafe-terminal-input" placeholder="ここに入力" maxlength="30" autocomplete="off">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="cafe-table">
+                                        <div class="table-surface">
+                                            <div class="cafe-spill">
+                                                <div class="spill-cup">☕</div>
+                                                <div class="spill-drop drop-1"></div>
+                                                <div class="spill-drop drop-2"></div>
+                                                <div class="spill-stain stain-1"></div>
+                                                <div class="spill-stain stain-2"></div>
+                                                <div class="spill-stain stain-3"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Design 4: Secret - USUI LAB Old School Style -->
+                            <div class="profile-design fgl" data-design="3">
+                                <!-- 工事中バー上 -->
+                                <div class="fgl-construction-bar">
+                                    <span>🚧</span><span>🚧</span><span>🚧</span><span>UNDER CONSTRUCTION</span><span>🚧</span><span>🚧</span><span>🚧</span>
+                                </div>
+
+                                <div class="fgl-page">
+                                    <div class="fgl-counter">
+                                        <marquee behavior="alternate">★☆★ あなたは<span id="fgl-visitor">000198</span>人目の訪問者です ★☆★ ｷﾘ番ｹﾞｯﾄした人はBBSに報告してね！ ★☆★</marquee>
+                                    </div>
+
+                                    <div class="fgl-title-area">
+                                        <p class="fgl-welcome">☆★☆ ようこそ！！ ☆★☆</p>
+                                        <h1 class="fgl-title">ウスイラボのホームページ</h1>
+                                        <h2 class="fgl-subtitle">～ USUI LAB Homepage ～</h2>
+                                        <p class="fgl-est">Since 2024 // 管理人：ウスイ // <span class="fgl-new">NEW!</span></p>
+                                    </div>
+
+                                    <hr class="fgl-hr">
+
+                                    <div class="fgl-body">
+                                        <div class="fgl-left">
+                                            <div class="fgl-notice">
+                                                <p class="fgl-notice-title">◆ おしらせ ◆</p>
+                                                <p class="fgl-notice-text">・HP開設しました！！（工事中）<br>・無断リンク禁止です<br>・IE5.0推奨 800x600以上</p>
+                                            </div>
+
+                                            <p class="fgl-section-title">◆ 管理人プロフ ◆</p>
+                                            <table class="fgl-table" border="1" cellpadding="4" cellspacing="0">
+                                                <tr><td class="fgl-label">名前</td><td>USUI（ウスイ）</td></tr>
+                                                <tr><td class="fgl-label">所属</td><td>USUI LAB 主任研究員</td></tr>
+                                                <tr><td class="fgl-label">研究</td><td>AI / 生成AI / AI講師<br>アプリ開発 / Web Design</td></tr>
+                                                <tr><td class="fgl-label">機材</td><td>JS, React, Node.js,<br>Python, Figma</td></tr>
+                                                <tr><td class="fgl-label">状態</td><td><blink class="fgl-blink">■ 実験中</blink></td></tr>
+                                            </table>
+
+                                            <div class="fgl-hitokoto">
+                                                <p class="fgl-hitokoto-text">「世界は欺瞞に満ちている」</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="fgl-right">
+                                            <p class="fgl-section-title">◆ コンテンツ ◆</p>
+                                            <div class="fgl-links">
+                                                <a href="#" class="fgl-link">▶ トップページ</a><br>
+                                                <a href="#" class="fgl-link">▶ 実験記録（日記） <span class="fgl-new">NEW!</span></a><br>
+                                                <a href="#" class="fgl-link">▶ 作品集</a><br>
+                                                <a href="#" class="fgl-link">▶ ゲストブック</a><br>
+                                                <a href="#" class="fgl-link">▶ 管理人にメール</a><br>
+                                                <a href="#" class="fgl-link">▶ リンク集</a>
+                                            </div>
+
+                                            <!-- FGL Terminal -->
+                                            <div class="fgl-terminal">
+                                                <div class="fgl-terminal-header">
+                                                    <span>秘密の端末</span>
+                                                    <span class="fgl-terminal-hint">「reset」で戻る</span>
+                                                </div>
+                                                <div class="fgl-terminal-body">
+                                                    <div class="fgl-terminal-output" id="fgl-terminal-output">ようこそ、我がラボへ。</div>
+                                                    <div class="fgl-terminal-input-row">
+                                                        <span class="fgl-terminal-prompt">$</span>
+                                                        <input type="text" class="fgl-terminal-input" id="fgl-terminal-input" placeholder="ここに入力" maxlength="30" autocomplete="off">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="fgl-footer">
+                                                <div class="fgl-badges">
+                                                    <img src="https://img.shields.io/badge/HTML-1.0-orange" alt="" class="fgl-badge">
+                                                    <img src="https://img.shields.io/badge/CSS-none-blue" alt="" class="fgl-badge">
+                                                    <div class="fgl-banner">USUI<br>LAB</div>
+                                                </div>
+                                                <p class="fgl-copy">© 2026 USUI LAB.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 工事中バー下 -->
+                                <div class="fgl-construction-bar">
+                                    <span>🚧</span><span>🚧</span><span>🚧</span><span>UNDER CONSTRUCTION</span><span>🚧</span><span>🚧</span><span>🚧</span>
+                                </div>
+                            </div>
+
+                            <!-- Terminal placeholder for other designs -->
+                            <div class="profile-terminal-placeholder" id="profile-terminal-placeholder"></div>
+                        </div>
+                    </div>
+
+                    <!-- CH 4: Contact - Cream Simple Design -->
+                    <div class="channel" data-channel="4">
+                        <div class="ch-contact">
+                            <div class="contact-carousel" id="contact-carousel">
+
+                                <!-- Contact Program 0: Ad Style -->
+                                <div class="contact-slide active" data-contact="0">
+                                    <div class="ad-program">
+                                        <div class="ad-header">
+                                            <span class="ad-badge">📢 PR</span>
+                                            <span class="ad-header-text">こんなことにお困りではありませんか？</span>
+                                        </div>
+
+                                        <div class="ad-problems">
+                                            <div class="ad-problem">
+                                                <span class="problem-icon">😰</span>
+                                                <span class="problem-text">ちょっとしたツールが欲しい...</span>
+                                            </div>
+                                            <div class="ad-problem">
+                                                <span class="problem-icon">🤔</span>
+                                                <span class="problem-text">こんな機能あったらいいのに...</span>
+                                            </div>
+                                            <div class="ad-problem">
+                                                <span class="problem-icon">💡</span>
+                                                <span class="problem-text">誰かにアイデア聞いてほしい...</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="ad-solution">
+                                            <div class="solution-arrow">▼</div>
+                                            <div class="solution-text">そんなあなたに！</div>
+                                        </div>
+
+                                        <div class="ad-cta">
+                                            <div class="cta-main">USUI LAB</div>
+                                            <div class="cta-sub">お気軽にご連絡ください</div>
+                                            <div class="cta-hint">PROG ▶ で連絡先へ</div>
+                                        </div>
+
+                                        <div class="ad-disclaimer">※個人の趣味です。返信は気まぐれです。</div>
+                                    </div>
+                                </div>
+
+                                <!-- Contact Program 1: Links (Cream Design) -->
+                                <div class="contact-slide" data-contact="1">
+                                    <div class="cream-content">
+                                        <!-- Simple Header -->
+                                        <div class="cream-header">
+                                            <span class="cream-title">Contact</span>
+                                            <span class="cream-subtitle">Get in touch</span>
+                                        </div>
+
+                                        <!-- Contact Cards -->
+                                        <div class="cream-links">
+                                            <a href="https://github.com/tomatomilk203" target="_blank" rel="noopener noreferrer" class="cream-card">
+                                                <div class="card-icon github">
+                                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                                                    </svg>
+                                                </div>
+                                                <div class="card-info">
+                                                    <span class="card-name">GitHub</span>
+                                                    <span class="card-handle">@tomatomilk203</span>
+                                                </div>
+                                                <span class="card-arrow">→</span>
+                                            </a>
+
+                                            <a href="https://x.com/Usui_good" target="_blank" rel="noopener noreferrer" class="cream-card">
+                                                <div class="card-icon twitter">
+                                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                                                    </svg>
+                                                </div>
+                                                <div class="card-info">
+                                                    <span class="card-name">X (Twitter)</span>
+                                                    <span class="card-handle">@Usui_good</span>
+                                                </div>
+                                                <span class="card-arrow">→</span>
+                                            </a>
+
+                                            <a href="/usuiblog/privacy/" class="cream-card">
+                                                <div class="card-icon" style="background:#e8e6dc;color:#5e5d59;">
+                                                    <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+                                                        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                                                    </svg>
+                                                </div>
+                                                <div class="card-info">
+                                                    <span class="card-name">Privacy Policy</span>
+                                                    <span class="card-handle">プライバシーポリシー</span>
+                                                </div>
+                                                <span class="card-arrow">→</span>
+                                            </a>
+
+                                            <a href="/usuiblog/contact/" class="cream-card">
+                                                <div class="card-icon" style="background:#e8e6dc;color:#5e5d59;">
+                                                    <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+                                                        <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                                                    </svg>
+                                                </div>
+                                                <div class="card-info">
+                                                    <span class="card-name">Contact</span>
+                                                    <span class="card-handle">お問い合わせ</span>
+                                                </div>
+                                                <span class="card-arrow">→</span>
+                                            </a>
+                                        </div>
+
+                                        <!-- Footer -->
+                                        <div class="cream-footer">
+                                            <div class="footer-brand">USUI LAB</div>
+                                            <div class="footer-copy">© 2026 USUI LAB</div>
+                                            <div class="footer-note">個人の趣味で運営しています</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Contact Carousel Dots -->
+                            <div class="contact-dots" id="contact-dots">
+                                <span class="dot active"></span>
+                                <span class="dot"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CH 5: NEWS - Photo Slideshow -->
+                    <div class="channel" data-channel="5">
+                        <div class="ch-news">
+                            <div class="news-carousel" id="news-carousel">
+
+                                <!-- News Program 0: Caster Screen -->
+                                <div class="news-slide active" data-news="0">
+                                    <div class="news-studio">
+                                        <!-- Station Logo -->
+                                        <div class="news-logo"><span class="logo-top">UL</span><span class="logo-bottom">NEWS</span></div>
+
+                                        <!-- Caster Area -->
+                                        <div class="news-caster">
+                                            <img src="assets/news/caster.png" alt="Caster" class="caster-img">
+                                        </div>
+
+                                        <!-- Telop Area -->
+                                        <div class="news-telop">
+                                            <div class="telop-top-row">
+                                                <div class="telop-category">特集</div>
+                                                <div class="telop-program-name">UL NEWS</div>
+                                            </div>
+                                            <div class="telop-headline">美しい写真の数々　狙いは無しか？</div>
+                                            <div class="telop-sub">USUI LAB が届ける至高のフォトギャラリー</div>
+                                            <div class="news-hint">PROG ▶ でスライドショーへ</div>
+                                        </div>
+
+                                        <!-- Time Display -->
+                                        <div class="news-time" id="news-time">00:00</div>
+                                    </div>
+                                </div>
+
+                                <!-- News Program 1: Photo Slideshow -->
+                                <div class="news-slide" data-news="1">
+                                    <div class="news-slideshow">
+                                        <!-- Photo Container -->
+                                        <div class="slideshow-container" id="slideshow-container">
+                                            <img src="assets/news/photo-01.jpg" class="slideshow-photo active" data-index="0" alt="Photo 1">
+                                            <img src="assets/news/photo-02.jpg" class="slideshow-photo" data-index="1" alt="Photo 2" loading="lazy">
+                                            <img src="assets/news/photo-03.jpg" class="slideshow-photo" data-index="2" alt="Photo 3" loading="lazy">
+                                            <img src="assets/news/photo-04.jpg" class="slideshow-photo" data-index="3" alt="Photo 4" loading="lazy">
+                                            <img src="assets/news/photo-05.jpg" class="slideshow-photo" data-index="4" alt="Photo 5" loading="lazy">
+                                            <img src="assets/news/photo-06.jpg" class="slideshow-photo" data-index="5" alt="Photo 6" loading="lazy">
+                                            <img src="assets/news/photo-07.jpg" class="slideshow-photo" data-index="6" alt="Photo 7" loading="lazy">
+                                            <img src="assets/news/photo-08.jpg" class="slideshow-photo" data-index="7" alt="Photo 8" loading="lazy">
+                                        </div>
+
+                                        <!-- Slideshow UI -->
+                                        <div class="slideshow-ui">
+                                            <div class="slideshow-logo">UL NEWS</div>
+                                            <div class="slideshow-counter">
+                                                <span id="slideshow-current">1</span> / <span id="slideshow-total">8</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Progress Bar -->
+                                        <div class="slideshow-progress">
+                                            <div class="progress-bar" id="slideshow-progress-bar"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- News Carousel Dots -->
+                            <div class="news-dots" id="news-dots">
+                                <span class="dot active"></span>
+                                <span class="dot"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Control Panel (TV外に配置) -->
+        <div class="tv-controls">
+            <div class="power-hint" id="power-hint">
+                <span>▼ POWER</span>
+            </div>
+            <button class="ctrl-power" id="power-btn" title="電源">
+                <svg viewBox="0 0 24 24" class="power-icon">
+                    <path d="M12 3v9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M18.36 6.64A9 9 0 1 1 5.64 6.64" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                </svg>
+            </button>
+            <div class="ctrl-channels">
+                <button class="ctrl-ch ch-down" id="ch-down" title="CH-">◀</button>
+                <span class="ctrl-ch-display">CH</span>
+                <button class="ctrl-ch ch-up" id="ch-up" title="CH+">▶</button>
+            </div>
+            <div class="ctrl-programs">
+                <button class="ctrl-prog prog-prev" id="prog-prev" title="前の番組">◀</button>
+                <button class="ctrl-prog prog-next" id="prog-next" title="次の番組">▶</button>
+            </div>
+            <div class="ctrl-volume">
+                <button class="ctrl-vol vol-down" id="vol-down" title="音量-">−</button>
+                <button class="ctrl-vol vol-up" id="vol-up" title="音量+">＋</button>
+            </div>
+            <div class="ctrl-lang">
+                <button class="ctrl-lang-btn" id="lang-btn" title="Language">EN</button>
+            </div>
+        </div>
+
+        <!-- Keyboard hints -->
+        <div class="keyboard-hints" id="keyboard-hints">
+            <span>[SPACE] Power</span>
+            <span>[←→] Channel</span>
+            <span>[ESC] Off</span>
+        </div>
+    </div>
+
+    <script src="script.js" defer></script>
+
+    <!-- ========== MOBILE SITE (スマホ専用 / hidden on desktop) ========== -->
+    <div id="mobile-site">
+        <!-- Nav -->
+        <nav class="m-nav">
+            <span class="m-nav-logo">USUI LAB</span>
+            <button id="m-lang-btn" class="m-lang-btn">EN</button>
+        </nav>
+
+        <!-- Hero — dark, full-screen statement -->
+        <section class="m-hero">
+            <div class="m-hero-inner">
+                <img src="assets/avatar.png" alt="Usui" class="m-hero-avatar m-anim">
+                <h1 class="m-hero-name m-anim">USUI</h1>
+                <p class="m-hero-role m-anim" data-ja="Creator & Engineer" data-en="Creator & Engineer">Creator & Engineer</p>
+                <p class="m-hero-desc m-anim" data-ja="AIから個人アプリ開発まで、好奇心の赴くままに。" data-en="From AI to indie apps — wherever curiosity leads.">AIから個人アプリ開発まで、好奇心の赴くままに。</p>
+                <div class="m-hero-tags m-anim">
+                    <span data-ja="AI / 生成AI" data-en="AI / Gen AI">AI / 生成AI</span>
+                    <span data-ja="AI講師" data-en="AI Instructor">AI講師</span>
+                    <span data-ja="アプリ開発" data-en="App Dev">アプリ開発</span>
+                    <span>Web Design</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- About — first impression, trust-building -->
+        <section class="m-about" id="m-about">
+            <div class="m-about-card m-anim">
+                <img src="assets/avatar.png" alt="Usui" class="m-about-avatar">
+                <div class="m-about-text">
+                    <h3 class="m-about-name">USUI</h3>
+                    <p class="m-about-role" data-ja="Creator & Engineer — 福岡" data-en="Creator & Engineer — Fukuoka">Creator & Engineer — 福岡</p>
+                </div>
+            </div>
+            <p class="m-about-bio m-anim" data-ja="生成AIの活用支援からiOS/Webアプリの企画・開発まで、一気通貫で対応します。AI講師としての活動経験あり。「面白いものを、ちゃんと届ける」をモットーに、技術と表現の両面からプロダクトを形にしています。" data-en="From generative AI consulting to full-cycle iOS/Web app development. Active as an AI instructor. I turn ideas into products where technology meets expression.">生成AIの活用支援からiOS/Webアプリの企画・開発まで、一気通貫で対応します。AI講師としての活動経験あり。「面白いものを、ちゃんと届ける」をモットーに、技術と表現の両面からプロダクトを形にしています。</p>
+            <div class="m-about-services m-anim">
+                <span data-ja="AI活用支援" data-en="AI Consulting">AI活用支援</span>
+                <span data-ja="AI講師・登壇" data-en="AI Instructor">AI講師・登壇</span>
+                <span data-ja="アプリ開発" data-en="App Development">アプリ開発</span>
+                <span>Web Design</span>
+            </div>
+            <div class="m-about-stack m-anim">
+                <span>JavaScript</span><span>React</span><span>Node.js</span><span>Python</span><span>Swift</span><span>Figma</span>
+            </div>
+        </section>
+
+        <!-- Works — light parchment -->
+        <section class="m-works" id="m-projects">
+            <div class="m-sec-label m-anim" data-ja="Works" data-en="Works">Works</div>
+
+            <a href="youtube-shooting/" class="m-work m-anim">
+                <span class="m-work-num">01</span>
+                <div class="m-work-body">
+                    <h3 class="m-work-name">YouTube Shooting</h3>
+                    <p class="m-work-cat">Chrome Extension</p>
+                    <p class="m-work-desc" data-ja="YouTubeのコメントが弾幕になって襲いかかる。避けて撃って、制圧せよ。" data-en="YouTube comments become bullet hell. Dodge, shoot, conquer.">YouTubeのコメントが弾幕になって襲いかかる。避けて撃って、制圧せよ。</p>
+                </div>
+                <span class="m-work-arrow">&rarr;</span>
+            </a>
+
+            <a href="brainrot-collection/" class="m-work m-anim">
+                <span class="m-work-num">02</span>
+                <div class="m-work-body">
+                    <h3 class="m-work-name" data-ja="ブレインロットコレクターズ" data-en="Brainrot Collectors">ブレインロットコレクターズ</h3>
+                    <p class="m-work-cat" data-ja="iOS ゲーム" data-en="iOS Game">iOS ゲーム</p>
+                    <p class="m-work-desc" data-ja="50体以上のキャラを収集。時間帯・天気・ステージで出現が変わる。" data-en="Collect 50+ characters. Appearances vary by time, weather, and stage.">50体以上のキャラを収集。時間帯・天気・ステージで出現が変わる。</p>
+                </div>
+                <span class="m-work-arrow">&rarr;</span>
+            </a>
+
+            <a href="jidori/" class="m-work m-anim">
+                <span class="m-work-num">03</span>
+                <div class="m-work-body">
+                    <h3 class="m-work-name">jidori</h3>
+                    <p class="m-work-cat" data-ja="iOS アプリ" data-en="iOS App">iOS アプリ</p>
+                    <p class="m-work-desc" data-ja="毎日1枚の顔写真で、自分の成長を記録する。" data-en="Track your growth with one selfie a day.">毎日1枚の顔写真で、自分の成長を記録する。</p>
+                </div>
+                <span class="m-work-arrow">&rarr;</span>
+            </a>
+
+            <a href="fall-in-love/" class="m-work m-work-dev m-anim">
+                <span class="m-work-num">04</span>
+                <div class="m-work-body">
+                    <h3 class="m-work-name">Fall in Love <span class="m-work-badge">IN DEV</span></h3>
+                    <p class="m-work-cat" data-ja="Steam ゲーム" data-en="Steam Game">Steam ゲーム</p>
+                    <p class="m-work-desc" data-ja="故意に��落ちろ。" data-en="Fall on purpose.">故意に、落ちろ。</p>
+                </div>
+                <span class="m-work-arrow">&rarr;</span>
+            </a>
+        </section>
+
+        <!-- Blog — dark section -->
+        <section class="m-dark" id="m-blog">
+            <div class="m-sec-label m-anim" data-ja="Blog" data-en="Blog">Blog</div>
+            <p class="m-dark-catch m-anim" data-ja="超AI入門" data-en="AI for Beginners">超AI入門</p>
+            <div class="m-blog-list">
+                <a href="usuiblog/chatgpt/" class="m-blog-row m-anim">
+                    <span class="m-blog-tag">入門</span>
+                    <span class="m-blog-title" data-ja="ChatGPTって何者？" data-en="What is ChatGPT?">ChatGPTって何者？</span>
+                </a>
+                <a href="usuiblog/gemini/" class="m-blog-row m-anim">
+                    <span class="m-blog-tag">入門</span>
+                    <span class="m-blog-title" data-ja="Geminiって何？" data-en="What is Gemini?">Geminiって何？</span>
+                </a>
+                <a href="usuiblog/claude/" class="m-blog-row m-anim">
+                    <span class="m-blog-tag">入門</span>
+                    <span class="m-blog-title" data-ja="Claudeって何？" data-en="What is Claude?">Claudeって何？</span>
+                </a>
+                <a href="usuiblog/hallucination/" class="m-blog-row m-anim">
+                    <span class="m-blog-tag t2">疑問</span>
+                    <span class="m-blog-title" data-ja="AIは嘘をつく？" data-en="Does AI lie?">AIは嘘をつく？</span>
+                </a>
+                <a href="usuiblog/prompt/" class="m-blog-row m-anim">
+                    <span class="m-blog-tag t3">使い方</span>
+                    <span class="m-blog-title" data-ja="プロンプトって何？" data-en="What is a prompt?">プロンプトって何？</span>
+                </a>
+            </div>
+            <a href="usuiblog/" class="m-blog-more m-anim" data-ja="すべての記事を見る" data-en="View all articles">すべての記事を見る</a>
+        </section>
+
+        <!-- About — light (moved above Works for trust-first impression) -->
+        <!-- (About is now placed before Works section above) -->
+
+        <!-- Contact — dark -->
+        <section class="m-dark m-contact" id="m-contact">
+            <div class="m-sec-label m-anim" data-ja="Contact" data-en="Contact">Contact</div>
+            <div class="m-contact-links">
+                <a href="https://github.com/tomatomilk203" target="_blank" rel="noopener noreferrer" class="m-cta-link m-anim">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    <span>GitHub</span>
+                    <span class="m-cta-handle">@tomatomilk203</span>
+                </a>
+                <a href="https://x.com/Usui_good" target="_blank" rel="noopener noreferrer" class="m-cta-link m-anim">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    <span>X</span>
+                    <span class="m-cta-handle">@Usui_good</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Gallery -->
+        <section class="m-gallery" id="m-news">
+            <div class="m-gallery-grid">
+                <div class="m-gal-item m-anim"><img src="assets/news/photo-01.jpg" alt="" loading="lazy"></div>
+                <div class="m-gal-item m-anim"><img src="assets/news/photo-02.jpg" alt="" loading="lazy"></div>
+                <div class="m-gal-item m-anim"><img src="assets/news/photo-03.jpg" alt="" loading="lazy"></div>
+                <div class="m-gal-item m-anim"><img src="assets/news/photo-04.jpg" alt="" loading="lazy"></div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="m-footer">
+            <span class="m-footer-logo">USUI LAB</span>
+            <span class="m-footer-copy">© 2026</span>
+            <div style="margin-top:8px;font-size:11px;display:flex;gap:12px;justify-content:center;opacity:.5;">
+                <a href="/usuiblog/privacy/" style="color:inherit;text-decoration:none;">プライバシーポリシー</a>
+                <a href="/usuiblog/contact/" style="color:inherit;text-decoration:none;">お問い合わせ</a>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

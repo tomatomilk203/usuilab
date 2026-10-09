@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>仕事の相談・お問い合わせ｜USUI LAB</title>
+    <meta
+      name="description"
+      content="AI活用、アプリ開発、Web制作の相談窓口。相談内容をメールの下書きにまとめられます。予算や仕様が未定でも概要からご相談ください。"
+    />
+    <link rel="canonical" href="https://usuilab.com/contact/" />
+    <meta property="og:title" content="仕事の相談・お問い合わせ｜USUI LAB" />
+    <meta
+      property="og:description"
+      content="AI活用、アプリ開発、Web制作の相談窓口。相談内容をメールの下書きにまとめられます。予算や仕様が未定でも概要からご相談ください。"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://usuilab.com/contact/" />
+    <meta property="og:image" content="https://usuilab.com/assets/ogp.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#10191d" />
+    <link rel="icon" href="/assets/avatar.png" />
+    <link rel="stylesheet" href="/assets/site.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "headline": "仕事の相談・お問い合わせ｜USUI LAB",
+        "name": "仕事の相談・お問い合わせ｜USUI LAB",
+        "url": "https://usuilab.com/contact/",
+        "inLanguage": "ja",
+        "author": {
+          "@type": "Person",
+          "name": "USUI",
+          "url": "https://usuilab.com/usuiblog/about/"
+        }
+      }
+    </script>
+    <script src="/assets/site.js" defer></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">本文へ移動</a>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="brand" href="/">USUI<span> LAB.</span></a>
+        <nav class="nav-links" aria-label="主要ページ">
+          <a class="desktop-nav" href="/#services">できること</a
+          ><a href="/#works">制作事例</a
+          ><a class="desktop-nav" href="/usuiblog/">記事</a
+          ><a class="nav-contact" href="/contact/">仕事の相談 ↗</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <header class="page-hero">
+        <div class="wrap">
+          <nav class="breadcrumbs" aria-label="パンくず">
+            <a href="/">USUI LAB</a> / CONTACT
+          </nav>
+          <span class="eyebrow">CONTACT</span>
+          <h1>仕事の相談を、ここから。</h1>
+          <p class="lead">
+            つくりたいもの、今困っていることを教えてください。仕様書や予算が固まっていなくても、概要からご相談いただけます。
+          </p>
+        </div>
+      </header>
+      <div class="wrap body-grid">
+        <div>
+          <form class="brief-form" id="brief-form">
+            <div class="field">
+              <label for="topic">相談の種類</label
+              ><select id="topic" name="topic">
+                <option>AI活用</option>
+                <option>アプリ開発</option>
+                <option>Web制作</option>
+                <option>その他</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="name">お名前・会社名<span>任意</span></label
+              ><input
+                id="name"
+                name="name"
+                autocomplete="organization"
+                maxlength="100"
+                placeholder="例：ウスイ商店 / 山田"
+              />
+            </div>
+            <div class="field">
+              <label for="message">相談内容<span>必須</span></label
+              ><textarea
+                id="message"
+                name="message"
+                required
+                maxlength="1500"
+                aria-describedby="message-help"
+                placeholder="誰が使うものですか？
+今、どんなことで困っていますか？
+つくりたいものや参考URLがあれば教えてください。"
+              ></textarea>
+              <p class="field-help" id="message-help">
+                箇条書きでも大丈夫です。最大1,500文字。
+              </p>
+            </div>
+            <div class="field">
+              <label for="timing">希望時期<span>任意</span></label
+              ><input
+                id="timing"
+                name="timing"
+                maxlength="100"
+                placeholder="例：来春まで / まずは相談したい"
+              />
+            </div>
+            <div class="field">
+              <label for="budget">予算の目安<span>任意</span></label
+              ><input
+                id="budget"
+                name="budget"
+                maxlength="100"
+                placeholder="未定でも大丈夫です"
+              />
+            </div>
+            <button class="button primary" type="submit" disabled>
+              相談メールの下書きを作る ↓
+            </button>
+            <p class="form-hint">
+              ここでは送信されません。下書きを確認し、メールアプリから送信してください。入力内容はこのサイトに保存されません。
+            </p>
+            <pre
+              class="draft-preview"
+              id="draft-preview"
+              hidden
+              aria-label="相談メールの下書き"
+            ></pre>
+            <div class="actions draft-actions" id="draft-actions" hidden>
+              <a class="button primary" id="draft-mail">メールアプリで開く ↗</a
+              ><button type="button" class="button" id="copy-draft">
+                相談内容をコピーする
+              </button>
+            </div>
+            <p
+              class="status"
+              id="draft-status"
+              role="status"
+              aria-live="polite"
+            ></p>
+            <noscript
+              ><p class="form-hint">
+                下書き機能にはJavaScriptが必要です。記載のメールアドレスへ直接ご連絡ください。
+              </p></noscript
+            >
+          </form>
+          <section class="faq" aria-label="よくある質問">
+            <h2 style="font-size: 23px; margin: 35px 0 20px">
+              相談前に気になること。
+            </h2>
+            <details>
+              <summary>まだアイデアだけでも相談できますか？</summary>
+              <p>
+                はい。利用する人、困っていること、参考になるサービスがあれば、その情報から制作範囲を整理します。
+              </p>
+            </details>
+            <details>
+              <summary>費用と納期はどのくらいですか？</summary>
+              <p>
+                内容や必要な機能によって異なります。概要を伺ったうえで、対応範囲と見積もり、進め方を確認します。予算・希望時期がある場合は最初にお知らせください。
+              </p>
+            </details>
+            <details>
+              <summary>送信ボタンがないのはなぜですか？</summary>
+              <p>
+                このフォームはメールの下書きを作るためのものです。確認後にご自身のメールで送信することで、返信先も確実に伝えられます。メールアプリが開かない場合は下書きをコピーして送ってください。
+              </p>
+            </details>
+            <details>
+              <summary>記事の訂正やアプリの問い合わせもできますか？</summary>
+              <p>
+                「その他」を選び、記事のURLやアプリ名、内容をお知らせください。アプリの不具合は、端末・OS・再現する操作があると確認しやすくなります。
+              </p>
+            </details>
+          </section>
+        </div>
+        <aside>
+          <div class="aside-card">
+            <h2>直接メールする</h2>
+            <p>
+              フォームを使わず、普段使っているメールからもご相談いただけます。
+            </p>
+            <p style="overflow-wrap: anywhere; margin-top: 15px">
+              <a href="mailto:kyouya510@gmail.com">kyouya510@gmail.com</a>
+            </p>
+            <a
+              class="button"
+              href="mailto:kyouya510@gmail.com?subject=USUI%20LAB%E3%81%B8%E3%81%AE%E7%9B%B8%E8%AB%87"
+              >メールを書く ↗</a
+            >
+          </div>
+          <div class="aside-card">
+            <h2>最初に伝えるとよいこと</h2>
+            <ul>
+              <li>誰が使うものか</li>
+              <li>いま困っていること</li>
+              <li>参考URLや、つくりたいもの</li>
+              <li>予算・希望時期（決まっていれば）</li>
+            </ul>
+            <p>対応できる範囲は内容を確認してからお伝えします。</p>
+          </div>
+          <div class="aside-card">
+            <h2>公開している制作物</h2>
+            <p>
+              <a href="/works/youtube-shooting/">YouTube Shootingの制作事例</a>
+            </p>
+            <p><a href="/works/usuilab/">このサイトの改善事例</a></p>
+            <p><a href="/usuiblog/privacy/">情報の取り扱いについて</a></p>
+          </div>
+        </aside>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <div>
+          <a class="brand" href="/">USUI LAB.</a>
+          <p class="copyright">© 2026 USUI LAB</p>
+        </div>
+        <nav class="footer-links" aria-label="補助ページ">
+          <a href="/usuiblog/">記事</a><a href="/lab/">ラボ</a
+          ><a href="/usuiblog/about/">運営者</a
+          ><a href="/contact/">お問い合わせ</a
+          ><a href="/usuiblog/privacy/">プライバシー</a>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

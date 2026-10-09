@@ -744,7 +744,7 @@
   <section class="articles">
     <div class="section-head">
       <h2 class="section-title">記事一覧</h2>
-      <span class="section-count">11 articles</span>
+      <span class="section-count">13 articles</span>
     </div>
 
     <div class="cats">
@@ -756,7 +756,8 @@
       <button class="cat cat-compare">徹底比較</button>
     </div>
 
-    <!-- 三大AI ラベル -->
+    <div class="series-label"><span class="series-badge">PRACTICE</span>仕事と制作の準備</div><div class="grid"><a class="card" data-cat="howto" style="grid-column:1 / 7; --rot:-0.2deg; --accent:var(--mint); --wash:#b8e8d8;" href="ai-workflow/"><div class="card-wash"></div><span class="card-tag tag-howto">仕事の整理</span><h3 class="card-title">AIを仕事に入れる前に、<br>作業を切り分ける。</h3><p class="card-excerpt">問い合わせ返信の下書きを例に。任せる範囲と確認手順、比較の条件を整理します。</p><div class="card-foot"><span class="card-time">確認シート付き</span><div class="card-arrow">→</div></div></a><a class="card" data-cat="howto" style="grid-column:7 / 13; --rot:0.2deg; --accent:var(--terra); --wash:#f6c4a8;" href="app-brief/"><div class="card-wash"></div><span class="card-tag tag-howto">依頼の準備</span><h3 class="card-title">アプリの相談に、<br>仕様書はいらない。</h3><p class="card-excerpt">利用者・困りごと・最初の体験。jidoriと架空の相談例から、伝える情報をまとめます。</p><div class="card-foot"><span class="card-time">相談メモ付き</span><div class="card-arrow">→</div></div></a></div>
+<!-- 三大AI ラベル -->
     <div class="series-label">
       <span class="series-badge">SERIES</span>
       三大AI入門
@@ -935,7 +936,7 @@
       <a href="https://usuilab.com" class="footer-link">← usuilab.com</a>
       <a href="https://x.com/Usui_good" class="footer-link">X / Twitter</a>
       <a href="privacy/" class="footer-link">プライバシーポリシー</a>
-      <a href="contact/" class="footer-link">お問い合わせ</a>
+      <a href="/contact/" class="footer-link">仕事の相談・お問い合わせ</a>
     </div>
   </footer>
 
@@ -995,11 +996,16 @@
             }
           });
 
-          allGrids.forEach(g => g.classList.toggle('filtering', !isAll));
+          allGrids.forEach(grid => {
+            grid.classList.toggle('filtering', !isAll);
+            const hasCards = [...grid.querySelectorAll('a.card')].some(card => isAll || card.dataset.cat === cat);
+            grid.style.display = hasCards ? '' : 'none';
+          });
 
-          seriesLabels.forEach((el, i) => {
-            if (isAll) { el.style.display = ''; return; }
-            el.style.display = (i === 0 && cat === 'intro') || (i === 1 && cat !== 'intro') ? '' : 'none';
+          seriesLabels.forEach(label => {
+            const grid = label.nextElementSibling;
+            const hasCards = grid && [...grid.querySelectorAll('a.card')].some(card => isAll || card.dataset.cat === cat);
+            label.style.display = hasCards ? '' : 'none';
           });
 
           if (countEl) countEl.textContent = isAll ? `${allCards.length} articles` : `${shown} article${shown !== 1 ? 's' : ''}`;

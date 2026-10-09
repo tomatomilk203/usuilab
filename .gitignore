@@ -14,3 +14,7 @@ desktop.ini
 
 # Node (if ever added)
 node_modules/
+
+# Local QA and campaign export sources
+_local/
+.site-*.py

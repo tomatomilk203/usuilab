@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>アプリ開発を相談する前の6項目｜USUI LAB</title>
+    <meta
+      name="description"
+      content="アプリの依頼に必要な情報を、jidoriの公開機能と架空の相談例で整理。利用者・課題・最初の機能をまとめる相談メモ付き。"
+    />
+    <link rel="canonical" href="https://usuilab.com/usuiblog/app-brief/" />
+    <meta
+      property="og:title"
+      content="アプリ開発を相談する前の6項目｜USUI LAB"
+    />
+    <meta
+      property="og:description"
+      content="アプリの依頼に必要な情報を、jidoriの公開機能と架空の相談例で整理。利用者・課題・最初の機能をまとめる相談メモ付き。"
+    />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://usuilab.com/usuiblog/app-brief/" />
+    <meta property="og:image" content="https://usuilab.com/assets/ogp.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#10191d" />
+    <link rel="icon" href="/assets/avatar.png" />
+    <link rel="stylesheet" href="/assets/site.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "アプリ開発を相談する前の6項目｜USUI LAB",
+        "name": "アプリ開発を相談する前の6項目｜USUI LAB",
+        "url": "https://usuilab.com/usuiblog/app-brief/",
+        "inLanguage": "ja",
+        "author": {
+          "@type": "Person",
+          "name": "USUI",
+          "url": "https://usuilab.com/usuiblog/about/"
+        },
+        "datePublished": "2026-10-09",
+        "dateModified": "2026-10-09"
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">本文へ移動</a>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="brand" href="/">USUI<span> LAB.</span></a>
+        <nav class="nav-links" aria-label="主要ページ">
+          <a class="desktop-nav" href="/#services">できること</a
+          ><a href="/#works">制作事例</a
+          ><a class="desktop-nav" href="/usuiblog/">記事</a
+          ><a class="nav-contact" href="/contact/">仕事の相談 ↗</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <header class="page-hero">
+        <div class="wrap">
+          <nav class="breadcrumbs" aria-label="パンくず">
+            <a href="/">USUI LAB</a> / FIELD NOTES / APP
+          </nav>
+          <span class="eyebrow">FIELD NOTES / APP</span>
+          <h1>アプリ開発の相談に、<br />最初から仕様書はいらない。</h1>
+          <p class="lead">
+            誰が、いつ、何のために使うか。最初の相談では、機能の名前をたくさん挙げるより、利用する場面を一つ説明することから始められます。
+          </p>
+        </div>
+      </header>
+      <div class="wrap body-grid">
+        <article class="prose">
+          <p class="page-date">2026年10月9日 / 執筆・編集：USUI</p>
+          <h2>「何をつくるか」より「何を変えたいか」</h2>
+          <p>
+            アプリの相談で、ログイン、通知、ランキング、決済と機能を並べても、それが必要か判断する材料はまだ足りません。使う人が何に困り、どんな行動をできるようにしたいかを先に書きます。
+          </p>
+          <p>
+            たとえば「日々の変化を写真で残したいが、写真フォルダでは振り返りにくい」という課題なら、撮る・蓄積する・振り返る、の流れが見えます。そこから、最初に必要な画面を考えられます。
+          </p>
+          <h2>jidoriの公開機能を、利用場面で読む</h2>
+          <p>
+            USUI
+            LABで紹介しているjidoriは、毎日1枚、自分の顔を記録するiPhoneアプリです。App
+            Storeの公開説明では、撮影、写真の振り返り、タイムラプス、コメント・タグ、通知などを案内しています。以下はその公開機能をもとにした、依頼の準備としての整理例です。開発当時の議事録や実際の工数を再現したものではありません。
+          </p>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>利用する場面</th>
+                  <th>必要になる体験</th>
+                  <th>最初に聞きたいこと</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>今日の写真を撮る</td>
+                  <td>撮影と保存</td>
+                  <td>撮り直しはできるか、1日の区切りはいつか</td>
+                </tr>
+                <tr>
+                  <td>過去の写真を探す</td>
+                  <td>日付やタグで振り返る</td>
+                  <td>一覧と1枚表示のどちらが使いやすいか</td>
+                </tr>
+                <tr>
+                  <td>変化を見る</td>
+                  <td>写真を連続で再生する</td>
+                  <td>動画を書き出すか、アプリ内で見るか</td>
+                </tr>
+                <tr>
+                  <td>撮り忘れを減らす</td>
+                  <td>通知する</td>
+                  <td>通知の時刻を自分で決められるか</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h2>最初に決める機能、後から考える機能</h2>
+          <p>
+            新しいアイデアを試すなら、「撮る→保存する→振り返る」が成立するかを先に確認する方法があります。通知、共有、細かなタグ、課金などは、目的や公開条件に応じて優先順位を決めます。すべて後回しにできるという意味ではなく、最初の公開に必要な条件を分けるためです。
+          </p>
+          <p>
+            特にアカウント、複数端末の同期、写真やデータの保存場所は、画面の数だけでは判断できません。端末内に保存するのか、サーバーに送るのかで構成と運用が変わるため、早い段階で確認します。
+          </p>
+          <h2>相談メモは、この6項目から</h2>
+          <div class="brief-example">
+            <p>
+              1. 使う人：誰のためのものか<br />2.
+              困っていること：今のやり方のどこが不便か<br />3.
+              使う場面：いつ、どこで使うか<br />4.
+              最初の体験：最初にできるようにしたいこと<br />5.
+              参考サービス：近いものと、違いを出したい点<br />6.
+              条件：希望時期・予算・利用端末（未定でも可）
+            </p>
+          </div>
+          <p>
+            この6項目があれば、相談から画面・機能・優先順位の整理へ進めます。わからない部分は「未定」と書いて構いません。
+          </p>
+          <h2>架空の相談例</h2>
+          <div class="brief-example">
+            <p>
+              使う人：自宅で植物を育てる人<br />困りごと：写真が散らばり、成長を比較しにくい<br />使う場面：朝の水やり時に撮り、週末に見返す<br />最初の体験：植物を選ぶ、写真を撮る、過去と並べる<br />参考：写真日記アプリ。SNSへの公開は必要ない<br />条件：まずは自分のiPhoneで試したい。予算と時期は相談したい
+            </p>
+          </div>
+          <p>
+            ここから「植物を何種類登録するか」「写真をどこへ保存するか」「機種変更時の扱い」「比較画面の操作」を確認できます。詳細な仕様は、こうした会話を通して決めていきます。
+          </p>
+          <h2>見積もりを比べるときは、範囲を揃える</h2>
+          <p>
+            価格だけを見ると、画面設計や公開作業、修正の回数、更新対応が含まれるかを見落としやすくなります。何が成果物に含まれるか、どこまで動作確認するか、公開後に誰が更新するかを揃えて比較してください。
+          </p>
+          <p>
+            USUI
+            LABでも、相談内容を伺い、対応できる範囲と進め方を確認します。料金や完成までの日数を一律に示すより、最初に何を確かめるかを共有します。
+          </p>
+          <h2>参照した公開情報</h2>
+          <ul>
+            <li>
+              <a
+                href="https://apps.apple.com/jp/app/jidori-%E6%AF%8E%E6%97%A5%E3%81%AE%E9%A1%94%E3%82%92%E8%A8%98%E9%8C%B2/id6763513809"
+                >App Store / jidori（2026年10月9日確認）</a
+              >
+            </li>
+            <li><a href="/jidori/">USUI LAB / jidori紹介ページ</a></li>
+          </ul>
+          <div class="related-box">
+            <h2>つくりたいものを、数行のメモから。</h2>
+            <p>このひな形を使って、アイデアや課題をお送りください。</p>
+            <a
+              href="/contact/?topic=%E3%82%A2%E3%83%97%E3%83%AA%E9%96%8B%E7%99%BA"
+              >アプリ開発を相談する ↗</a
+            >
+          </div>
+        </article>
+        <aside>
+          <div class="aside-card">
+            <h2>この記事の使い方</h2>
+            <p>
+              最初の相談を準備するための整理例です。仕様・工数・費用は、作る内容や条件を確認して決めます。
+            </p>
+            <a
+              class="button"
+              href="/contact/?topic=%E3%82%A2%E3%83%97%E3%83%AA%E9%96%8B%E7%99%BA"
+              >相談メモをつくる ↗</a
+            >
+          </div>
+          <div class="aside-card">
+            <h2>公開アプリを見る</h2>
+            <p><a href="/jidori/">jidoriの紹介</a></p>
+            <p>
+              <a href="/brainrot-collection/"
+                >ブレインロットコレクターズの紹介</a
+              >
+            </p>
+            <p><a href="/usuiblog/">記事一覧へ</a></p>
+          </div>
+        </aside>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <div>
+          <a class="brand" href="/">USUI LAB.</a>
+          <p class="copyright">© 2026 USUI LAB</p>
+        </div>
+        <nav class="footer-links" aria-label="補助ページ">
+          <a href="/usuiblog/">記事</a><a href="/lab/">ラボ</a
+          ><a href="/usuiblog/about/">運営者</a
+          ><a href="/contact/">お問い合わせ</a
+          ><a href="/usuiblog/privacy/">プライバシー</a>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>

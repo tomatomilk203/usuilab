@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>YouTube Shootingの制作事例｜USUI LAB</title>
+    <meta
+      name="description"
+      content="YouTubeのコメントを弾幕ゲームに変えるChrome拡張。自主制作の目的、操作設計、公開物、技術構成を紹介します。"
+    />
+    <link rel="canonical" href="https://usuilab.com/works/youtube-shooting/" />
+    <meta property="og:title" content="YouTube Shootingの制作事例｜USUI LAB" />
+    <meta
+      property="og:description"
+      content="YouTubeのコメントを弾幕ゲームに変えるChrome拡張。自主制作の目的、操作設計、公開物、技術構成を紹介します。"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://usuilab.com/works/youtube-shooting/"
+    />
+    <meta property="og:image" content="https://usuilab.com/assets/ogp.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#10191d" />
+    <link rel="icon" href="/assets/avatar.png" />
+    <link rel="stylesheet" href="/assets/site.css" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "headline": "YouTube Shootingの制作事例｜USUI LAB",
+        "name": "YouTube Shootingの制作事例｜USUI LAB",
+        "url": "https://usuilab.com/works/youtube-shooting/",
+        "inLanguage": "ja",
+        "author": {
+          "@type": "Person",
+          "name": "USUI",
+          "url": "https://usuilab.com/usuiblog/about/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#main">本文へ移動</a>
+    <header class="site-header">
+      <div class="wrap header-inner">
+        <a class="brand" href="/">USUI<span> LAB.</span></a>
+        <nav class="nav-links" aria-label="主要ページ">
+          <a class="desktop-nav" href="/#services">できること</a
+          ><a href="/#works">制作事例</a
+          ><a class="desktop-nav" href="/usuiblog/">記事</a
+          ><a class="nav-contact" href="/contact/">仕事の相談 ↗</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <header class="page-hero">
+        <div class="wrap">
+          <nav class="breadcrumbs" aria-label="パンくず">
+            <a href="/">USUI LAB</a> / WORKS / CHROME EXTENSION
+          </nav>
+          <span class="eyebrow">WORKS / CHROME EXTENSION</span>
+          <h1>YouTubeのコメントを、<br />ゲームの遊びに。</h1>
+          <p class="lead">
+            YouTube
+            Shootingは、動画のコメントを弾幕として使うChrome拡張です。いつもの視聴画面に、遊びのレイヤーを重ねる自主制作プロジェクトです。
+          </p>
+        </div>
+      </header>
+      <div class="wrap body-grid">
+        <article class="prose">
+          <figure>
+            <img
+              src="/assets/works/youtube-shooting.png"
+              width="1440"
+              height="810"
+              alt="YouTube Shootingの公開紹介ページ"
+              loading="lazy"
+            />
+            <figcaption>
+              公開紹介ページのビジュアル。アプリ本体の実行キャプチャではありません。
+            </figcaption>
+          </figure>
+          <h2>何をつくったか</h2>
+          <p>
+            動画のコメントを敵として表示し、避けたり撃ったりして遊ぶゲームです。Chrome
+            Web
+            Storeで公開しており、紹介ページと公開コードから、利用方法や構成を確認できます。クライアント案件ではなく、自主制作として紹介しています。
+          </p>
+          <h2>体験の中心は「動画の上で遊ぶ」</h2>
+          <p>
+            動画と別の画面へ移るのではなく、視聴中の画面にゲームを重ねます。導入後は動画を開き、STARTボタンから開始。難易度を選び、マウスまたはキーボードで移動します。射撃は自動で、プレイヤーは移動と回避に集中する構成です。
+          </p>
+          <p>
+            同じ動画でも、コメントがゲームの素材になります。既存コンテンツを別の体験として扱う発想が、このプロジェクトの核です。
+          </p>
+          <h2>公開物から分かる設計</h2>
+          <ul>
+            <li>
+              <strong>入口を短くする：</strong>紹介ページからChrome Web
+              Storeへ直接移動し、インストール後の開始方法を案内しています。
+            </li>
+            <li>
+              <strong>操作を絞る：</strong
+              >自動射撃を採用し、初めて遊ぶ人も移動から始められます。
+            </li>
+            <li>
+              <strong>難易度を分ける：</strong
+              >EASY・NORMAL・HARD・HELLの4段階で、挑戦の幅を設けています。
+            </li>
+            <li>
+              <strong>続ける理由をつくる：</strong
+              >実績やコイン、機体スキンを用意し、繰り返し遊ぶ要素を加えています。
+            </li>
+          </ul>
+          <h2>技術の構成</h2>
+          <p>
+            公開リポジトリのREADMEでは、Manifest V3、JavaScript、Canvas、YouTube
+            Data API
+            v3を構成要素として示しています。紹介するのは公開コードの技術構成であり、ストア版とリポジトリが常に同じバージョンであることまでは確認していません。
+          </p>
+          <h2>成果物と、まだ測れていないこと</h2>
+          <p>
+            確認できる成果物は、公開されたChrome拡張、紹介ページ、コードです。利用者の継続率や、どの操作で離脱するかの分析結果はここでは示していません。公開できたことと、ユーザーに継続して使われることは別の課題として扱います。
+          </p>
+          <p>
+            次に評価するなら「紹介ページからストアへ進んだ割合」「初回ゲーム開始」「繰り返し遊んだか」を分けて確認します。数字を出す場合は、期間・計測方法・対象を合わせて掲載する必要があります。
+          </p>
+          <h2>同じ考え方を、仕事に使うなら</h2>
+          <p>
+            「普段の作業や閲覧の流れに、小さな機能を足したい」という相談にも、利用場面・入口・最初の操作を分けて考えられます。拡張機能で実現できるか、独立したWebアプリがよいかは、必要な権限や利用環境を確認して判断します。
+          </p>
+          <h2>公開先・参照資料</h2>
+          <ul>
+            <li>
+              <a
+                href="https://chromewebstore.google.com/detail/mdndofnojmpkmglofeioeikbgpjbphka"
+                >Chrome Web Store / YouTube Shooting</a
+              >
+            </li>
+            <li>
+              <a href="https://github.com/tomatomilk203/Yotubeshooting"
+                >公開コードとREADME</a
+              >
+            </li>
+            <li><a href="/youtube-shooting/">機能と遊び方の紹介ページ</a></li>
+          </ul>
+          <p class="page-date">
+            公開情報の確認・事例作成：2026年10月9日 / USUI
+          </p>
+        </article>
+        <aside>
+          <div class="aside-card">
+            <h2>プロジェクト概要</h2>
+            <dl>
+              <dt>種別</dt>
+              <dd>自主制作 / Chrome拡張</dd>
+              <dt>利用する人</dt>
+              <dd>YouTube視聴と弾幕ゲームを楽しみたい人</dd>
+              <dt>公開物</dt>
+              <dd>拡張機能・紹介ページ・公開コード</dd>
+              <dt>主な技術</dt>
+              <dd>JavaScript / Canvas / Manifest V3</dd>
+            </dl>
+            <a
+              class="button primary"
+              href="https://chromewebstore.google.com/detail/mdndofnojmpkmglofeioeikbgpjbphka"
+              >ストアで見る ↗</a
+            >
+          </div>
+          <div class="aside-card">
+            <h2>小さな機能をつくりたい方へ</h2>
+            <p>
+              利用する場面と、いまの操作を教えてください。実現する範囲から整理します。
+            </p>
+            <a class="button" href="/contact/?topic=Web%E5%88%B6%E4%BD%9C"
+              >制作を相談する ↗</a
+            >
+          </div>
+        </aside>
+      </div>
+      <section class="contact-band">
+        <div class="wrap">
+          <div>
+            <h2>「こんなこと、できる？」から。</h2>
+            <p>課題やアイデアを数行で。予算・時期が未定でもご相談ください。</p>
+          </div>
+          <div class="actions">
+            <a class="button primary" href="/contact/">仕事の相談をする ↗</a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div class="wrap footer-inner">
+        <div>
+          <a class="brand" href="/">USUI LAB.</a>
+          <p class="copyright">© 2026 USUI LAB</p>
+        </div>
+        <nav class="footer-links" aria-label="補助ページ">
+          <a href="/usuiblog/">記事</a><a href="/lab/">ラボ</a
+          ><a href="/usuiblog/about/">運営者</a
+          ><a href="/contact/">お問い合わせ</a
+          ><a href="/usuiblog/privacy/">プライバシー</a>
+        </nav>
+      </div>
+    </footer>
+  </body>
+</html>
