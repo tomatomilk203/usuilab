@@ -21,9 +21,9 @@
     <meta property="og:url" content="https://usuilab.com/" />
     <meta property="og:image" content="https://usuilab.com/assets/ogp.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#10191d" />
+    <meta name="theme-color" content="#10150f" />
     <link rel="icon" href="/assets/avatar.png" />
-    <link rel="stylesheet" href="/assets/site.css" />
+    <link rel="stylesheet" href="/assets/front.css" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -39,340 +39,399 @@
         }
       }
     </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap"
+      rel="stylesheet"
+    />
+    <script src="/assets/front.js" defer></script>
   </head>
   <body>
     <a class="skip" href="#main">本文へ移動</a>
-    <header class="site-header">
-      <div class="wrap header-inner">
-        <a class="brand" href="/">USUI<span> LAB.</span></a>
-        <nav class="nav-links" aria-label="主要ページ">
-          <a class="desktop-nav" href="/#services">できること</a
-          ><a href="/#works">制作事例</a
-          ><a class="desktop-nav" href="/usuiblog/">記事</a
-          ><a class="nav-contact" href="/contact/">仕事の相談 ↗</a>
+    <header class="topbar">
+      <div class="shell">
+        <a class="wordmark mono" href="/">USUI<i> LAB_</i></a>
+        <nav class="topnav mono" aria-label="主要ページ">
+          <a href="#works">つくったもの</a
+          ><a class="wide-link" href="/usuiblog/">実験ノート</a
+          ><a class="ask" href="/contact/">仕事の相談 ↗</a>
         </nav>
       </div>
     </header>
     <main id="main">
       <section class="hero">
-        <div class="wrap hero-grid">
-          <div>
-            <span class="eyebrow">FUKUOKA / AI · APPS · WEB</span>
-            <h1>
-              そのアイデアを、<span class="hero-break"
-                ><span class="highlight">使えるかたちへ。</span></span
-              >
-            </h1>
-            <p class="lead">
-              AIを仕事に取り入れたい。アプリを試作したい。<br />サービスが伝わるWebサイトをつくりたい。<br />USUI
-              LABは、課題の整理から制作までを考える個人のラボです。
-            </p>
-            <div class="actions">
-              <a class="button primary" href="/contact/"
-                >つくりたいものを相談する ↗</a
-              ><a class="button" href="#works">制作事例を見る ↓</a>
+        <div class="shell">
+          <div class="room-note mono">
+            <span
+              ><span class="status-dot"></span>福岡の個人開発室 / USUI LAB</span
+            ><span class="extra">APPS, AI, AND A LITTLE WEIRDNESS.</span>
+          </div>
+          <div class="hero-grid">
+            <div class="hero-copy">
+              <p class="hand-note mono">好奇心からできています。</p>
+              <h1>
+                <span>おもしろそう。</span
+                ><span class="lime">で、つくる。</span>
+              </h1>
+              <p class="lead">
+                YouTubeのコメントを、弾幕に。<br />毎日の顔を、タイムラプスに。<br />AIとアプリで、思いつきを触れるものにする<br />ウスイの開発室です。
+              </p>
+              <div class="hero-links mono">
+                <a href="#works"
+                  >実験の成果を見る <span aria-hidden="true">↓</span></a
+                ><a href="/contact/"
+                  >いっしょにつくる <span aria-hidden="true">↗</span></a
+                >
+              </div>
             </div>
-            <p class="note">
-              仕様・予算がまだ決まっていなくても、概要からご相談いただけます。
+            <div>
+              <div class="television">
+                <div class="tape-label mono">
+                  本日の実験<span id="experiment-description"
+                    >コメント欄と戦ってみる。</span
+                  >
+                </div>
+                <div class="tv-screen">
+                  <div class="screen-ui mono">
+                    <span>USUI LAB / ON AIR</span
+                    ><span
+                      ><span id="screen-stat-name">SCORE</span>
+                      <span id="screen-score">000</span></span
+                    >
+                  </div>
+                  <canvas
+                    id="lab-canvas"
+                    width="640"
+                    height="400"
+                    tabindex="0"
+                    aria-label="コメント弾幕のミニ実験。12秒あそぶボタンで開始し、左右キー、マウス、タッチで左右に移動します。"
+                    >このテレビでは小さなコメント弾幕を試せます。作品の説明と配信先は下の制作物一覧にあります。</canvas
+                  >
+                  <p class="screen-label" id="screen-label">
+                    コメントを撃つ、ここだけのミニ実験。
+                  </p>
+                </div>
+                <img
+                  class="tv-frame"
+                  src="/assets/tv-frame.png"
+                  width="1536"
+                  height="1024"
+                  alt="コーヒーとCDが置かれた作業机のブラウン管テレビ"
+                  fetchpriority="high"
+                />
+              </div>
+              <div class="tv-controls mono" aria-label="テレビの操作">
+                <button id="experiment-start" type="button" disabled>
+                  12秒あそぶ</button
+                ><button
+                  type="button"
+                  data-channel="shoot"
+                  aria-pressed="true"
+                  disabled
+                >
+                  CH 01</button
+                ><button
+                  type="button"
+                  data-channel="diary"
+                  aria-pressed="false"
+                  disabled
+                >
+                  CH 02</button
+                ><button id="experiment-pause" type="button" disabled>
+                  一時停止
+                </button>
+              </div>
+              <p class="tv-caption">
+                ここだけのミニ実験。アプリ本体の画面ではありません。<br /><a
+                  href="/lab/"
+                  >もっとディープなテレビの世界へ ↗</a
+                >
+              </p>
+              <p
+                id="experiment-status"
+                class="sr-only"
+                role="status"
+                aria-live="polite"
+              ></p>
+              <noscript
+                ><p class="tv-caption">
+                  テレビの操作にはJavaScriptが必要です。作品の紹介は下からご覧いただけます。
+                </p></noscript
+              >
+            </div>
+          </div>
+          <div class="room-floor">
+            <p>
+              AI活用・アプリ試作・Web制作も。<br /><a href="/contact/"
+                >「これ、つくれる？」から相談できます。</a
+              >
+            </p>
+            <div class="stamp" aria-hidden="true">MADE<br />BY USUI</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="files" id="works">
+        <div class="shell">
+          <p class="section-label mono">01 / 実験ファイル</p>
+          <div class="section-top">
+            <h2>気になったら、<br />作っちゃうので。</h2>
+            <p>
+              公開中の自主制作です。<br />使い方も、考えた過程も置いてあります。
             </p>
           </div>
-          <div class="lab-board">
-            <div class="board-head">
-              <span><span class="board-dot"></span>USUI LAB / OUTPUT</span
-              ><span>01—03</span>
+          <article class="file">
+            <div>
+              <span class="file-number">FILE 001 / CHROME EXTENSION</span>
+              <h3>
+                コメント欄と、<br />戦えるようにしてみた。<small
+                  >YouTube Shooting</small
+                >
+              </h3>
+              <p>
+                動画を見ながら、コメントを撃って避ける。<br />いつものYouTubeに、ちょっと余計な楽しみを足したChrome拡張。マウスでもキーボードでも遊べます。
+              </p>
+              <div class="file-links">
+                <a href="/works/youtube-shooting/">つくった話を読む ↗</a
+                ><a
+                  href="https://chromewebstore.google.com/detail/mdndofnojmpkmglofeioeikbgpjbphka"
+                  >Chromeに入れる ↗</a
+                >
+              </div>
             </div>
-            <h2 class="board-title">
-              考える。つくる。<br />公開して、育てる。
-            </h2>
-            <a class="output-row" href="/works/youtube-shooting/"
-              ><span
-                ><strong>YouTube Shooting</strong
-                ><small>コメントを遊びに変える / Chrome拡張</small></span
-              ><span aria-hidden="true">↗</span></a
-            ><a class="output-row" href="/jidori/"
-              ><span
-                ><strong>jidori</strong
-                ><small>毎日1枚、自分を記録 / iPhoneアプリ</small></span
-              ><span aria-hidden="true">↗</span></a
-            ><a class="output-row" href="/works/usuilab/"
-              ><span
-                ><strong>USUI LAB</strong
-                ><small>作品と相談をつなぐ / Webサイト</small></span
-              ><span aria-hidden="true">↗</span></a
+            <a
+              class="file-visual youtube-art"
+              href="/youtube-shooting/"
+              aria-label="YouTube Shootingの遊び方を見る"
+              ><span class="visual-meta">COMMENT → BULLET HELL</span
+              ><span class="flying-comment c1">最高www</span
+              ><span class="flying-comment c2">なんで作った？</span
+              ><span class="flying-comment c3">おもしろい！</span
+              ><span class="play-symbol" aria-hidden="true">▶</span
+              ><span class="visual-title">YouTube Shooting</span></a
             >
-            <div class="board-foot">SMALL IDEAS. REAL PRODUCTS.</div>
-          </div>
-        </div>
-      </section>
-      <div class="intro-strip">
-        <div class="wrap">
-          <span>福岡を拠点に活動する USUI / Creator &amp; Engineer</span
-          ><span>自主制作のアプリ・Web・AIの検証を公開中</span>
-        </div>
-      </div>
-      <section class="section" id="services">
-        <div class="wrap">
-          <div class="section-head">
+          </article>
+          <article class="file">
             <div>
-              <span class="eyebrow">01 / SERVICES</span>
-              <h2>こんな相談に、応えます。</h2>
-            </div>
-            <p>誰の何を楽にするかを、一緒に整理します。</p>
-          </div>
-          <div class="service-grid">
-            <article class="service">
-              <span class="index">01 / AI</span>
-              <h3>AIを、日々の仕事へ。</h3>
+              <span class="file-number">FILE 002 / IPHONE APP</span>
+              <h3>今日の顔を、<br />未来の自分に残す。<small>jidori</small></h3>
               <p>
-                小さなチームや個人の、文章作成・情報整理などの仕事に。AIを使う作業と、結果の確認方法を考えます。
+                毎日1枚、顔を撮る。それだけ。<br />積み重ねた写真がタイムラプスになります。変化も、変わらなかった日も、あとからまとめて見返せる記録アプリ。
               </p>
-              <ul>
-                <li>作業の整理と、AIに任せる範囲の検討</li>
-                <li>プロンプト・確認手順の試作</li>
-                <li>使い方の説明・学習支援</li>
-              </ul>
-              <a class="text-link" href="/contact/?topic=AI%E6%B4%BB%E7%94%A8"
-                >AI活用について相談する ↗</a
-              >
-            </article>
-            <article class="service">
-              <span class="index">02 / APP</span>
-              <h3>アイデアを、小さく試す。</h3>
-              <p>
-                新しいサービスを考えている方へ。最初に必要な機能を絞り、iOS・Webアプリで実際に触れるかたちを目指します。
-              </p>
-              <ul>
-                <li>利用場面・必要な画面の整理</li>
-                <li>画面設計とアプリの試作</li>
-                <li>公開に向けた機能・導線の検討</li>
-              </ul>
-              <a
-                class="text-link"
-                href="/contact/?topic=%E3%82%A2%E3%83%97%E3%83%AA%E9%96%8B%E7%99%BA"
-                >アプリ開発について相談する ↗</a
-              >
-            </article>
-            <article class="service">
-              <span class="index">03 / WEB</span>
-              <h3>伝わって、相談される。</h3>
-              <p>
-                サービスや作品を紹介したい方へ。見た目と一緒に、説明・事例・問い合わせまでの順番を設計します。
-              </p>
-              <ul>
-                <li>サイトの内容とページ構成の整理</li>
-                <li>スマートフォンに対応した制作</li>
-                <li>問い合わせ・配信先への導線改善</li>
-              </ul>
-              <a class="text-link" href="/contact/?topic=Web%E5%88%B6%E4%BD%9C"
-                >Web制作について相談する ↗</a
-              >
-            </article>
-          </div>
-        </div>
-      </section>
-      <section class="section dark" id="works">
-        <div class="wrap">
-          <div class="section-head">
-            <div>
-              <span class="eyebrow">02 / SELECTED WORKS</span>
-              <h2>つくったもの。考えたこと。</h2>
-            </div>
-            <p>公開中の自主制作を、目的・設計・成果物の順に紹介します。</p>
-          </div>
-          <div class="work-grid">
-            <article class="work">
-              <a
-                class="work-art"
-                href="/works/youtube-shooting/"
-                aria-label="YouTube Shootingの制作事例"
-                ><img
-                  src="/assets/works/youtube-shooting.png"
-                  width="1440"
-                  height="810"
-                  loading="lazy"
-                alt="公開中のYouTube Shooting紹介ページ。コメントをゲームにするChrome拡張の紹介"
-              /></a>
-              <div class="work-body">
-                <div class="tags">
-                  <span>自主制作</span><span>Chrome Extension</span>
-                </div>
-                <h3>YouTubeのコメントを、<br />ゲームの遊びに。</h3>
-                <p>
-                  動画を見る場面に、コメントと戦う弾幕ゲームを重ねたChrome拡張。操作、難易度、導入までの流れを紹介します。
-                </p>
-                <a class="text-link" href="/works/youtube-shooting/"
-                  >YouTube Shootingの事例を読む ↗</a
-                >
-              </div>
-            </article>
-            <article class="work">
-              <a
-                class="work-art"
-                href="/works/usuilab/"
-                aria-label="USUI LABのサイト改善事例"
-                ><img
-                  src="/assets/works/usuilab.png"
-                  width="1440"
-                  height="810"
-                  loading="lazy"
-                  alt="USUI LABのトップページ。相談内容と公開作品を並べた構成"
-              /></a>
-              <div class="work-body">
-                <div class="tags">
-                  <span>自サイト改善</span><span>Web Design</span>
-                </div>
-                <h3>作品を見せるサイトから、<br />相談できるサイトへ。</h3>
-                <p>
-                  レトロなラボの個性を残しながら、サービス説明・制作事例・連絡方法を整備。変更前後の判断を公開します。
-                </p>
-                <a class="text-link" href="/works/usuilab/"
-                  >USUI LABの改善事例を読む ↗</a
-                >
-              </div>
-            </article>
-          </div>
-          <div class="project-row">
-            <article class="mini-project">
-              <div>
-                <h3>jidori / iPhone</h3>
-                <p>毎日1枚の写真を、タイムラプスの記録へ。</p>
-                <a href="/jidori/">アプリの紹介</a
+              <div class="file-links">
+                <a href="/jidori/">アプリをのぞく ↗</a
                 ><a
                   href="https://apps.apple.com/jp/app/jidori-%E6%AF%8E%E6%97%A5%E3%81%AE%E9%A1%94%E3%82%92%E8%A8%98%E9%8C%B2/id6763513809"
-                  >App Store ↗</a
+                  >App Storeで見る ↗</a
                 >
               </div>
-            </article>
-            <article class="mini-project">
-              <img
-                src="/brainrot-collection/gameicon.png"
-                width="62"
-                height="62"
-                loading="lazy"
-                alt="ブレインロットコレクターズのアイコン"
-              />
-              <div>
-                <h3>ブレインロットコレクターズ / iOS</h3>
-                <p>キャラクターを集めて楽しむコレクションゲーム。</p>
-                <a href="/brainrot-collection/">ゲームの紹介</a
+            </div>
+            <a
+              class="file-visual jidori-art"
+              href="/jidori/"
+              aria-label="jidoriの紹介を見る"
+              ><span class="visual-meta">ONE DAY. ONE PHOTO.</span>
+              <div class="photo-strip">
+                <figure>
+                  <img
+                    src="/assets/avatar.png"
+                    width="97"
+                    height="97"
+                    loading="lazy"
+                    alt="記録のイメージとして使ったUSUIのアイコン"
+                  />
+                  <figcaption>DAY 001</figcaption>
+                </figure>
+                <figure>
+                  <img
+                    src="/assets/avatar.png"
+                    width="97"
+                    height="97"
+                    loading="lazy"
+                    alt="同じアイコンを並べた記録のイメージ"
+                  />
+                  <figcaption>DAY 030</figcaption>
+                </figure>
+                <figure>
+                  <img
+                    src="/assets/avatar.png"
+                    width="97"
+                    height="97"
+                    loading="lazy"
+                    alt="同じアイコンを並べた記録のイメージ"
+                  />
+                  <figcaption>DAY 365</figcaption>
+                </figure>
+              </div>
+              <span class="jidori-logo">jidori.</span
+              ><span class="concept-label"
+                >記録のイメージ / アプリ画面ではありません</span
+              ></a
+            >
+          </article>
+          <article class="file">
+            <div>
+              <span class="file-number">FILE 003 / IOS GAME</span>
+              <h3>
+                この変なやつらを、<br />集めたくなった。<small
+                  >ブレインロットコレクターズ</small
+                >
+              </h3>
+              <p>
+                クセのあるキャラクターを、集めて楽しむ。<br />イタリアンブレインロットのコレクションゲーム。どんなゲームか、紹介ページからのぞいてみてください。
+              </p>
+              <div class="file-links">
+                <a href="/brainrot-collection/">ゲームをのぞく ↗</a
                 ><a
                   href="https://apps.apple.com/jp/app/%E3%83%96%E3%83%AC%E3%82%A4%E3%83%B3%E3%83%AD%E3%83%83%E3%83%88%E3%82%B3%E3%83%AC%E3%82%AF%E3%82%BF%E3%83%BC%E3%82%BA/id6760715798"
-                  >App Store ↗</a
+                  >App Storeで見る ↗</a
                 >
               </div>
-            </article>
-          </div>
-        </div>
-      </section>
-      <section class="section" id="process">
-        <div class="wrap">
-          <div class="section-head">
-            <div>
-              <span class="eyebrow">03 / HOW WE WORK</span>
-              <h2>まず、何をつくるかから。</h2>
             </div>
-            <p>費用や納期は、相談内容と制作範囲を確認してからお伝えします。</p>
-          </div>
-          <div class="process-grid">
-            <article class="step">
-              <span class="index">STEP 01</span>
-              <h3>目的を聞く</h3>
-              <p>
-                誰が使うのか、今どこで困っているのか、どうなれば成功か。大まかなメモや参考URLからでも始められます。
-              </p>
-            </article>
-            <article class="step">
-              <span class="index">STEP 02</span>
-              <h3>範囲を決める</h3>
-              <p>
-                最初に必要な機能・画面と、後から追加することを分けます。成果物・費用・進め方は着手前に確認します。
-              </p>
-            </article>
-            <article class="step">
-              <span class="index">STEP 03</span>
-              <h3>触って、確かめる</h3>
-              <p>
-                制作した画面や試作品を見ながら確認します。公開先・更新方法まで含め、引き渡す内容を相談します。
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-      <section class="section" id="notes">
-        <div class="wrap">
-          <div class="section-head">
-            <div>
-              <span class="eyebrow">04 / FIELD NOTES</span>
-              <h2>つくる前に、読んでおく。</h2>
-            </div>
-            <a href="/usuiblog/">記事一覧へ ↗</a>
-          </div>
-          <div class="reading-grid">
-            <a class="reading" href="/usuiblog/ai-workflow/"
-              ><small>AI / 仕事の整理</small>
-              <h3>AIを仕事に入れる前に、<br />一つの作業を切り分ける。</h3>
-              <p>
-                問い合わせ返信を例に、任せる部分・人が確認する部分・比較する項目を具体化します。
-              </p>
-              <span class="text-link">確認シート付きの記事を読む ↗</span></a
-            ><a class="reading" href="/usuiblog/app-brief/"
-              ><small>APP / 依頼の準備</small>
-              <h3>アプリ開発の相談に、<br />最初から仕様書はいらない。</h3>
-              <p>
-                利用者、困りごと、最初の機能。jidoriの公開機能を例に、相談に必要な情報を整理します。
-              </p>
-              <span class="text-link">相談メモの例を読む ↗</span></a
+            <a
+              class="file-visual brainrot-art"
+              href="/brainrot-collection/"
+              aria-label="ブレインロットコレクターズの紹介を見る"
+              ><span class="visual-meta">COLLECT THE WEIRD ONES.</span
+              ><img
+                src="/brainrot-collection/gameicon.png"
+                width="185"
+                height="185"
+                loading="lazy"
+                alt="ブレインロットコレクターズのアプリアイコン"
+              /><span class="visual-title">ブレインロットコレクターズ</span></a
             >
+          </article>
+          <div class="index-links">
+            <p>見せ方も、つくるものの一部です。</p>
+            <a href="/works/usuilab/">このサイトをつくった話 ↗</a>
           </div>
         </div>
       </section>
-      <section class="section" id="about">
-        <div class="wrap about-grid">
-          <img
-            class="portrait"
-            src="/assets/avatar.png"
-            width="180"
-            height="180"
-            loading="lazy"
-            alt="USUIのプロフィールアイコン"
-          />
-          <div>
-            <span class="eyebrow">05 / ABOUT</span>
-            <h2>USUI / つくりながら、考える人。</h2>
+
+      <section class="notes" id="notes">
+        <div class="shell">
+          <p class="section-label mono">02 / 実験ノート</p>
+          <div class="section-top">
+            <h2>つくったあとに、<br />考えたこと。</h2>
             <p>
-              福岡を拠点に、AIの活用や個人アプリ・Webの制作に取り組んでいます。公開アプリやコード、AIの比較記事を通して、つくったものと考えた過程を紹介しています。相談の内容を聞き、対応できる範囲と進め方を確認します。
+              AIの比較から、仕事に使う手順まで。<br />分かったことと、まだ分からないことを。
             </p>
-            <div class="about-links">
-              <a href="/usuiblog/about/">運営者・編集方針</a
-              ><a href="https://github.com/tomatomilk203">GitHub ↗</a
-              ><a href="https://x.com/Usui_good">X ↗</a
-              ><a href="/lab/">レトロなラボで遊ぶ ↗</a>
+          </div>
+          <a class="note-row" href="/usuiblog/ai-compare-3/"
+            ><small class="mono">AI<br />比較</small>
+            <div>
+              <h3>同じゲームを、3つのAIに書かせたら。</h3>
+              <p>
+                生成されたコードと、動かせるデモを並べて見る。操作や確認が必要な点も整理しています。
+              </p>
             </div>
+            <span class="arrow" aria-hidden="true">↗</span></a
+          ><a class="note-row" href="/usuiblog/ai-workflow/"
+            ><small class="mono">AI<br />仕事</small>
+            <div>
+              <h3>便利そう、の先まで考える。</h3>
+              <p>
+                問い合わせ返信を例に、AIに任せる部分と人が確認する部分を分ける。確認シート付き。
+              </p>
+            </div>
+            <span class="arrow" aria-hidden="true">↗</span></a
+          ><a class="note-row" href="/usuiblog/app-brief/"
+            ><small class="mono">APP<br />相談</small>
+            <div>
+              <h3>アプリのアイデアはある。仕様書はない。</h3>
+              <p>
+                それなら、誰が使うかと困りごとから。最初に伝えたい情報を6項目にまとめました。
+              </p>
+            </div>
+            <span class="arrow" aria-hidden="true">↗</span></a
+          >
+          <p class="note-footer">
+            <a href="/usuiblog/">ノートを全部めくる ↗</a>
+          </p>
+        </div>
+      </section>
+
+      <section class="commission" id="services">
+        <div class="shell commission-grid">
+          <div>
+            <p class="section-label mono">03 / いっしょにつくる</p>
+            <h2>あなたの<br />「つくりたい」も、<br />聞かせてください。</h2>
+            <p class="intro">
+              好奇心のある企画も、毎日のちょっとした不便も。<br />誰がどう使うかから考えて、AI・アプリ・Webで形にしていきます。
+            </p>
+          </div>
+          <div>
+            <div class="commission-item">
+              <span>AI</span
+              ><a href="/contact/?topic=AI%E6%B4%BB%E7%94%A8"
+                ><h3>その作業、AIとできる？ ↗</h3>
+                <p>
+                  作業を切り分け、プロンプトと確認手順を試す。使い方の説明・学習支援も相談できます。
+                </p></a
+              >
+            </div>
+            <div class="commission-item">
+              <span>APP</span
+              ><a
+                href="/contact/?topic=%E3%82%A2%E3%83%97%E3%83%AA%E9%96%8B%E7%99%BA"
+                ><h3>まず、触れるものをつくりたい。 ↗</h3>
+                <p>
+                  最初の機能と画面を絞って、iOS・Webアプリの試作へ。利用場面の整理から始めます。
+                </p></a
+              >
+            </div>
+            <div class="commission-item">
+              <span>WEB</span
+              ><a href="/contact/?topic=Web%E5%88%B6%E4%BD%9C"
+                ><h3>ちゃんと伝わるサイトにしたい。 ↗</h3>
+                <p>
+                  説明・作品・相談先までの流れを考え、スマートフォンでも読めるかたちにします。
+                </p></a
+              >
+            </div>
+            <a class="big-ask" href="/contact/"
+              >「これ、つくれる？」を送る <span aria-hidden="true">↗</span></a
+            >
+            <p class="commission-note">
+              仕様・予算は未定でも大丈夫。対応範囲・費用・納期は内容を確認してから相談します。
+            </p>
           </div>
         </div>
       </section>
-      <section class="contact-band">
-        <div class="wrap">
-          <div>
-            <h2>「こんなこと、できる？」から。</h2>
-            <p>課題やアイデアを数行で。予算・時期が未定でもご相談ください。</p>
-          </div>
-          <div class="actions">
-            <a class="button primary" href="/contact/">仕事の相談をする ↗</a>
+
+      <section class="maker" id="about">
+        <div class="shell">
+          <div class="maker-grid">
+            <img
+              src="/assets/avatar.png"
+              width="85"
+              height="85"
+              loading="lazy"
+              alt="USUIのプロフィールアイコン"
+            />
+            <div>
+              <p class="section-label mono">この部屋の人</p>
+              <h2>USUI / ウスイ</h2>
+              <p>
+                福岡を拠点に、AIとアプリとWebを触っています。<br />思いついたものをつくって、公開して、また考える。<br />コードや制作物、検証した内容をここに置いています。
+              </p>
+              <nav class="maker-links" aria-label="USUIについて">
+                <a href="/usuiblog/about/">運営者・編集方針</a
+                ><a href="https://github.com/tomatomilk203">GitHub ↗</a
+                ><a href="https://x.com/Usui_good">X ↗</a>
+              </nav>
+            </div>
           </div>
         </div>
       </section>
     </main>
-    <footer class="site-footer">
-      <div class="wrap footer-inner">
-        <div>
-          <a class="brand" href="/">USUI LAB.</a>
-          <p class="copyright">© 2026 USUI LAB</p>
-        </div>
-        <nav class="footer-links" aria-label="補助ページ">
-          <a href="/usuiblog/">記事</a><a href="/lab/">ラボ</a
-          ><a href="/usuiblog/about/">運営者</a
-          ><a href="/contact/">お問い合わせ</a
+    <footer class="footer">
+      <div class="shell">
+        <p class="mono">© 2026 USUI LAB / MADE WITH CURIOSITY.</p>
+        <nav aria-label="補助ページ">
+          <a href="/contact/">お問い合わせ</a><a href="/lab/">テレビの奥へ</a
           ><a href="/usuiblog/privacy/">プライバシー</a>
         </nav>
       </div>

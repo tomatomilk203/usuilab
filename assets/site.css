@@ -605,6 +605,7 @@ button:disabled {
 .prose figure img {
   border: 1px solid var(--line);
   border-radius: 5px;
+  height: auto;
 }
 .prose figcaption {
   font-size: 12px;

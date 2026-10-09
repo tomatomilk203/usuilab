@@ -4,11 +4,11 @@
 
 ## 1. サイト更新の告知 / X
 
-ウスイラボを見直しました。
-AI活用・アプリ開発・Web制作について、相談できることと制作事例をまとめています。
+ウスイラボに、遊べるテレビを置きました。
+YouTubeのコメントを弾幕にしたり、毎日の顔を動画にしたり。
+「おもしろそう。で、つくる。」が集まる個人開発室です。
 
-「こんなこと、できる？」という段階から相談できます。
-公開作品と、つくった過程も載せています。
+アプリと制作の話、AI活用・アプリ・Web制作の相談もこちらから。
 https://usuilab.com/?utm_source=x&utm_medium=social&utm_campaign=site_renewal
 
 添付候補：assets/ogp.png または marketing/usuilab-intro.mp4
@@ -41,8 +41,8 @@ https://usuilab.com/usuiblog/app-brief/?utm_source=x&utm_medium=social&utm_campa
 
 ## 縦動画用の本文 / Reels・Shorts
 
-AI活用、アプリ開発、Web制作。
-アイデアを、使えるかたちにするUSUI LAB。
+おもしろそう。で、つくる。
+YouTubeのコメントを弾幕にするUSUI LAB。
 自主制作のアプリと制作事例を公開しています。
 仕事の相談は usuilab.com/contact/ へ。
 #個人開発 #アプリ開発 #Web制作 #AI活用
